@@ -12,8 +12,12 @@ buildscript {
 apply plugin: "gmcp"
 
 group = 'ccm.compresstion'
-version = "1.0.0.${System.env.BUILD_NUMBER}"
+version = "1.0.0.${System.env.BUILD_NUMBER}.ALPHA"
 archivesBaseName = 'Compresstion'
+
+minecraft { 
+	minecraftVersion = '1.6.2'
+}
 
 sourceSets {
     main {
@@ -26,15 +30,9 @@ sourceSets {
     }
 }
 
-minecraft { 
-	minecraftVersion = '1.6.2'
-}
-
-processResources{
-
-	// Iterate through files to expand version on things not PNGs, or OBJs
+processResources {
 	eachFile { file ->
-		if (!(file.getPath().endsWith('png') || file.getPath().endsWith('obj'))){
+		if(!(file.getPath().endsWith('png'))){
 			expand version: version, mcversion: minecraft.minecraftVersion
 		}
 	}
