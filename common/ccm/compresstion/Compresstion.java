@@ -22,7 +22,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 
 import ccm.compresstion.proxy.CommonProxy;
 import ccm.compresstion.utils.handler.config.CompresstionConfig;
-import ccm.nucleum.omnium.BaseMod;
+import ccm.nucleum.omnium.CCMMod;
 import ccm.nucleum.omnium.IMod;
 import ccm.nucleum.omnium.utils.handler.ModLoadingHandler;
 import ccm.nucleum.omnium.utils.handler.config.ConfigurationHandler;
@@ -32,7 +32,7 @@ import lib.org.modstats.ModstatInfo;
 @Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 @ModstatInfo(prefix = MOD_PREFIX)
-public class Compresstion extends BaseMod implements IMod
+public class Compresstion extends CCMMod implements IMod
 {
 
     @Instance(MOD_ID)
