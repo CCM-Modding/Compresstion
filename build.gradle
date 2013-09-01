@@ -2,13 +2,9 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots'
-        }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
-    dependencies { 
-        classpath 'com.github.abrarsyed.gmcp:GMCP:0.7.4-SNAPSHOT'
-    }
+    dependencies {  classpath 'com.github.abrarsyed.gmcp:GMCP:0.7.4-SNAPSHOT' }
 }
 
 apply plugin: "gmcp"
@@ -17,18 +13,12 @@ group = 'ccm.compresstion'
 version = "1.0.0.${System.env.BUILD_NUMBER}.ALPHA"
 archivesBaseName = 'Compresstion'
 
-minecraft { 
-    minecraftVersion = '1.6.2'
-}
+minecraft {  minecraftVersion = '1.6.2' }
 
 sourceSets {
     main {
-        java {
-            srcDir 'common'
-        }
-        resources {
-            srcDir 'resources'
-        }
+        java { srcDir 'common' }
+        resources { srcDir 'resources' }
     }
 }
 
@@ -40,11 +30,11 @@ processResources {
     }
 }
 
-jar { 
+jar {
     appendix = 'universal'
-    manifest { 	
+    manifest {
         attributes 'MCVersion' : project.minecraft.minecraftVersion
-        attributes 'Version' : project.version 
+        attributes 'Version' : project.version
     }
 }
 
@@ -53,6 +43,4 @@ task sourceJar(type: Jar) {
     appendix = 'src'
 }
 
-artifacts {
-    archives sourceJar
-}
+artifacts { archives sourceJar }
