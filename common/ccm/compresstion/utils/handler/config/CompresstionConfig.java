@@ -3,6 +3,11 @@
  */
 package ccm.compresstion.utils.handler.config;
 
+import static ccm.compresstion.utils.lib.Properties.BLOCK_COMPRESSED_ID;
+import static ccm.compresstion.utils.lib.Properties.BLOCK_COMPRESSED_ID_DEFAULT;
+import static ccm.compresstion.utils.lib.Properties.BLOCK_COMPRESSER_ID;
+import static ccm.compresstion.utils.lib.Properties.BLOCK_COMPRESSER_ID_DEFAULT;
+
 import ccm.nucleum.omnium.utils.handler.config.IConfig;
 
 /**
@@ -15,5 +20,9 @@ public class CompresstionConfig extends IConfig
 {
     @Override
     public void init()
-    {}
+    {
+        BLOCK_COMPRESSER_ID = config.getBlock("Compresser_Block", BLOCK_COMPRESSER_ID_DEFAULT, "This is the ID of the Compresser").getInt();
+
+        BLOCK_COMPRESSED_ID = config.getBlock("Compressed_Block", BLOCK_COMPRESSED_ID_DEFAULT, "This is the ID of all the compressed blocks").getInt();
+    }
 }

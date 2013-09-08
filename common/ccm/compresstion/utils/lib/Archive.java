@@ -15,5 +15,9 @@ public class Archive
 
     public static final String MOD_NAME = "Compresstion";
 
-    public static final String MOD_PREFIX = "compresstion";
+    static final String NBT = "CCM." + MOD_ID.toUpperCase() + "ITEM.BLOCK.COMPRESSED";
+
+    public static final String NBT_COMPRESSED_BLOCK_ID = NBT + ".ID";
+
+    public static final String NBT_COMPRESSED_BLOCK_META = NBT + ".META";
 }
