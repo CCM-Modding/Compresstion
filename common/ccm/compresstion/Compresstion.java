@@ -19,18 +19,18 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
+import ccm.compresstion.block.ModBlocks;
 import ccm.compresstion.proxy.CommonProxy;
 import ccm.compresstion.utils.handler.config.CompresstionConfig;
 import ccm.nucleum.omnium.CCMMod;
 import ccm.nucleum.omnium.IMod;
+import ccm.nucleum.omnium.utils.handler.IconHandler;
 import ccm.nucleum.omnium.utils.handler.ModLoadingHandler;
-import ccm.nucleum.omnium.utils.handler.config.ConfigurationHandler;
 
 @Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class Compresstion extends CCMMod implements IMod
 {
-
     @Instance(MOD_ID)
     public static Compresstion instance;
 
@@ -45,10 +45,12 @@ public class Compresstion extends CCMMod implements IMod
     @EventHandler
     public void preInit(final FMLPreInitializationEvent event)
     {
-        ModLoadingHandler.loadMod(this);
-
-        initializeConfig(event);
-        ConfigurationHandler.init(this, CompresstionConfig.class);
+        ModLoadingHandler.loadMod(this, event, new CompresstionConfig());
+        for (int i = 1; i < 9; i++)
+        {
+            IconHandler.addIcon("renderOverlay" + i);
+        }
+        ModBlocks.init();
     }
 
     @EventHandler

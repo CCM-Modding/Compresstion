@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +22,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import ccm.compresstion.client.renderer.block.CompressedRenderer;
 import ccm.compresstion.tileentity.CompressedTile;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.helper.NBTItemHelper;
@@ -30,6 +32,7 @@ public class Compressed extends BlockContainer
     public Compressed(final int id, final Material material)
     {
         super(id, material);
+        setCreativeTab(CreativeTabs.tabBlock);
     }
 
     @Override
@@ -209,5 +212,38 @@ public class Compressed extends BlockContainer
     public void onBlockDestroyedByExplosion(final World world, final int x, final int y, final int z, final Explosion explosion)
     {
         getBlock(world, x, y, z).onBlockDestroyedByExplosion(world, x, y, z, explosion);
+    }
+
+    @Override
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
+
+    @Override
+    public int getRenderType()
+    {
+        return CompressedRenderer.id;
+    }
+
+    @Override
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+
+    @Override
+    public int getRenderBlockPass()
+    {
+        return 1;
+    }
+
+    @Override
+    public boolean canRenderInPass(final int pass)
+    {
+        // Set the static var in the client proxy
+        CompressedRenderer.currentRenderPass = (byte) pass;
+        // the block can render in both passes, so return true always
+        return true;
     }
 }

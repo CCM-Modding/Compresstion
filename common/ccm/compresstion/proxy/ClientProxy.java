@@ -3,6 +3,7 @@
  */
 package ccm.compresstion.proxy;
 
+
 /**
  * ClientProxy
  * <p>
@@ -12,4 +13,9 @@ package ccm.compresstion.proxy;
 public class ClientProxy extends CommonProxy
 {
 
+    @Override
+    public void registerRenders()
+    {
+
+    }
 }
