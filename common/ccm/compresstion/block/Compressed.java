@@ -70,7 +70,7 @@ public class Compressed extends BlockContainer
         return ret;
     }
 
-    private Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
+    private static Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
     {
         return ((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock();
     }
