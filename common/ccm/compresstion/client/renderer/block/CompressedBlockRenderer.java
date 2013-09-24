@@ -9,7 +9,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import ccm.nucleum.omnium.utils.handler.IconHandler;
 
-public class CompressedRenderer implements ISimpleBlockRenderingHandler
+public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
 {
     public final static int id = RenderingRegistry.getNextAvailableRenderId();
 
@@ -47,5 +47,4 @@ public class CompressedRenderer implements ISimpleBlockRenderingHandler
     {
         return id;
     }
-
 }

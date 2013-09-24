@@ -24,7 +24,6 @@ import ccm.compresstion.proxy.CommonProxy;
 import ccm.compresstion.utils.handler.config.CompresstionConfig;
 import ccm.nucleum.omnium.CCMMod;
 import ccm.nucleum.omnium.IMod;
-import ccm.nucleum.omnium.utils.handler.IconHandler;
 import ccm.nucleum.omnium.utils.handler.ModLoadingHandler;
 
 @Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true)
@@ -46,11 +45,9 @@ public class Compresstion extends CCMMod implements IMod
     public void preInit(final FMLPreInitializationEvent event)
     {
         ModLoadingHandler.loadMod(this, event, new CompresstionConfig());
-        for (int i = 1; i < 9; i++)
-        {
-            IconHandler.addIcon("renderOverlay" + i);
-        }
+        proxy.addIcons();
         ModBlocks.init();
+        proxy.registerRenders();
     }
 
     @EventHandler

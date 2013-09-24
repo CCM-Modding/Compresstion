@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import ccm.compresstion.client.renderer.block.CompressedRenderer;
+import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
 import ccm.compresstion.tileentity.CompressedTile;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.helper.NBTItemHelper;
@@ -223,7 +223,7 @@ public class Compressed extends BlockContainer
     @Override
     public int getRenderType()
     {
-        return CompressedRenderer.id;
+        return CompressedBlockRenderer.id;
     }
 
     @Override
@@ -242,7 +242,7 @@ public class Compressed extends BlockContainer
     public boolean canRenderInPass(final int pass)
     {
         // Set the static var in the client proxy
-        CompressedRenderer.currentRenderPass = (byte) pass;
+        CompressedBlockRenderer.currentRenderPass = (byte) pass;
         // the block can render in both passes, so return true always
         return true;
     }
