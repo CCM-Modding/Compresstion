@@ -11,10 +11,6 @@ package ccm.compresstion.proxy;
  */
 public class CommonProxy
 {
-
     public void registerRenders()
-    {}
-
-    public void addIcons()
     {}
 }

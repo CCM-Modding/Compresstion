@@ -7,6 +7,7 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
+import ccm.compresstion.Compresstion;
 import ccm.nucleum.omnium.utils.handler.IconHandler;
 
 public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
@@ -30,7 +31,7 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
         } else
         {
             // we are on the alpha render pass, draw the overlay
-            renderer.renderBlockUsingTexture(block, x, y, z, IconHandler.getIcon("condensedOverlay" + world.getBlockMetadata(x, y, z)));
+            renderer.renderBlockUsingTexture(block, x, y, z, IconHandler.getIcon(Compresstion.instance, "condensedOverlay" + world.getBlockMetadata(x, y, z)));
         }
 
         return true;

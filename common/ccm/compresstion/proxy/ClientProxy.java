@@ -10,8 +10,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
 import ccm.compresstion.client.renderer.item.CompressedItemRenderer;
 import ccm.compresstion.utils.lib.Properties;
-import ccm.nucleum.omnium.utils.handler.IconHandler;
-
 
 /**
  * ClientProxy
@@ -21,20 +19,10 @@ import ccm.nucleum.omnium.utils.handler.IconHandler;
  */
 public class ClientProxy extends CommonProxy
 {
-
     @Override
     public void registerRenders()
     {
         RenderingRegistry.registerBlockHandler(new CompressedBlockRenderer());
         MinecraftForgeClient.registerItemRenderer(Properties.BLOCK_COMPRESSED_ID, new CompressedItemRenderer());
-    }
-    
-    @Override
-    public void addIcons()
-    {
-        for (int i = 1; i < 9; i++)
-        {
-            IconHandler.addIcon("renderOverlay" + i);
-        }
     }
 }

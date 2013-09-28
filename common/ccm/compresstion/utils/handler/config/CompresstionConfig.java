@@ -8,7 +8,7 @@ import static ccm.compresstion.utils.lib.Properties.BLOCK_COMPRESSED_ID_DEFAULT;
 import static ccm.compresstion.utils.lib.Properties.BLOCK_COMPRESSER_ID;
 import static ccm.compresstion.utils.lib.Properties.BLOCK_COMPRESSER_ID_DEFAULT;
 
-import ccm.nucleum.omnium.utils.handler.config.IConfig;
+import ccm.nucleum.omnium.utils.handler.configuration.IConfig;
 
 /**
  * CompresstionConfig

@@ -6,7 +6,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,14 +24,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
 import ccm.compresstion.tileentity.CompressedTile;
 import ccm.compresstion.utils.lib.Archive;
-import ccm.nucleum.omnium.utils.helper.NBTItemHelper;
+import ccm.nucleum.omnium.utils.helper.ItemNBTHelper;
 
 public class Compressed extends BlockContainer
 {
     public Compressed(final int id, final Material material)
     {
         super(id, material);
-        setCreativeTab(CreativeTabs.tabBlock);
     }
 
     @Override
@@ -46,8 +44,8 @@ public class Compressed extends BlockContainer
     {
         super.onBlockPlacedBy(world, x, y, z, entity, item);
         CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
-        tile.setBlockID(NBTItemHelper.getInt(item, Archive.NBT_COMPRESSED_BLOCK_ID));
-        tile.setBlockMeta(NBTItemHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
+        tile.setBlockID(ItemNBTHelper.getInt(item, Archive.NBT_COMPRESSED_BLOCK_ID));
+        tile.setBlockMeta(ItemNBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
     }
 
     @Override
@@ -62,8 +60,8 @@ public class Compressed extends BlockContainer
             if (id > 0)
             {
                 ItemStack stack = new ItemStack(id, 1, damageDropped(metadata));
-                NBTItemHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
-                NBTItemHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getMeta());
+                ItemNBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
+                ItemNBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getMeta());
                 ret.add(stack);
             }
         }
@@ -241,7 +239,7 @@ public class Compressed extends BlockContainer
     @Override
     public boolean canRenderInPass(final int pass)
     {
-        // Set the static var in the client proxy
+        // Set the static var renderer
         CompressedBlockRenderer.currentRenderPass = (byte) pass;
         // the block can render in both passes, so return true always
         return true;

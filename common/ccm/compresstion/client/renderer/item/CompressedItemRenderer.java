@@ -21,6 +21,6 @@ public class CompressedItemRenderer implements IItemRenderer
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data)
     {
-        
+
     }
 }
