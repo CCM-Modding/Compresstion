@@ -9,7 +9,7 @@ import ccm.compresstion.tileentity.CompressorTile;
 import ccm.compresstion.utils.lib.Properties;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
 
-public class ModBlocks
+public final class ModBlocks
 {
     public static Block compresser;
 

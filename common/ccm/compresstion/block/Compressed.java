@@ -95,11 +95,11 @@ public class Compressed extends BlockContainer
     {
         return getBlock(world, x, y, z).getBlockTexture(world, x, y, z, side);
     }
-    
+
     @Override
-    public Icon getIcon(int par1, int par2)
+    public Icon getIcon(int par1, int meta)
     {
-        return CompressedType.values()[par2].getIcon();
+        return CompressedType.values()[meta].getIcon();
     }
 
     /**
@@ -234,15 +234,18 @@ public class Compressed extends BlockContainer
     {
         getBlock(world, x, y, z).onBlockDestroyedByExplosion(world, x, y, z, explosion);
     }
-    
-    public float getExplosionResistance(final Entity entity, final World world, final int x, final int y, final int z, final double explosionX, final double explosionY, final double explosionZ) {
+
+    public float getExplosionResistance(final Entity entity, final World world, final int x, final int y, final int z, final double explosionX, final double explosionY,
+            final double explosionZ)
+    {
         int metadata = world.getBlockMetadata(x, y, z);
-        return getBlock(world, x, y, z).getExplosionResistance(entity) * (float)((int)Math.pow(2.0, 1 + metadata));
+        return getBlock(world, x, y, z).getExplosionResistance(entity) * (float) ((int) Math.pow(2.0, 1 + metadata));
     }
-    
-    public float getBlockHardness(final World world, final int x, final int y, final int z) {
+
+    public float getBlockHardness(final World world, final int x, final int y, final int z)
+    {
         int metadata = world.getBlockMetadata(x, y, z);
-        return getBlock(world, x, y, z).getBlockHardness(world, x, y, z) * (float)((int)Math.pow(2.0, 1 + metadata));
+        return getBlock(world, x, y, z).getBlockHardness(world, x, y, z) * (float) ((int) Math.pow(2.0, 1 + metadata));
     }
 
     @Override
