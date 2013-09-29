@@ -8,7 +8,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import ccm.compresstion.Compresstion;
-import ccm.compresstion.tileentity.CompressorTile;
+import ccm.nucleum.omnium.tileentity.InventoryTE;
+import ccm.nucleum.omnium.utils.handler.TileHandler;
 
 public class Compresser extends BlockContainer
 {
@@ -24,6 +25,6 @@ public class Compresser extends BlockContainer
     @Override
     public TileEntity createNewTileEntity(final World world)
     {
-        return new CompressorTile().setInventorySize(2);
+        return ((InventoryTE) TileHandler.getTileInstance(getUnlocalizedName())).setInventorySize(2);
     }
 }

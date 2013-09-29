@@ -11,6 +11,7 @@ import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
 import ccm.compresstion.client.renderer.item.CompressedItemRenderer;
 import ccm.compresstion.utils.lib.Properties;
 
+
 /**
  * ClientProxy
  * <p>
@@ -22,7 +23,7 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerRenders()
     {
-        //RenderingRegistry.registerBlockHandler(new CompressedBlockRenderer());
-        //MinecraftForgeClient.registerItemRenderer(Properties.BLOCK_COMPRESSED_ID, new CompressedItemRenderer());
+        RenderingRegistry.registerBlockHandler(new CompressedBlockRenderer());
+        MinecraftForgeClient.registerItemRenderer(Properties.BLOCK_COMPRESSED_ID, new CompressedItemRenderer());
     }
 }

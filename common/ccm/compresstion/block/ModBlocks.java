@@ -4,8 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
 import ccm.compresstion.tileentity.CompressedTile;
 import ccm.compresstion.tileentity.CompressorTile;
 import ccm.compresstion.utils.lib.Properties;
@@ -20,9 +18,9 @@ public class ModBlocks
     public static void init()
     {
         compresser = new Compresser(Properties.BLOCK_COMPRESSER_ID, Material.rock).setCreativeTab(CreativeTabs.tabBlock);
+        TileHandler.registerTile("compresser", CompressorTile.class);
+
         compressedBlock = new Compressed(Properties.BLOCK_COMPRESSED_ID, Material.rock);
-        
-        TileHandler.registerTile("CCM.COMPRESSED.TILE.COMPRESSED", new CompressedTile());
-        TileHandler.registerTile("CCM.COMPRESSED.TILE.COMPRESSER", new CompressorTile().setInventorySize(2));
+        TileHandler.registerTile("compressed", CompressedTile.class);
     }
 }

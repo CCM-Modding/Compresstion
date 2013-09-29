@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,7 @@ import ccm.compresstion.Compresstion;
 import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
 import ccm.compresstion.tileentity.CompressedTile;
 import ccm.compresstion.utils.lib.Archive;
+import ccm.nucleum.omnium.utils.handler.TileHandler;
 import ccm.nucleum.omnium.utils.helper.ItemNBTHelper;
 
 public class Compressed extends BlockContainer
@@ -40,12 +42,21 @@ public class Compressed extends BlockContainer
     }
 
     @Override
-    public TileEntity createNewTileEntity(final World world)
+    public void registerIcons(IconRegister register)
     {
-        return new CompressedTile();
+        for (CompressedType type : CompressedType.values())
+        {
+            type.setIcon(register.registerIcon(getTextureName() + "_" + (type.ordinal() + 1)));
+        }
     }
 
-   /* @Override
+    @Override
+    public TileEntity createNewTileEntity(final World world)
+    {
+        return TileHandler.getTileInstance(getUnlocalizedName());
+    }
+
+    @Override
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack item)
     {
         super.onBlockPlacedBy(world, x, y, z, entity, item);
@@ -67,7 +78,7 @@ public class Compressed extends BlockContainer
             {
                 ItemStack stack = new ItemStack(id, 1, damageDropped(metadata));
                 ItemNBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
-                ItemNBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getMeta());
+                ItemNBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
                 ret.add(stack);
             }
         }
@@ -84,10 +95,16 @@ public class Compressed extends BlockContainer
     {
         return getBlock(world, x, y, z).getBlockTexture(world, x, y, z, side);
     }
+    
+    @Override
+    public Icon getIcon(int par1, int par2)
+    {
+        return CompressedType.values()[par2].getIcon();
+    }
 
-    *//**
+    /**
      * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
-     *//*
+     */
     @Override
     public void onBlockClicked(final World world, final int x, final int y, final int z, final EntityPlayer player)
     {
@@ -96,17 +113,17 @@ public class Compressed extends BlockContainer
 
     @Override
     @SideOnly(Side.CLIENT)
-    *//**
+    /**
      * A randomly called display update to be able to add particles or other items for display
-     *//*
+     */
     public void randomDisplayTick(final World world, final int x, final int y, final int z, final Random rand)
     {
         getBlock(world, x, y, z).randomDisplayTick(world, x, y, z, rand);
     }
 
-    *//**
+    /**
      * Called right before the block is destroyed by a player. Args: world, x, y, z, metaData
-     *//*
+     */
     @Override
     public void onBlockDestroyedByPlayer(final World world, final int x, final int y, final int z, final int meta)
     {
@@ -115,9 +132,9 @@ public class Compressed extends BlockContainer
 
     @Override
     @SideOnly(Side.CLIENT)
-    *//**
+    /**
      * Goes straight to getLightBrightnessForSkyBlocks for Blocks, does some fancy computing for Fluids
-     *//*
+     */
     public int getMixedBrightnessForBlock(final IBlockAccess world, final int x, final int y, final int z)
     {
         return getBlock(world, x, y, z).getMixedBrightnessForBlock(world, x, y, z);
@@ -125,17 +142,17 @@ public class Compressed extends BlockContainer
 
     @Override
     @SideOnly(Side.CLIENT)
-    *//**
+    /**
      * How bright to render this block based on the light its receiving. Args: iBlockAccess, x, y, z
-     *//*
+     */
     public float getBlockBrightness(final IBlockAccess world, final int x, final int y, final int z)
     {
         return getBlock(world, x, y, z).getBlockBrightness(world, x, y, z);
     }
 
-    *//**
+    /**
      * Can add to the passed in vector for a movement vector to be applied to the entity. Args: x, y, z, entity, vec3d
-     *//*
+     */
     @Override
     public void velocityToAddToEntity(final World world, final int x, final int y, final int z, final Entity entity, final Vec3 par6Vec3)
     {
@@ -144,26 +161,26 @@ public class Compressed extends BlockContainer
 
     @Override
     @SideOnly(Side.CLIENT)
-    *//**
+    /**
      * Returns the bounding box of the wired rectangular prism to render.
-     *//*
+     */
     public AxisAlignedBB getSelectedBoundingBoxFromPool(final World world, final int x, final int y, final int z)
     {
         return getBlock(world, x, y, z).getSelectedBoundingBoxFromPool(world, x, y, z);
     }
 
-    *//**
+    /**
      * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     *//*
+     */
     @Override
     public boolean canPlaceBlockAt(final World world, final int x, final int y, final int z)
     {
         return getBlock(world, x, y, z).canPlaceBlockAt(world, x, y, z);
     }
 
-    *//**
+    /**
      * Called whenever the block is added into the world. Args: world, x, y, z
-     *//*
+     */
     @Override
     public void onBlockAdded(final World world, final int x, final int y, final int z)
     {
@@ -171,37 +188,37 @@ public class Compressed extends BlockContainer
         getBlock(world, x, y, z).onBlockAdded(world, x, y, z);
     }
 
-    *//**
+    /**
      * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a different metadata value, but before the new metadata value
      * is set. Args: World, x, y, z, old block ID, old metadata
-     *//*
+     */
     @Override
     public void breakBlock(final World world, final int x, final int y, final int z, final int par5, final int par6)
     {
         getBlock(world, x, y, z).breakBlock(world, x, y, z, par5, par6);
     }
 
-    *//**
+    /**
      * Called whenever an entity is walking on top of this block. Args: world, x, y, z, entity
-     *//*
+     */
     @Override
     public void onEntityWalking(final World world, final int x, final int y, final int z, final Entity entity)
     {
         getBlock(world, x, y, z).onEntityWalking(world, x, y, z, entity);
     }
 
-    *//**
+    /**
      * Ticks the block if it's been scheduled
-     *//*
+     */
     @Override
     public void updateTick(final World world, final int x, final int y, final int z, final Random rand)
     {
         getBlock(world, x, y, z).updateTick(world, x, y, z, rand);
     }
 
-    *//**
+    /**
      * Called upon block activation (right click on the block.)
-     *//*
+     */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player, final int par6, final float par7, final float par8,
             final float par9)
@@ -209,13 +226,23 @@ public class Compressed extends BlockContainer
         return getBlock(world, x, y, z).onBlockActivated(world, x, y, z, player, 0, 0.0F, 0.0F, 0.0F);
     }
 
-    *//**
+    /**
      * Called upon the block being destroyed by an explosion
-     *//*
+     */
     @Override
     public void onBlockDestroyedByExplosion(final World world, final int x, final int y, final int z, final Explosion explosion)
     {
         getBlock(world, x, y, z).onBlockDestroyedByExplosion(world, x, y, z, explosion);
+    }
+    
+    public float getExplosionResistance(final Entity entity, final World world, final int x, final int y, final int z, final double explosionX, final double explosionY, final double explosionZ) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        return getBlock(world, x, y, z).getExplosionResistance(entity) * (float)((int)Math.pow(2.0, 1 + metadata));
+    }
+    
+    public float getBlockHardness(final World world, final int x, final int y, final int z) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        return getBlock(world, x, y, z).getBlockHardness(world, x, y, z) * (float)((int)Math.pow(2.0, 1 + metadata));
     }
 
     @Override
@@ -249,5 +276,5 @@ public class Compressed extends BlockContainer
         CompressedBlockRenderer.currentRenderPass = (byte) pass;
         // the block can render in both passes, so return true always
         return true;
-    }*/
+    }
 }
