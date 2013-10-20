@@ -11,7 +11,6 @@ import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
 import ccm.compresstion.client.renderer.item.CompressedItemRenderer;
 import ccm.compresstion.utils.lib.Properties;
 
-
 /**
  * ClientProxy
  * <p>

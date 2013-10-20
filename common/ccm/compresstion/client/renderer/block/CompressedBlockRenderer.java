@@ -31,7 +31,7 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
         } else
         {
             // we are on the alpha render pass, draw the overlay
-            renderer.renderBlockUsingTexture(block, x, y, z, IconHandler.getIcon(Compresstion.instance, "condensedOverlay" + world.getBlockMetadata(x, y, z)));
+            renderer.renderBlockUsingTexture(block, x, y, z, IconHandler.getIcon(Compresstion.instance, "condensedOverlay_" + world.getBlockMetadata(x, y, z)));
         }
 
         return true;

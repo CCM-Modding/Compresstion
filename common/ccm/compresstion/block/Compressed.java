@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -28,7 +29,7 @@ import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
 import ccm.compresstion.tileentity.CompressedTile;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
-import ccm.nucleum.omnium.utils.helper.ItemNBTHelper;
+import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class Compressed extends BlockContainer
 {
@@ -38,7 +39,7 @@ public class Compressed extends BlockContainer
         Compresstion.instance.getLogger().debug(id);
         setUnlocalizedName("compressed");
         setTextureName("compresstion:compressed");
-        GameRegistry.registerBlock(this, getUnlocalizedName());
+        GameRegistry.registerBlock(this, ItemBlockWithMetadata.class, getUnlocalizedName());
     }
 
     @Override
@@ -61,8 +62,8 @@ public class Compressed extends BlockContainer
     {
         super.onBlockPlacedBy(world, x, y, z, entity, item);
         CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
-        tile.setBlockID(ItemNBTHelper.getInt(item, Archive.NBT_COMPRESSED_BLOCK_ID));
-        tile.setBlockMeta(ItemNBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
+        tile.setBlockID(NBTHelper.getInt(item, Archive.NBT_COMPRESSED_BLOCK_ID));
+        tile.setBlockMeta(NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
     }
 
     @Override
@@ -77,8 +78,8 @@ public class Compressed extends BlockContainer
             if (id > 0)
             {
                 ItemStack stack = new ItemStack(id, 1, damageDropped(metadata));
-                ItemNBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
-                ItemNBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
+                NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
+                NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
                 ret.add(stack);
             }
         }
@@ -235,17 +236,19 @@ public class Compressed extends BlockContainer
         getBlock(world, x, y, z).onBlockDestroyedByExplosion(world, x, y, z, explosion);
     }
 
+    @Override
     public float getExplosionResistance(final Entity entity, final World world, final int x, final int y, final int z, final double explosionX, final double explosionY,
             final double explosionZ)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        return getBlock(world, x, y, z).getExplosionResistance(entity) * (float) ((int) Math.pow(2.0, 1 + metadata));
+        return getBlock(world, x, y, z).getExplosionResistance(entity) * ((int) Math.pow(2.0, 1 + metadata));
     }
 
+    @Override
     public float getBlockHardness(final World world, final int x, final int y, final int z)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        return getBlock(world, x, y, z).getBlockHardness(world, x, y, z) * (float) ((int) Math.pow(2.0, 1 + metadata));
+        return getBlock(world, x, y, z).getBlockHardness(world, x, y, z) * ((int) Math.pow(2.0, 1 + metadata));
     }
 
     @Override
