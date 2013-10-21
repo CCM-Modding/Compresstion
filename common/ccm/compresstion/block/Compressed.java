@@ -37,26 +37,10 @@ public class Compressed extends BlockContainer
     {
         super(id, Material.rock);
         setUnlocalizedName(name);
-        setTextureName(name);
         GameRegistry.registerBlock(this, ItemBlockWithMetadata.class, getUnlocalizedName());
         TileHandler.registerTile(getUnlocalizedName(), CompressedTile.class);
     }
     
-    @Override
-    public Block setTextureName(String name)
-    {
-        return super.setTextureName("compresstion:" + name);
-    }
-
-    @Override
-    public void registerIcons(IconRegister register)
-    {
-        for (CompressedType type : CompressedType.values())
-        {
-            type.setIcon(register.registerIcon(getTextureName() + "_" + (type.ordinal() + 1)));
-        }
-    }
-
     @Override
     public TileEntity createNewTileEntity(final World world)
     {
@@ -103,12 +87,6 @@ public class Compressed extends BlockContainer
     public Icon getBlockTexture(final IBlockAccess world, final int x, final int y, final int z, final int side)
     {
         return getBlock(world, x, y, z).getBlockTexture(world, x, y, z, side);
-    }
-
-    @Override
-    public Icon getIcon(int par1, int meta)
-    {
-        return CompressedType.values()[meta].getIcon();
     }
 
     /**

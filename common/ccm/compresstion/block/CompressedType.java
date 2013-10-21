@@ -33,18 +33,6 @@ public enum CompressedType
     QUINDECOUPLE,
     SEDECOUPLE;
 
-    private Icon overlay;
-
-    public Icon getIcon()
-    {
-        return overlay;
-    }
-
-    public void setIcon(Icon icon)
-    {
-        overlay = icon;
-    }
-
     @Override
     public String toString()
     {
