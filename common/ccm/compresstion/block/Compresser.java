@@ -1,5 +1,6 @@
 package ccm.compresstion.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
@@ -14,11 +15,11 @@ import ccm.nucleum.omnium.utils.handler.TileHandler;
 
 public class Compresser extends BlockContainer
 {
-    public Compresser(final int id, final Material material)
+    public Compresser(final int id, String name)
     {
-        super(id, material);
-        setUnlocalizedName("compresser");
-        setTextureName("compresstion:compresser");
+        super(id, Material.rock);
+        setUnlocalizedName(name);
+        setTextureName(name);
         GameRegistry.registerBlock(this, getUnlocalizedName());
         TileHandler.registerTile(getUnlocalizedName(), CompressorTile.class);
     }
@@ -27,5 +28,11 @@ public class Compresser extends BlockContainer
     public TileEntity createNewTileEntity(final World world)
     {
         return ((InventoryTE) TileHandler.getTileInstance(getUnlocalizedName())).setInventorySize(2);
+    }
+    
+    @Override
+    public Block setTextureName(String name)
+    {
+        return super.setTextureName("compresstion:" + name);
     }
 }

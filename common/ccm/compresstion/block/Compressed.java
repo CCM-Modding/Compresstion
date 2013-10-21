@@ -33,14 +33,19 @@ import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class Compressed extends BlockContainer
 {
-    public Compressed(final int id, final Material material)
+    public Compressed(final int id, String name)
     {
-        super(id, material);
-        Compresstion.instance.getLogger().debug(id);
-        setUnlocalizedName("compressed");
-        setTextureName("compresstion:compressed");
+        super(id, Material.rock);
+        setUnlocalizedName(name);
+        setTextureName(name);
         GameRegistry.registerBlock(this, ItemBlockWithMetadata.class, getUnlocalizedName());
         TileHandler.registerTile(getUnlocalizedName(), CompressedTile.class);
+    }
+    
+    @Override
+    public Block setTextureName(String name)
+    {
+        return super.setTextureName("compresstion:" + name);
     }
 
     @Override
