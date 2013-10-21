@@ -20,7 +20,7 @@ public final class ModBlocks
         compresser = new Compresser(Properties.BLOCK_COMPRESSER_ID, Material.rock).setCreativeTab(CreativeTabs.tabBlock);
         TileHandler.registerTile("compresser", CompressorTile.class);
 
-        compressedBlock = new Compressed(Properties.BLOCK_COMPRESSED_ID, Material.rock);
-        TileHandler.registerTile("compressed", CompressedTile.class);
+        //compressedBlock = new Compressed(Properties.BLOCK_COMPRESSED_ID, Material.rock);
+        //TileHandler.registerTile("compressed", CompressedTile.class);
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import ccm.compresstion.Compresstion;
+import ccm.compresstion.tileentity.CompressorTile;
 import ccm.nucleum.omnium.tileentity.InventoryTE;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
 
@@ -16,10 +17,10 @@ public class Compresser extends BlockContainer
     public Compresser(final int id, final Material material)
     {
         super(id, material);
-        Compresstion.instance.getLogger().debug(id);
         setUnlocalizedName("compresser");
         setTextureName("compresstion:compresser");
         GameRegistry.registerBlock(this, getUnlocalizedName());
+        TileHandler.registerTile(getUnlocalizedName(), CompressorTile.class);
     }
 
     @Override

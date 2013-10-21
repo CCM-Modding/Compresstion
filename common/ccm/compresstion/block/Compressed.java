@@ -40,6 +40,7 @@ public class Compressed extends BlockContainer
         setUnlocalizedName("compressed");
         setTextureName("compresstion:compressed");
         GameRegistry.registerBlock(this, ItemBlockWithMetadata.class, getUnlocalizedName());
+        TileHandler.registerTile(getUnlocalizedName(), CompressedTile.class);
     }
 
     @Override
@@ -64,6 +65,7 @@ public class Compressed extends BlockContainer
         CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
         tile.setBlockID(NBTHelper.getInt(item, Archive.NBT_COMPRESSED_BLOCK_ID));
         tile.setBlockMeta(NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
+        tile.setBlockType(item.getItemDamage());
     }
 
     @Override
@@ -80,6 +82,7 @@ public class Compressed extends BlockContainer
                 ItemStack stack = new ItemStack(id, 1, damageDropped(metadata));
                 NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
                 NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
+                NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_TYPE, tile.type().ordinal());
                 ret.add(stack);
             }
         }

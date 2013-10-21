@@ -3,6 +3,7 @@ package ccm.compresstion.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 
+import ccm.compresstion.block.CompressedType;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.tileentity.BaseTE;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
@@ -11,6 +12,7 @@ public class CompressedTile extends BaseTE
 {
     private int id;
     private byte meta;
+    private CompressedType type;
 
     public Block getBlock()
     {
@@ -31,6 +33,20 @@ public class CompressedTile extends BaseTE
     {
         return meta;
     }
+    
+    public void setBlockType(final CompressedType type)
+    {
+        this.type = type;
+    }
+    
+    public void setBlockType(final int type)
+    {
+        setBlockType(CompressedType.values()[type]);
+    }
+    
+    public CompressedType type(){
+        return type;
+    }
 
     @Override
     public void writeToNBT(final NBTTagCompound nbt)
@@ -38,13 +54,15 @@ public class CompressedTile extends BaseTE
         super.writeToNBT(nbt);
         nbt.setInteger(Archive.NBT_COMPRESSED_BLOCK_ID, id);
         nbt.setByte(Archive.NBT_COMPRESSED_BLOCK_META, meta);
+        nbt.setInteger(Archive.NBT_COMPRESSED_BLOCK_TYPE, type.ordinal());
     }
 
     @Override
     public void readFromNBT(final NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        id = NBTHelper.getInt(nbt, Archive.NBT_COMPRESSED_BLOCK_ID);
+        id = NBTHelper.getInteger(nbt, Archive.NBT_COMPRESSED_BLOCK_ID);
         meta = NBTHelper.getByte(nbt, Archive.NBT_COMPRESSED_BLOCK_META);
+        type = CompressedType.values()[NBTHelper.getInteger(nbt, Archive.NBT_COMPRESSED_BLOCK_TYPE)];
     }
 }

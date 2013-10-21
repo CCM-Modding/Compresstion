@@ -22,11 +22,14 @@ import cpw.mods.fml.common.network.NetworkMod;
 
 import ccm.compresstion.block.ModBlocks;
 import ccm.compresstion.proxy.CommonProxy;
+import ccm.compresstion.tileentity.CompressedTile;
+import ccm.compresstion.tileentity.CompressorTile;
 import ccm.compresstion.utils.handler.config.CompresstionConfig;
 import ccm.nucleum.network.PacketHandler;
 import ccm.nucleum.omnium.CCMMod;
 import ccm.nucleum.omnium.IMod;
 import ccm.nucleum.omnium.utils.handler.ModLoadingHandler;
+import ccm.nucleum.omnium.utils.handler.TileHandler;
 
 @Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = MOD_CHANNEL, packetHandler = PacketHandler.class)
