@@ -68,7 +68,7 @@ public class Compressed extends BlockContainer
     {
         super.onBlockPlacedBy(world, x, y, z, entity, item);
         CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
-        tile.setBlockID(NBTHelper.getInt(item, Archive.NBT_COMPRESSED_BLOCK_ID));
+        tile.setBlockID(NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
         tile.setBlockMeta(NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
         tile.setBlockType(item.getItemDamage());
     }
@@ -87,7 +87,7 @@ public class Compressed extends BlockContainer
                 ItemStack stack = new ItemStack(id, 1, damageDropped(metadata));
                 NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
                 NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
-                NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_TYPE, tile.type().ordinal());
+                stack.setItemDamage(tile.type().ordinal());
                 ret.add(stack);
             }
         }
