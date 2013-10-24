@@ -31,7 +31,7 @@ import ccm.nucleum.omnium.IMod;
 import ccm.nucleum.omnium.utils.handler.ModLoadingHandler;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
 
-@Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true)
+@Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true, dependencies = "required-after:nucleum_omnium")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = MOD_CHANNEL, packetHandler = PacketHandler.class)
 public class Compresstion extends CCMMod implements IMod
 {
