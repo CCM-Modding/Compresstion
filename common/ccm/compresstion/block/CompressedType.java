@@ -1,18 +1,8 @@
 package ccm.compresstion.block;
 
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.Icon;
-import net.minecraft.world.World;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+import java.util.Locale;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
-import ccm.compresstion.utils.lib.Properties;
-import ccm.compresstion.utils.registry.recipe.DownConvertionRecipe;
-import ccm.nucleum.omnium.utils.helper.JavaHelper;
+import net.minecraft.util.StatCollector;
 
 public enum CompressedType
 {
@@ -36,6 +26,6 @@ public enum CompressedType
     @Override
     public String toString()
     {
-        return JavaHelper.titleCase(name().toLowerCase());
+        return StatCollector.translateToLocal("compressed." + name().toUpperCase(Locale.US) + ".name");
     }
 }

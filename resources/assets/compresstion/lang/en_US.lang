@@ -1,1 +1,20 @@
+# Blocks
 tile.compressor.name=Compressor
+# Compressed Blocks
+compressed.SINGLE.name=Single
+compressed.DOUBLE.name=Double
+compressed.TRIPLE.name=Triple
+compressed.QUADRUPLE.name=Quadruple
+compressed.QUINTUPLE.name=Quintuple
+compressed.SEXTUPLE.name=Sextuple
+compressed.SEPTUPLE.name=Septuple
+compressed.OCTUPLE.name=Octuple
+compressed.NONUPLE.name=Nonuple
+compressed.DECUPLE.name=Decuple
+compressed.UNDECUPLE.name=Undecuple
+compressed.DUODECUPLE.name=Duodecuple
+compressed.TREDECUPLE.name=Tredecuple
+compressed.QUATTORDECUPLE.name=Quattordecuple
+compressed.QUINDECOUPLE.name=Quindecouple
+compressed.SEDECOUPLE.name=Sedecouple
+compressed.name=Compressed %s

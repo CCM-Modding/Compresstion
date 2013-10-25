@@ -54,7 +54,7 @@ public class CompressedTile extends BaseTE
         super.writeToNBT(nbt);
         nbt.setInteger(Archive.NBT_COMPRESSED_BLOCK_ID, id);
         nbt.setByte(Archive.NBT_COMPRESSED_BLOCK_META, meta);
-        nbt.setInteger(Archive.NBT_COMPRESSED_BLOCK_TYPE, type.ordinal());
+        nbt.setByte(Archive.NBT_COMPRESSED_BLOCK_TYPE, (byte) type.ordinal());
     }
 
     @Override
@@ -63,6 +63,6 @@ public class CompressedTile extends BaseTE
         super.readFromNBT(nbt);
         id = NBTHelper.getInteger(nbt, Archive.NBT_COMPRESSED_BLOCK_ID);
         meta = NBTHelper.getByte(nbt, Archive.NBT_COMPRESSED_BLOCK_META);
-        type = CompressedType.values()[NBTHelper.getInteger(nbt, Archive.NBT_COMPRESSED_BLOCK_TYPE)];
+        type = CompressedType.values()[NBTHelper.getByte(nbt, Archive.NBT_COMPRESSED_BLOCK_TYPE)];
     }
 }

@@ -26,6 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import ccm.compresstion.Compresstion;
 import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
+import ccm.compresstion.item.block.CompressedItemBlock;
 import ccm.compresstion.tileentity.CompressedTile;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
@@ -37,10 +38,10 @@ public class Compressed extends BlockContainer
     {
         super(id, Material.rock);
         setUnlocalizedName(name);
-        GameRegistry.registerBlock(this, ItemBlockWithMetadata.class, getUnlocalizedName());
+        GameRegistry.registerBlock(this, CompressedItemBlock.class, getUnlocalizedName());
         TileHandler.registerTile(getUnlocalizedName(), CompressedTile.class);
     }
-    
+
     @Override
     public TileEntity createNewTileEntity(final World world)
     {
