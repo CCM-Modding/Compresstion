@@ -80,7 +80,7 @@ public class Compressor extends BlockContainer
             final BaseTE te = (BaseTE) world.getBlockTileEntity(x, y, z);
             if (te != null)
             {
-                GuiHandler.openGui(FunctionHelper.getTEName(world, x, y, z), player, x, y, z);
+                GuiHandler.openGui("Compressor", player, x, y, z);
                 return true;
             } else
             {

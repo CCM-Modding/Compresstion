@@ -1,7 +1,10 @@
 package ccm.compresstion.client.renderer.item;
 
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
+import ccm.compresstion.block.CompressedType;
 
 public class CompressedItemRenderer implements IItemRenderer
 {
@@ -21,6 +24,5 @@ public class CompressedItemRenderer implements IItemRenderer
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data)
     {
-
     }
 }

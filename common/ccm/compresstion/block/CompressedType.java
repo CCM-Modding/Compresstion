@@ -2,6 +2,7 @@ package ccm.compresstion.block;
 
 import java.util.Locale;
 
+import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 
 public enum CompressedType
@@ -22,6 +23,18 @@ public enum CompressedType
     QUATTORDECUPLE,
     QUINDECOUPLE,
     SEDECOUPLE;
+
+    private Icon overlay;
+
+    public void setIcon(Icon icon)
+    {
+        overlay = icon;
+    }
+
+    public Icon getOverlay()
+    {
+        return overlay;
+    }
 
     @Override
     public String toString()
