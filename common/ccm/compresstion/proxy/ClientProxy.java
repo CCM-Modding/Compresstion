@@ -7,6 +7,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import ccm.compresstion.Compresstion;
 import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
+import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.ResourceHandler;
 
 /**
@@ -25,7 +26,6 @@ public class ClientProxy extends CommonProxy
     
     public void registerGUI()
     {
-        // FINISH
-        ResourceHandler.addGUI(Compresstion.instance, "");
+        ResourceHandler.addGUI(Compresstion.instance, Archive.COMPRESSOR);
     }
 }

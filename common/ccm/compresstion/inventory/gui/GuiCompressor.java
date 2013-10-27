@@ -20,10 +20,4 @@ public class GuiCompressor extends BaseGui
     {
         return null;
     }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
-    {
-        
-    }
 }
