@@ -19,7 +19,9 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.GameRegistry;
 
+import ccm.compresstion.block.CompressedType;
 import ccm.compresstion.block.ModBlocks;
 import ccm.compresstion.proxy.CommonProxy;
 import ccm.compresstion.utils.handler.config.CompresstionConfig;
@@ -47,6 +49,11 @@ public class Compresstion extends CCMMod
         loadMod(this, event, new CompresstionConfig());
         ModBlocks.init();
         proxy.registerRenders();
+
+        for (CompressedType type : CompressedType.values())
+        {
+            GameRegistry.addRecipe(type.recipe);
+        }
     }
 
     @EventHandler
