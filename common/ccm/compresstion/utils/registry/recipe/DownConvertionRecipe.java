@@ -23,7 +23,7 @@ public class DownConvertionRecipe implements IRecipe
         try
         {
             preType = CompressedType.values()[type.ordinal() - 1];
-        } catch (IndexOutOfBoundsException e)
+        } catch (Exception e)
         {
             preType = null;
         }
