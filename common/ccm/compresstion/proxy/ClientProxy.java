@@ -21,11 +21,16 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerRenders()
     {
+        super.registerRenders();
+        
         RenderingRegistry.registerBlockHandler(new CompressedBlockRenderer());
     }
     
+    @Override
     public void registerGUI()
     {
+        super.registerGUI();
+        
         ResourceHandler.addGUI(Compresstion.instance, Archive.COMPRESSOR);
     }
 }

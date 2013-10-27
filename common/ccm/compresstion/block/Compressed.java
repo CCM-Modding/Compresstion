@@ -54,7 +54,7 @@ public class Compressed extends BlockContainer
             type.setIcon(register.registerIcon("condensedOverlay_" + type.ordinal()));
         }
     }
-
+    
     @Override
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack item)
     {
@@ -62,7 +62,6 @@ public class Compressed extends BlockContainer
         CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
         tile.setBlockID(NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
         tile.setBlockMeta(NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
-        tile.setBlockType(item.getItemDamage());
     }
 
     @Override
@@ -76,10 +75,10 @@ public class Compressed extends BlockContainer
             int id = idDropped(metadata, world.rand, fortune);
             if (id > 0)
             {
-                ItemStack stack = new ItemStack(id, 1, damageDropped(metadata));
+                ItemStack stack = new ItemStack(id, 1, metadata);
                 NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
                 NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
-                stack.setItemDamage(tile.type().ordinal());
+                stack.setItemDamage(metadata);
                 ret.add(stack);
             }
         }
@@ -179,10 +178,9 @@ public class Compressed extends BlockContainer
     @Override
     public void onBlockAdded(final World world, final int x, final int y, final int z)
     {
-        onNeighborBlockChange(world, x, y, z, 0);
         getBlock(world, x, y, z).onBlockAdded(world, x, y, z);
     }
-
+    
     /**
      * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a different metadata value, but before the new metadata value
      * is set. Args: World, x, y, z, old block ID, old metadata

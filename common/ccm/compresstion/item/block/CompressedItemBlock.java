@@ -26,7 +26,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     {
         StringBuilder name = new StringBuilder();
 
-        CompressedType type = CompressedType.values()[NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_TYPE)];
+        CompressedType type = CompressedType.values()[item.getItemDamage()];
         name.append(type.toString());
         name.append(" ");
 
@@ -38,7 +38,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     @Override
     public void addInformation(ItemStack item, EntityPlayer player, List list, boolean par4)
     {
-        CompressedType type = CompressedType.values()[NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_TYPE)];
+        CompressedType type = CompressedType.values()[item.getItemDamage()];
         
         list.add("This Block contains: " + Math.pow(9, (type.ordinal() + 1)));
         list.add(getCompressedName(item));

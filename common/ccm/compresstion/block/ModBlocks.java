@@ -5,7 +5,6 @@ import net.minecraft.creativetab.CreativeTabs;
 
 import ccm.compresstion.Compresstion;
 import ccm.compresstion.utils.lib.Archive;
-import ccm.compresstion.utils.lib.Properties;
 
 public final class ModBlocks
 {

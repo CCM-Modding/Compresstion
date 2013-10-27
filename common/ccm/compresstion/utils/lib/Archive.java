@@ -20,8 +20,6 @@ public class Archive
     public static final String NBT_COMPRESSED_BLOCK_ID = NBT + ".ID";
 
     public static final String NBT_COMPRESSED_BLOCK_META = NBT + ".META";
-
-    public static final String NBT_COMPRESSED_BLOCK_TYPE = NBT + ".TYPE";
     
     public static final String COMPRESSOR = "Compressor";
 }

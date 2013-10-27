@@ -12,7 +12,6 @@ public class CompressedTile extends BaseTE
 {
     private int id;
     private byte meta;
-    private CompressedType type;
 
     public Block getBlock()
     {
@@ -34,27 +33,12 @@ public class CompressedTile extends BaseTE
         return meta;
     }
     
-    public void setBlockType(final CompressedType type)
-    {
-        this.type = type;
-    }
-    
-    public void setBlockType(final int type)
-    {
-        setBlockType(CompressedType.values()[type]);
-    }
-    
-    public CompressedType type(){
-        return type;
-    }
-
     @Override
     public void writeToNBT(final NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger(Archive.NBT_COMPRESSED_BLOCK_ID, id);
         nbt.setByte(Archive.NBT_COMPRESSED_BLOCK_META, meta);
-        nbt.setByte(Archive.NBT_COMPRESSED_BLOCK_TYPE, (byte) type.ordinal());
     }
 
     @Override
@@ -63,6 +47,5 @@ public class CompressedTile extends BaseTE
         super.readFromNBT(nbt);
         id = NBTHelper.getInteger(nbt, Archive.NBT_COMPRESSED_BLOCK_ID);
         meta = NBTHelper.getByte(nbt, Archive.NBT_COMPRESSED_BLOCK_META);
-        type = CompressedType.values()[NBTHelper.getByte(nbt, Archive.NBT_COMPRESSED_BLOCK_TYPE)];
     }
 }

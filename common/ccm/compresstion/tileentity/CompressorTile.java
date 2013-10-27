@@ -5,8 +5,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
 
 import ccm.nucleum.omnium.tileentity.InventoryTE;
+import ccm.nucleum.omnium.tileentity.ProgressTE;
 
-public class CompressorTile extends InventoryTE implements ISidedInventory
+public class CompressorTile extends ProgressTE implements ISidedInventory
 {
     @Override
     public int[] getAccessibleSlotsFromSide(int side)
