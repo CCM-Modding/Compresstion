@@ -4,7 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.world.World;
 
+import ccm.compresstion.inventory.container.ContainerCompressor;
 import ccm.nucleum.omnium.inventory.gui.BaseGui;
+import ccm.nucleum.omnium.tileentity.ProgressTE;
 
 public class GuiCompressor extends BaseGui
 {
@@ -16,8 +18,8 @@ public class GuiCompressor extends BaseGui
     }
 
     @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getClientGuiElement(EntityPlayer player, World world, int x, int y, int z)
     {
-        return null;
+        return new GuiCompressor(new ContainerCompressor((ProgressTE)world.getBlockTileEntity(x, y, z)));
     }
 }
