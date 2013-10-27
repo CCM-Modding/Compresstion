@@ -12,13 +12,12 @@ public class ContainerCompressor extends ProgressContainer
     public ContainerCompressor(IInventory inventory)
     {
         super(inventory);
-        // TODO Auto-generated constructor stub
+        // FINISH
     }
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        // TODO Auto-generated method stub
         return null;
     }
 

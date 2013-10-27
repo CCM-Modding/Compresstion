@@ -21,8 +21,8 @@ public class CompresstionConfig extends IConfig
     @Override
     public void init()
     {
-        BLOCK_COMPRESSOR_ID = config.getBlock("Compressor", BLOCK_COMPRESSOR_ID_DEFAULT, "This is the ID of the Compressor").getInt();
+        BLOCK_COMPRESSOR_ID = config.getBlockId("Compressor");
 
-        BLOCK_COMPRESSED_ID = config.getBlock("Compressed", BLOCK_COMPRESSED_ID_DEFAULT, "This is the ID of all the Compressed blocks").getInt();
+        BLOCK_COMPRESSED_ID = config.getBlockId("Compressed");
     }
 }

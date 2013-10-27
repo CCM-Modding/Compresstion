@@ -20,7 +20,7 @@ public class CommonProxy
     
     public void registerGUI()
     {
-     // TODO Finish
+     // FINISH
         GuiHandler.addGui("Compressor", new ContainerCompressor(null), new GuiCompressor(null));
     }
 }

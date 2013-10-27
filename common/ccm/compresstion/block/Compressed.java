@@ -246,35 +246,8 @@ public class Compressed extends BlockContainer
     }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
     public int getRenderType()
     {
         return CompressedBlockRenderer.id;
-    }
-
-    @Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    @Override
-    public int getRenderBlockPass()
-    {
-        return 1;
-    }
-
-    @Override
-    public boolean canRenderInPass(final int pass)
-    {
-        // Set the static var renderer
-        CompressedBlockRenderer.currentRenderPass = (byte) pass;
-        // the block can render in both passes, so return true always
-        return true;
     }
 }
