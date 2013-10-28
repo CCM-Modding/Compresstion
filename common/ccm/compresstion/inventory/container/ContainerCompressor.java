@@ -9,16 +9,22 @@ import ccm.nucleum.omnium.tileentity.ProgressTE;
 
 public class ContainerCompressor extends ProgressContainer
 {
-
     public ContainerCompressor(ProgressTE inventory)
     {
         super(inventory);
-        // FINISH
     }
-
+    
+    public ContainerCompressor(EntityPlayer player, ProgressTE inventory)
+    {
+        super(inventory, player.inventory, 8, 84);
+        drawBoxInventory(tile, 0, 67, 35, 1, 1);
+        drawBoxInventory(tile, 1, 23, 44, 1, 1);
+        drawOutBoxInventory(tile, 2, 131, 35, 1, 1);
+    }
+    
     @Override
     public Object getServerGuiElement(EntityPlayer player, World world, int x, int y, int z)
     {
-        return new ContainerCompressor((ProgressTE)world.getBlockTileEntity(x, y, z));
+        return new ContainerCompressor(player, (ProgressTE)world.getBlockTileEntity(x, y, z));
     }
 }

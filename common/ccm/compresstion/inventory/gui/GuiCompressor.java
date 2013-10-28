@@ -21,6 +21,6 @@ public class GuiCompressor extends BaseGui
     @Override
     public Object getClientGuiElement(EntityPlayer player, World world, int x, int y, int z)
     {
-        return new GuiCompressor(new ContainerCompressor((ProgressTE)world.getBlockTileEntity(x, y, z)));
+        return new GuiCompressor(new ContainerCompressor(player, (ProgressTE)world.getBlockTileEntity(x, y, z)));
     }
 }

@@ -37,7 +37,7 @@ public class Compressed extends BlockContainer
         super(id, Material.rock);
         setUnlocalizedName(name);
         GameRegistry.registerBlock(this, CompressedItemBlock.class, getUnlocalizedName());
-        TileHandler.registerTile(getUnlocalizedName(), CompressedTile.class);
+        TileHandler.registerTile(name, CompressedTile.class);
     }
 
     @Override
