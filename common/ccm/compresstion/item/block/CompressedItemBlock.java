@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 
 import ccm.compresstion.block.CompressedType;
@@ -22,7 +23,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
         super(id, block);
         CCMLogger.DEFAULT_LOGGER.severe("ITEMBLOCK: " + id);
     }
-
+    
     @Override
     public String getItemDisplayName(ItemStack item)
     {

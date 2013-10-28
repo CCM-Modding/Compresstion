@@ -11,6 +11,7 @@ import ccm.compresstion.Compresstion;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.inventory.container.element.TimedElement;
 import ccm.nucleum.omnium.tileentity.ProgressTE;
+import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
 
@@ -127,12 +128,13 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                     stack.setItemDamage(stack.getItemDamage() + 1);
                 } else
                 {
+                    CCMLogger.DEFAULT_LOGGER.severe("WTF!!!!!!");
                     return;
                 }
             } else
             // if it is not
             {
-                Block block = Block.blocksList[stack.itemID - 256];
+                Block block = Block.blocksList[stack.itemID - 256 < 0 ? stack.itemID : stack.itemID - 256];
                 int meta = stack.getItemDamage();
                 if (block.isOpaqueCube() && (block.getRenderType() == 0) && (!block.hasTileEntity(meta)) && block.renderAsNormalBlock() && hasNormalBounds(block))
                 {
@@ -140,6 +142,8 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                     NBTHelper.setInteger(tmp, Archive.NBT_COMPRESSED_BLOCK_ID, block.blockID);
                     NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_META, meta);
                     stack = tmp;
+                }else{
+                    CCMLogger.DEFAULT_LOGGER.severe("WTF!!!");
                 }
             }
 
