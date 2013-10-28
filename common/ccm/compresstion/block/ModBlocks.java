@@ -14,7 +14,7 @@ public final class ModBlocks
 
     public static void init()
     {
-        compressor = new Compressor(Compresstion.instance.getConfigHandler().getBlockId(Archive.COMPRESSOR), "compressor").setCreativeTab(CreativeTabs.tabBlock);
+        compressor = new Compressor(Compresstion.instance.getConfigHandler().getBlockId(Archive.COMPRESSOR), Archive.COMPRESSOR).setCreativeTab(CreativeTabs.tabBlock);
 
         compressedBlock = new Compressed(Compresstion.instance.getConfigHandler().getBlockId("Compressed"), "compressed");
     }

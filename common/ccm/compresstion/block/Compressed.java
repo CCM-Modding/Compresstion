@@ -28,6 +28,7 @@ import ccm.compresstion.item.block.CompressedItemBlock;
 import ccm.compresstion.tileentity.CompressedTile;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
+import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class Compressed extends BlockContainer
@@ -35,6 +36,7 @@ public class Compressed extends BlockContainer
     public Compressed(final int id, String name)
     {
         super(id, Material.rock);
+        CCMLogger.DEFAULT_LOGGER.severe("BLOCK: " + id);
         setUnlocalizedName(name);
         GameRegistry.registerBlock(this, CompressedItemBlock.class, getUnlocalizedName());
         TileHandler.registerTile(name, CompressedTile.class);

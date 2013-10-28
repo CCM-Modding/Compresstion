@@ -11,6 +11,7 @@ import net.minecraft.util.StatCollector;
 
 import ccm.compresstion.block.CompressedType;
 import ccm.compresstion.utils.lib.Archive;
+import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class CompressedItemBlock extends ItemBlockWithMetadata
@@ -19,6 +20,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     public CompressedItemBlock(int id, Block block)
     {
         super(id, block);
+        CCMLogger.DEFAULT_LOGGER.severe("ITEMBLOCK: " + id);
     }
 
     @Override

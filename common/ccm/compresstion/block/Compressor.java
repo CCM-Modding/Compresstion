@@ -29,7 +29,7 @@ public class Compressor extends BlockContainer
     public Compressor(final int id, String name)
     {
         super(id, Material.rock);
-        setUnlocalizedName(name);
+        setUnlocalizedName(name.toLowerCase());
         GameRegistry.registerBlock(this, getUnlocalizedName());
         TileHandler.registerTile(name, CompressorTile.class);
     }
@@ -60,7 +60,7 @@ public class Compressor extends BlockContainer
     @Override
     public TileEntity createNewTileEntity(final World world)
     {
-        return ((InventoryTE) TileHandler.getTileInstance(getUnlocalizedName())).setInventorySize(3);
+        return ((InventoryTE) TileHandler.getTileInstance(Archive.COMPRESSOR)).setInventorySize(3);
     }
 
     @Override
