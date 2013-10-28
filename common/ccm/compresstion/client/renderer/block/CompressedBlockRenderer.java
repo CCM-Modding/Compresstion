@@ -22,7 +22,7 @@ import ccm.nucleum.omnium.utils.helper.NBTHelper;
 /**
  * CompressedBlockRenderer
  * <p>
- *
+ * 
  * @author Resinresin
  */
 public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
@@ -34,7 +34,7 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
-        renderer.setOverrideBlockTexture(renderer.getBlockIcon(block));
+        renderer.setOverrideBlockTexture(renderer.getBlockIcon(block, world, x, y, z, 1));
         renderer.clearOverrideBlockTexture();
 
         CompressedTile te = (CompressedTile) world.getBlockTileEntity(x, y, z);
