@@ -71,7 +71,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 if (getTimeLeft(progressBar) == 200)
                 {
                     setTimeLeft(progressBar, 0);
-                    smeltItem();
+                    compressItem();
                     done = true;
                 }
             } else
@@ -94,27 +94,29 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
     @Override
     public boolean canRun()
     {
-        if (inventory[0] == null)
+        if (inventory[0] != null)
         {
-            return false;
-        } else
-        {
-            ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(inventory[0]);
-            if (itemstack == null)
+            ItemStack stack = inventory[0];
+            Block block = Block.blocksList[stack.itemID - 256 < 0 ? stack.itemID : stack.itemID - 256];
+            int meta = stack.getItemDamage();
+            if(isNormalBlock(block, meta))
+
+            if (stack == null)
                 return false;
             if (inventory[2] == null)
                 return true;
-            if (!inventory[2].isItemEqual(itemstack))
+            if (!inventory[2].isItemEqual(stack))
                 return false;
-            int result = inventory[2].stackSize + itemstack.stackSize;
-            return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
+            int result = inventory[2].stackSize + stack.stackSize;
+            return (result <= getInventoryStackLimit() && result <= stack.getMaxStackSize());
         }
+        return false;
     }
 
     /**
      * Turn one item from the furnace source stack into the appropriate smelted item in the furnace result stack
      */
-    public void smeltItem()
+    public void compressItem()
     {
         if (canRun())
         {
@@ -136,13 +138,14 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
             {
                 Block block = Block.blocksList[stack.itemID - 256 < 0 ? stack.itemID : stack.itemID - 256];
                 int meta = stack.getItemDamage();
-                if (block.isOpaqueCube() && (block.getRenderType() == 0) && (!block.hasTileEntity(meta)) && block.renderAsNormalBlock() && hasNormalBounds(block))
+                if (isNormalBlock(block, meta))
                 {
                     ItemStack tmp = new ItemStack(Compresstion.instance.getConfigHandler().getBlockId(Archive.COMPRESSOR) + 256, 1, 1);
                     NBTHelper.setInteger(tmp, Archive.NBT_COMPRESSED_BLOCK_ID, block.blockID);
                     NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_META, meta);
                     stack = tmp;
-                }else{
+                } else
+                {
                     CCMLogger.DEFAULT_LOGGER.severe("WTF!!!");
                 }
             }
@@ -162,9 +165,13 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
             {
                 inventory[0] = null;
             }
-            
-            
         }
+    }
+
+    // TODO Move to Nucleum
+    public static boolean isNormalBlock(Block block, int meta)
+    {
+        return (block.isOpaqueCube() && (block.getRenderType() == 0) && (!block.hasTileEntity(meta)) && block.renderAsNormalBlock() && hasNormalBounds(block));
     }
 
     // TODO Move to Nucleum
