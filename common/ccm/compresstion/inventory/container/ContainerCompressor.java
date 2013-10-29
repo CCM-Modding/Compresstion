@@ -2,6 +2,7 @@ package ccm.compresstion.inventory.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import ccm.nucleum.omnium.inventory.container.ProgressContainer;
@@ -26,5 +27,11 @@ public class ContainerCompressor extends ProgressContainer
     public Object getServerGuiElement(EntityPlayer player, World world, int x, int y, int z)
     {
         return new ContainerCompressor(player, (ProgressTE)world.getBlockTileEntity(x, y, z));
+    }
+    
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    {
+        return null;
     }
 }
