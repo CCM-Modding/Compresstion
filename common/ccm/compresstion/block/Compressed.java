@@ -65,7 +65,7 @@ public class Compressed extends BlockContainer
         tile.setBlockID(NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
         tile.setBlockMeta(NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
     }
-
+    
     @Override
     public ArrayList<ItemStack> getBlockDropped(final World world, final int x, final int y, final int z, final int metadata, final int fortune)
     {
