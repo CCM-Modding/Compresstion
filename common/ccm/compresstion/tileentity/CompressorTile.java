@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.ForgeDirection;
 
 import ccm.compresstion.Compresstion;
+import ccm.compresstion.block.ModBlocks;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.inventory.container.element.TimedElement;
 import ccm.nucleum.omnium.tileentity.ProgressTE;
@@ -113,20 +114,22 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
     }
 
     /**
-     * Turn one item from the furnace source stack into the appropriate smelted item in the furnace result stack
+     * Turn one item from the compressor source stack into the appropriate compressed item in the compressor result stack
      */
     public void compressItem()
     {
         if (canRun())
         {
             ItemStack stack = inventory[0].copy();
+            Block block = Block.blocksList[stack.itemID - 256 < 0 ? stack.itemID : stack.itemID - 256];
+            int meta = stack.getItemDamage();
 
             // if the stack is Ours
-            if (NBTHelper.hasTag(stack, Archive.NBT_COMPRESSED_BLOCK_ID))
+            if (block.blockID == ModBlocks.compressor.blockID)
             {
-                if (stack.getItemDamage() + 1 <= 15)
+                if (meta + 1 <= 15)
                 {
-                    stack.setItemDamage(stack.getItemDamage() + 1);
+                    stack.setItemDamage(meta + 1);
                 } else
                 {
                     CCMLogger.DEFAULT_LOGGER.severe("WTF!!!!!!");
@@ -135,18 +138,10 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
             } else
             // if it is not
             {
-                Block block = Block.blocksList[stack.itemID - 256 < 0 ? stack.itemID : stack.itemID - 256];
-                int meta = stack.getItemDamage();
-                if (isNormalBlock(block, meta))
-                {
-                    ItemStack tmp = new ItemStack(Compresstion.instance.getConfigHandler().getBlockId(Archive.COMPRESSOR) + 256, 1, 1);
-                    NBTHelper.setInteger(tmp, Archive.NBT_COMPRESSED_BLOCK_ID, block.blockID);
-                    NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_META, meta);
-                    stack = tmp;
-                } else
-                {
-                    CCMLogger.DEFAULT_LOGGER.severe("WTF!!!");
-                }
+                ItemStack tmp = new ItemStack(ModBlocks.compressor.blockID + 256, 1, 0);
+                NBTHelper.setInteger(tmp, Archive.NBT_COMPRESSED_BLOCK_ID, block.blockID);
+                NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_META, meta);
+                stack = tmp;
             }
 
             // Below it does all the item checking
