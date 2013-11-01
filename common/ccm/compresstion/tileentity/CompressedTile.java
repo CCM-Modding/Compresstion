@@ -34,6 +34,12 @@ public class CompressedTile extends BaseTE
     }
     
     @Override
+    public boolean canUpdate()
+    {
+        return false;
+    }
+    
+    @Override
     public void writeToNBT(final NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);

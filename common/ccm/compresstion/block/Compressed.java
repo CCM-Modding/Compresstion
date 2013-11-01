@@ -83,7 +83,6 @@ public class Compressed extends BlockContainer
                 ItemStack stack = new ItemStack(id, 1, metadata);
                 NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
                 NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
-                stack.setItemDamage(metadata);
                 ret.add(stack);
             }
         }
