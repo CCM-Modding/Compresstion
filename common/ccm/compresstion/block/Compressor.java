@@ -26,12 +26,12 @@ public class Compressor extends BlockContainer
 {
     private Icon top, bottom, sides;
 
-    public Compressor(final int id, String name)
+    public Compressor(final int id)
     {
         super(id, Material.rock);
-        setUnlocalizedName(name.toLowerCase());
+        setUnlocalizedName(Archive.COMPRESSOR.toLowerCase());
         GameRegistry.registerBlock(this, getUnlocalizedName());
-        TileHandler.registerTile(name, CompressorTile.class);
+        TileHandler.registerTile(Archive.COMPRESSOR, CompressorTile.class);
     }
 
     @Override

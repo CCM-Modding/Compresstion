@@ -33,7 +33,9 @@ import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class Compressed extends BlockContainer
 {
-    public Compressed(final int id, String name)
+    public static final String name = "Compressed";
+    
+    public Compressed(final int id)
     {
         super(id, Material.rock);
         CCMLogger.DEFAULT_LOGGER.severe("BLOCK: " + id);
@@ -45,7 +47,7 @@ public class Compressed extends BlockContainer
     @Override
     public TileEntity createNewTileEntity(final World world)
     {
-        return TileHandler.getTileInstance(getUnlocalizedName());
+        return TileHandler.getTileInstance(name);
     }
 
     @Override
@@ -61,11 +63,12 @@ public class Compressed extends BlockContainer
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack item)
     {
         super.onBlockPlacedBy(world, x, y, z, entity, item);
+        //createNewTileEntity(world);
         CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
         tile.setBlockID(NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
         tile.setBlockMeta(NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
     }
-    
+        
     @Override
     public ArrayList<ItemStack> getBlockDropped(final World world, final int x, final int y, final int z, final int metadata, final int fortune)
     {
@@ -117,15 +120,6 @@ public class Compressed extends BlockContainer
         getBlock(world, x, y, z).randomDisplayTick(world, x, y, z, rand);
     }
 
-    /**
-     * Called right before the block is destroyed by a player. Args: world, x, y, z, metaData
-     */
-    @Override
-    public void onBlockDestroyedByPlayer(final World world, final int x, final int y, final int z, final int meta)
-    {
-        getBlock(world, x, y, z).onBlockDestroyedByPlayer(world, x, y, z, meta);
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     /**
@@ -165,24 +159,6 @@ public class Compressed extends BlockContainer
         return getBlock(world, x, y, z).getSelectedBoundingBoxFromPool(world, x, y, z);
     }
 
-    /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
-     */
-    @Override
-    public boolean canPlaceBlockAt(final World world, final int x, final int y, final int z)
-    {
-        return getBlock(world, x, y, z).canPlaceBlockAt(world, x, y, z);
-    }
-
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
-    @Override
-    public void onBlockAdded(final World world, final int x, final int y, final int z)
-    {
-        getBlock(world, x, y, z).onBlockAdded(world, x, y, z);
-    }
-    
     /**
      * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a different metadata value, but before the new metadata value
      * is set. Args: World, x, y, z, old block ID, old metadata

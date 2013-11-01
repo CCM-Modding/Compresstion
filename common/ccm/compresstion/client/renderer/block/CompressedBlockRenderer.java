@@ -29,19 +29,14 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
 {
     public final static int id = RenderingRegistry.getNextAvailableRenderId();
 
-    World worldr;
-
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
         renderer.setOverrideBlockTexture(renderer.getBlockIcon(block, world, x, y, z, 1));
         renderer.clearOverrideBlockTexture();
 
-        CompressedTile te = (CompressedTile) world.getBlockTileEntity(x, y, z);
-        CompressedType type = CompressedType.values()[world.getBlockMetadata(x, y, z)];
-
-        Icon original = Block.blocksList[te.getBlock().blockID].getBlockTexture(world, x, y, z, 0);
-        Icon overlay = type.getOverlay();
+        Icon original = Block.blocksList[((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock().blockID].getBlockTexture(world, x, y, z, 0);
+        Icon overlay = CompressedType.values()[world.getBlockMetadata(x, y, z)].getOverlay();
         Tessellator.instance.setBrightness(0xf0);
         Tessellator.instance.setColorOpaque(100, 100, 100);
 
@@ -63,7 +58,7 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
         renderer.renderFaceZPos(block, x, y, z, original);
         renderer.renderFaceZPos(block, x, y, z, overlay);
 
-        worldr.markBlockForUpdate(x, y, z);
+        //worldr.markBlockForUpdate(x, y, z);
         Minecraft.getMinecraft().renderGlobal.markBlockForUpdate(x, y, z);
 
         return false;

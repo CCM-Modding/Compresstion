@@ -23,7 +23,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
         super(id, block);
         CCMLogger.DEFAULT_LOGGER.severe("ITEMBLOCK: " + id);
     }
-    
+
     @Override
     public String getItemDisplayName(ItemStack item)
     {
@@ -42,10 +42,10 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     public void addInformation(ItemStack item, EntityPlayer player, List list, boolean par4)
     {
         CompressedType type = CompressedType.values()[item.getItemDamage()];
-        
-        list.add("This Block contains: " + Math.pow(9, (type.ordinal() + 1)));
+
+        list.add("This Block contains: " + ((int) Math.pow(9, (type.ordinal() + 1))));
         list.add(getCompressedName(item));
-        
+
         super.addInformation(item, player, list, par4);
     }
 
