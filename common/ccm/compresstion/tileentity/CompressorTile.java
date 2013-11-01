@@ -18,6 +18,10 @@ import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
 
 public class CompressorTile extends ProgressTE implements ISidedInventory
 {
+    public static final int IN = 0;
+    public static final int FUEL = 1;
+    public static final int OUT = 2;
+
     public static final int progressBar = 0;
     public static final int burnBar = 1;
     private int currentItemBurnTime;
@@ -27,6 +31,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
         progresses = new TimedElement[2];
         progresses[progressBar] = new TimedElement();
         progresses[burnBar] = new TimedElement();
+        setInventorySize(3);
     }
 
     @Override
@@ -53,13 +58,13 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 {
                     done = true;
 
-                    if (getStackInSlot(1) != null)
+                    if (getStackInSlot(FUEL) != null)
                     {
-                        --getInventory()[1].stackSize;
+                        --getInventory()[FUEL].stackSize;
 
-                        if (getStackInSlot(1).stackSize == 0)
+                        if (getStackInSlot(FUEL).stackSize == 0)
                         {
-                            getInventory()[1] = getStackInSlot(1).getItem().getContainerItemStack(getStackInSlot(1));
+                            getInventory()[FUEL] = getStackInSlot(FUEL).getItem().getContainerItemStack(getStackInSlot(FUEL));
                         }
                     }
                 }
@@ -95,18 +100,18 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
     @Override
     public boolean canRun()
     {
-        if (getStackInSlot(0) != null)
+        if (getStackInSlot(IN) != null)
         {
-            ItemStack stack = getStackInSlot(0);
+            ItemStack stack = getStackInSlot(IN);
             Block block = Block.blocksList[stack.itemID - 256 < 0 ? stack.itemID : stack.itemID - 256];
             int meta = stack.getItemDamage();
             if (isNormalBlock(block, meta))
             {
-                if (getStackInSlot(2) == null)
+                if (getStackInSlot(OUT) == null)
                     return true;
-                if (!getStackInSlot(2).isItemEqual(stack))
+                if (!getStackInSlot(OUT).isItemEqual(stack))
                     return false;
-                int result = getStackInSlot(2).stackSize + stack.stackSize;
+                int result = getStackInSlot(OUT).stackSize + stack.stackSize;
                 return (result <= getInventoryStackLimit() && result <= stack.getMaxStackSize());
             }
         }
@@ -120,7 +125,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
     {
         if (canRun())
         {
-            ItemStack stack = getStackInSlot(0).copy();
+            ItemStack stack = getStackInSlot(IN).copy();
             Block block = Block.blocksList[stack.itemID - 256 < 0 ? stack.itemID : stack.itemID - 256];
             byte meta = (byte) stack.getItemDamage();
 
@@ -145,19 +150,19 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
             }
 
             // Below it does all the item checking
-            if (getStackInSlot(2) == null)
+            if (getStackInSlot(OUT) == null)
             {
-                getInventory()[2] = stack.copy();
-            } else if (ItemHelper.compare(getInventory()[2], stack))
+                getInventory()[OUT] = stack.copy();
+            } else if (ItemHelper.compare(getStackInSlot(OUT), stack))
             {
-                getInventory()[2].stackSize += stack.stackSize;
+                getInventory()[OUT].stackSize += stack.stackSize;
             }
 
-            --getInventory()[0].stackSize;
+            --getInventory()[IN].stackSize;
 
-            if (getStackInSlot(0).stackSize <= 0)
+            if (getStackInSlot(IN).stackSize <= 0)
             {
-                getInventory()[0] = null;
+                getInventory()[IN] = null;
             }
         }
     }
