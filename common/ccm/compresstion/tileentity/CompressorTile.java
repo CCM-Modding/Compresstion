@@ -138,7 +138,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
             } else
             // if it is not
             {
-                ItemStack tmp = new ItemStack(ModBlocks.compressor.blockID + 256, 1, 0);
+                ItemStack tmp = new ItemStack(ModBlocks.compressor, 1);
                 NBTHelper.setInteger(tmp, Archive.NBT_COMPRESSED_BLOCK_ID, block.blockID);
                 NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_META, meta);
                 stack = tmp;
