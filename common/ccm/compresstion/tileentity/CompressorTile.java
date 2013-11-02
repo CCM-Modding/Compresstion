@@ -2,6 +2,7 @@ package ccm.compresstion.tileentity;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -31,7 +32,6 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
         progresses = new TimedElement[2];
         progresses[progressBar] = new TimedElement();
         progresses[burnBar] = new TimedElement();
-        setInventorySize(3);
     }
 
     @Override
@@ -102,33 +102,46 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
     {
         if (getStackInSlot(IN) != null)
         {
+            // get the current Item
             ItemStack stack = getStackInSlot(IN);
-            Block block = Block.blocksList[stack.itemID - 256 < 0 ? stack.itemID : stack.itemID - 256];
-            int meta = stack.getItemDamage();
-            if (isNormalBlock(block, meta))
+            Block block = getBlock(stack);
+            if (block != null)
             {
-                if (getStackInSlot(OUT) == null)
-                    return true;
-                if (!getStackInSlot(OUT).isItemEqual(stack))
-                    return false;
-                int result = getStackInSlot(OUT).stackSize + stack.stackSize;
-                return (result <= getInventoryStackLimit() && result <= stack.getMaxStackSize());
+                int meta = stack.getItemDamage();
+                // Reset for the actual output
+                stack = getCompressedItem();
+                if (isNormalBlock(block, meta))
+                {
+                    if (getStackInSlot(OUT) == null)
+                        return true;
+                    if (!getStackInSlot(OUT).isItemEqual(stack))
+                        return false;
+                    int result = getStackInSlot(OUT).stackSize + stack.stackSize;
+                    return (result <= getInventoryStackLimit() && result <= stack.getMaxStackSize());
+                }
             }
         }
         return false;
     }
 
-    /**
-     * Turn one item from the compressor source stack into the appropriate compressed item in the compressor result stack
-     */
-    public void compressItem()
+    private Block getBlock(ItemStack stack)
     {
-        if (canRun())
+        Block block = null;
+        if (stack.getItem() instanceof ItemBlock)
         {
-            ItemStack stack = getStackInSlot(IN).copy();
-            Block block = Block.blocksList[stack.itemID - 256 < 0 ? stack.itemID : stack.itemID - 256];
-            byte meta = (byte) stack.getItemDamage();
+            ItemBlock item = (ItemBlock) stack.getItem();
+            block = Block.blocksList[item.getBlockID()];
+        }
+        return block;
+    }
 
+    private ItemStack getCompressedItem()
+    {
+        ItemStack stack = getStackInSlot(IN).copy();
+        Block block = getBlock(stack);
+        if (block != null)
+        {
+            byte meta = (byte) stack.getItemDamage();
             // if the stack is Ours
             if (block.blockID == ModBlocks.compressedBlock.blockID)
             {
@@ -138,7 +151,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 } else
                 {
                     CCMLogger.DEFAULT_LOGGER.severe("WTF!!!!!!");
-                    return;
+                    return null;
                 }
             } else
             // if it is not
@@ -148,12 +161,24 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, meta);
                 stack = tmp;
             }
+        }
+        return stack;
+    }
 
+    /**
+     * Turn one item from the compressor source stack into the appropriate compressed item in the compressor result stack
+     */
+    public void compressItem()
+    {
+        if (canRun())
+        {
+            ItemStack stack = getCompressedItem();
+            
             // Below it does all the item checking
             if (getStackInSlot(OUT) == null)
             {
                 getInventory()[OUT] = stack.copy();
-            } else if (ItemHelper.compare(getStackInSlot(OUT), stack))
+            } else if (getStackInSlot(OUT).isItemEqual(stack))
             {
                 getInventory()[OUT].stackSize += stack.stackSize;
             }
