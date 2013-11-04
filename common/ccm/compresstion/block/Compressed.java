@@ -30,6 +30,10 @@ import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
 import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Compressed extends BlockContainer
 {
@@ -55,7 +59,7 @@ public class Compressed extends BlockContainer
     {
         for (CompressedType type : CompressedType.values())
         {
-            type.setIcon(register.registerIcon("condensedOverlay_" + type.ordinal()));
+            type.setIcon(register.registerIcon("compresstion:condensedOverlay_" + type.ordinal()));
         }
     }
     
@@ -90,7 +94,12 @@ public class Compressed extends BlockContainer
     }
 
     private static Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
-    {
+    {	
+    	if (((CompressedTile) world.getBlockTileEntity(x, y, z)) == null)
+    	{
+    		return Block.cobblestone;
+    	}
+    	
         return ((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock();
     }
 
