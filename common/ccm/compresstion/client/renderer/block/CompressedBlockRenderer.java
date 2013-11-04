@@ -15,6 +15,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import ccm.compresstion.block.CompressedType;
+import ccm.compresstion.block.ModBlocks;
 import ccm.compresstion.tileentity.CompressedTile;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
@@ -23,7 +24,7 @@ import ccm.nucleum.omnium.utils.helper.NBTHelper;
  * CompressedBlockRenderer
  * <p>
  * 
- * @author Resinresin
+ * @author TuxCraft
  */
 public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
 {
@@ -32,36 +33,13 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
-        renderer.setOverrideBlockTexture(renderer.getBlockIcon(block, world, x, y, z, 1));
-        renderer.clearOverrideBlockTexture();
-
-        Icon original = Block.blocksList[((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock().blockID].getBlockTexture(world, x, y, z, 0);
-        Icon overlay = CompressedType.values()[world.getBlockMetadata(x, y, z)].getOverlay();
-        Tessellator.instance.setBrightness(0xf0);
-        Tessellator.instance.setColorOpaque(100, 100, 100);
-
-        renderer.renderFaceYNeg(block, x, y, z, original);
-        renderer.renderFaceYNeg(block, x, y, z, overlay);
-
-        renderer.renderFaceYPos(block, x, y, z, original);
-        renderer.renderFaceYPos(block, x, y, z, overlay);
-
-        renderer.renderFaceXNeg(block, x, y, z, original);
-        renderer.renderFaceXNeg(block, x, y, z, overlay);
-
-        renderer.renderFaceXPos(block, x, y, z, original);
-        renderer.renderFaceXPos(block, x, y, z, overlay);
-
-        renderer.renderFaceZNeg(block, x, y, z, original);
-        renderer.renderFaceZNeg(block, x, y, z, overlay);
-
-        renderer.renderFaceZPos(block, x, y, z, original);
-        renderer.renderFaceZPos(block, x, y, z, overlay);
-
-        //worldr.markBlockForUpdate(x, y, z);
-        Minecraft.getMinecraft().renderGlobal.markBlockForUpdate(x, y, z);
-
-        return false;
+    	renderer.renderStandardBlock(block, x, y, z);
+    	
+    	renderer.setOverrideBlockTexture(CompressedType.values()[world.getBlockMetadata(x, y, z) + 1].getOverlay());
+	    renderer.renderStandardBlock(block, x, y, z);
+	    renderer.clearOverrideBlockTexture();
+	
+	    return false;
     }
 
     @Override
@@ -72,17 +50,35 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
-    {
+    {	
+    	GL11.glPushMatrix();
+
+        metadata = 1;
+        
         Tessellator tessellator = Tessellator.instance;
+
+        int j;
+        float f1;
+        float f2;
+        float f3;
+
+        renderer.setRenderBoundsFromBlock(block);
+        int k;
+
+        block.setBlockBoundsForItemRender();
+        renderer.setRenderBoundsFromBlock(block);
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, -1.0F, 0.0F);
         renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 0, metadata));
         tessellator.draw();
+
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 1.0F, 0.0F);
         renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 1, metadata));
         tessellator.draw();
+
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 0.0F, -1.0F);
         renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 2, metadata));
@@ -100,6 +96,47 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 5, metadata));
         tessellator.draw();
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+        
+
+
+        Icon icon = CompressedType.values()[ metadata + 1 ].getOverlay();
+        
+        float scale = 1.01F;
+        GL11.glScalef(scale, scale, scale);
+        
+        block.setBlockBoundsForItemRender();
+        renderer.setRenderBoundsFromBlock(block);
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, -1.0F, 0.0F);
+        renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, icon);
+        tessellator.draw();
+
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, icon);
+        tessellator.draw();
+
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 0.0F, -1.0F);
+        renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, icon);
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 0.0F, 1.0F);
+        renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, icon);
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, icon);
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, icon);
+        tessellator.draw();
+        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+
+        GL11.glPopMatrix();
     }
 
     @Override
