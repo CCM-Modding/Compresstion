@@ -2,8 +2,9 @@ package ccm.compresstion.tileentity;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-
-import ccm.compresstion.block.CompressedType;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.tileentity.BaseTE;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
@@ -54,4 +55,10 @@ public class CompressedTile extends BaseTE
         id = NBTHelper.getInteger(nbt, Archive.NBT_COMPRESSED_BLOCK_ID);
         meta = NBTHelper.getByte(nbt, Archive.NBT_COMPRESSED_BLOCK_META);
     }
+
+    @Override
+	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) 
+	{
+		readFromNBT(packet.data);
+	}
 }

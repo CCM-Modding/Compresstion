@@ -3,12 +3,15 @@
  */
 package ccm.compresstion.proxy;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-
+import net.minecraft.item.Item;
+import net.minecraftforge.client.MinecraftForgeClient;
 import ccm.compresstion.Compresstion;
+import ccm.compresstion.block.ModBlocks;
 import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
+import ccm.compresstion.client.renderer.item.CompressedItemRenderer;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.ResourceHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 /**
  * ClientProxy
@@ -24,6 +27,8 @@ public class ClientProxy extends CommonProxy
         super.registerRenders();
         
         RenderingRegistry.registerBlockHandler(new CompressedBlockRenderer());
+        
+        MinecraftForgeClient.registerItemRenderer(Item.itemsList[ModBlocks.compressedBlock.blockID].itemID, new CompressedItemRenderer());
     }
     
     @Override

@@ -55,6 +55,12 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
         int blockMeta = NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META);
 
         Block block = Block.blocksList[blockID];
+        
+        if(block == null)
+        {
+        	return StatCollector.translateToLocalFormatted("compressed.name", "ERROR");
+        }
+        
         List<ItemStack> list = new ArrayList<ItemStack>();
         block.getSubBlocks(blockID, null, list);
         ItemStack stack = list.get(blockMeta);
