@@ -32,36 +32,31 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
-        renderer.setOverrideBlockTexture(renderer.getBlockIcon(block, world, x, y, z, 1));
+        CompressedTile tile = ((CompressedTile) world.getBlockTileEntity(x, y, z));
+        
+        if(tile == null || tile.getBlock() == null)
+        {
+        	renderer.setOverrideBlockTexture(Block.sponge.getIcon(0, 0));
+            renderer.renderStandardBlock(block, x, y, z);
+            renderer.clearOverrideBlockTexture();
+            
+            return false;
+        }
+        
+        Icon original = tile.getBlock().getBlockTexture(world, x, y, z, 0);
+        Icon overlay = CompressedType.values()[tile.getMeta()].getOverlay();
+        
+        renderer.setOverrideBlockTexture(original);
+        renderer.setRenderBoundsFromBlock(block);
+        renderer.renderStandardBlock(block, x, y, z);
+        renderer.clearOverrideBlockTexture();
+        
+        renderer.setOverrideBlockTexture(overlay);
+        renderer.setRenderBoundsFromBlock(block);
+        renderer.renderStandardBlock(block, x, y, z);
         renderer.clearOverrideBlockTexture();
 
-        Icon original = Block.blocksList[((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock().blockID].getBlockTexture(world, x, y, z, 0);
-        Icon overlay = CompressedType.values()[world.getBlockMetadata(x, y, z)].getOverlay();
-        Tessellator.instance.setBrightness(0xf0);
-        Tessellator.instance.setColorOpaque(100, 100, 100);
-
-        renderer.renderFaceYNeg(block, x, y, z, original);
-        renderer.renderFaceYNeg(block, x, y, z, overlay);
-
-        renderer.renderFaceYPos(block, x, y, z, original);
-        renderer.renderFaceYPos(block, x, y, z, overlay);
-
-        renderer.renderFaceXNeg(block, x, y, z, original);
-        renderer.renderFaceXNeg(block, x, y, z, overlay);
-
-        renderer.renderFaceXPos(block, x, y, z, original);
-        renderer.renderFaceXPos(block, x, y, z, overlay);
-
-        renderer.renderFaceZNeg(block, x, y, z, original);
-        renderer.renderFaceZNeg(block, x, y, z, overlay);
-
-        renderer.renderFaceZPos(block, x, y, z, original);
-        renderer.renderFaceZPos(block, x, y, z, overlay);
-
-        //worldr.markBlockForUpdate(x, y, z);
-        Minecraft.getMinecraft().renderGlobal.markBlockForUpdate(x, y, z);
-
-        return false;
+        return true;
     }
 
     @Override

@@ -55,7 +55,7 @@ public class Compressed extends BlockContainer
     {
         for (CompressedType type : CompressedType.values())
         {
-            type.setIcon(register.registerIcon("condensedOverlay_" + type.ordinal()));
+            type.setIcon(register.registerIcon("compresstion:condensedOverlay_" + type.ordinal()));
         }
     }
     
@@ -91,7 +91,20 @@ public class Compressed extends BlockContainer
 
     private static Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
     {
-        return ((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock();
+    	// TODO: Null checks, rather see sponge then a crash :P
+    	if(world.getBlockTileEntity(x, y, z) == null)
+    	{
+    		return Block.sponge;
+    	}
+    	
+    	Block block = ((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock();
+    	
+    	if(block == null)
+    	{
+    		return Block.sponge;
+    	}
+    	
+        return block;
     }
 
     @Override
@@ -224,5 +237,10 @@ public class Compressed extends BlockContainer
     public int getRenderType()
     {
         return CompressedBlockRenderer.id;
+    }
+    
+    public Icon getIcon(int side, int meta)
+    {
+        return Block.slowSand.getBlockTextureFromSide(side);
     }
 }
