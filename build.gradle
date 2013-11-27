@@ -1,50 +1,71 @@
 // CCM Modding, Compresstion
 buildscript {
-	repositories {
-		mavenCentral()
-		maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-	}
-	dependencies { classpath 'com.github.abrarsyed.gmcp:GMCP:0.8' }
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies { 
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT' 
+    }
 }
 
-apply plugin: "gmcp"
+apply plugin: "forge"
 
 group = 'ccm.compresstion'
 version = "0.0.1.${System.env.BUILD_NUMBER}"
 archivesBaseName = 'Compresstion'
 
 sourceSets {
-	main {
-		java { srcDir 'common' }
-		resources { srcDir 'resources' }
-	}
+    main {
+        java { srcDir 'common' }
+        resources { srcDir 'resources' }
+    }
 }
 
 minecraft {
-	minecraftVersion = '1.6.4'
-	forgeVersion = '916'
+    version = "1.6.4-LATEST"
+    assetDir = "run/assets"
 }
 
 processResources {
-	// Iterate through files to expand version on things not PNGs
-	eachFile { file ->
-		if(!(file.getPath().endsWith('png'))){
-			expand version: version, mcversion: minecraft.minecraftVersion
-		}
-	}
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.info'
+        expand version: version, mcversion: minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude '**/*.info'
+    }
 }
 
 jar {
-	appendix = 'universal'
-	manifest {
-		attributes 'MCVersion' : project.minecraft.minecraftVersion
-		attributes 'Version' : project.version
-	}
+    appendix = 'universal'
+    manifest {
+        attributes 'MCVersion' : project.minecraft.version
+        attributes 'Version' : project.version
+    }
 }
 
 task sourceJar(type: Jar) {
-	from sourceSets.main.allSource
-	appendix = 'src'
+    from sourceSets.main.allSource
+    appendix = 'src'
 }
 
-artifacts { archives sourceJar }
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    appendix = 'dev'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    appendix = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+artifacts {
+    archives sourceJar 
+	archives deobfJar 
+    archives javadocJar
+}
