@@ -188,7 +188,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 getInventory()[OUT].stackSize += stack.stackSize;
             }
 
-            --getInventory()[IN].stackSize;
+            getInventory()[IN].stackSize -= 9;
 
             if (getStackInSlot(IN).stackSize <= 0)
             {
