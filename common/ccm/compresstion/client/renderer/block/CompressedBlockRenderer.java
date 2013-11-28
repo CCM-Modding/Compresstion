@@ -28,8 +28,8 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
             return false;
         }
 
-        Icon original = tile.getBlock().getBlockTexture(world, x, y, z, 0);
-        Icon overlay = CompressedType.values()[world.getBlockMetadata(x, y, z)].getOverlay();
+        Icon original = tile.getBlock().getIcon(0, tile.getMeta());
+        Icon overlay = CompressedType.getOverlay(tile.getBlockMetadata());
 
         renderer.setOverrideBlockTexture(original);
         renderer.setRenderBoundsFromBlock(block);

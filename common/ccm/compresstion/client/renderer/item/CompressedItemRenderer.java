@@ -30,7 +30,7 @@ public class CompressedItemRenderer implements IItemRenderer
         RenderBlocks renderer = (RenderBlocks) data[0];
 
         Icon original = Block.blocksList[NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID)].getIcon(0, NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
-        Icon overlay = CompressedType.values()[item.getItemDamage()].getOverlay();
+        Icon overlay = CompressedType.getOverlay(item.getItemDamage());
 
         renderer.setOverrideBlockTexture(original);
         renderer.setRenderBoundsFromBlock(block);

@@ -50,8 +50,7 @@ public class Compressed extends BlockContainer
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
-        int tmp = world.getBlockMetadata(x, y, z) + 1;
-        ItemStack stack = new ItemStack(world.getBlockId(x, y, z), 1, (tmp > 15 ? 15 : tmp));
+        ItemStack stack = new ItemStack(world.getBlockId(x, y, z), 1, world.getBlockMetadata(x, y, z));
         CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
         
         NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
