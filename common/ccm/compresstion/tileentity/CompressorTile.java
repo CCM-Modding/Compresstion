@@ -203,15 +203,15 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
         if (side == ForgeDirection.UP.ordinal())
         {
             return new int[]
-            { 0 };
+            { IN };
         } else if (side == ForgeDirection.DOWN.ordinal())
         {
             return new int[]
-            { 2 };
+            { OUT };
         } else
         {
             return new int[]
-            { 1 };
+            { FUEL };
         }
     }
 
@@ -237,15 +237,15 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
     @Override
     public boolean canExtractItem(int slot, ItemStack item, int side)
     {
-        return side == ForgeDirection.DOWN.ordinal() ? true : false;
+        return (side == ForgeDirection.DOWN.ordinal() && slot == OUT) ? true : false;
     }
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack item)
     {
-        if (slot != 2)
+        if (slot != OUT)
         {
-            if (slot != 0)
+            if (slot != IN)
             {
                 if (TileEntityFurnace.isItemFuel(item))
                 {
