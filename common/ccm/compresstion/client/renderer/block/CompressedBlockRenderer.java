@@ -1,30 +1,18 @@
 package ccm.compresstion.client.renderer.block;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import org.lwjgl.opengl.GL11;
 
 import ccm.compresstion.block.CompressedType;
 import ccm.compresstion.tileentity.CompressedTile;
-import ccm.compresstion.utils.lib.Archive;
-import ccm.nucleum.omnium.utils.helper.NBTHelper;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
-/**
- * CompressedBlockRenderer
- * <p>
- * 
- * @author Resinresin
- */
 public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
 {
     public final static int id = RenderingRegistry.getNextAvailableRenderId();
@@ -33,24 +21,21 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
         CompressedTile tile = ((CompressedTile) world.getBlockTileEntity(x, y, z));
-        
-        if(tile == null || tile.getBlock() == null)
+
+        if ((tile == null) || (tile.getBlock() == null))
         {
-        	renderer.setOverrideBlockTexture(Block.sponge.getIcon(0, 0));
-            renderer.renderStandardBlock(block, x, y, z);
-            renderer.clearOverrideBlockTexture();
-            
+            renderer.renderStandardBlock(Block.sponge, x, y, z);
             return false;
         }
-        
+
         Icon original = tile.getBlock().getBlockTexture(world, x, y, z, 0);
-        Icon overlay = CompressedType.values()[tile.getMeta()].getOverlay();
-        
+        Icon overlay = CompressedType.values()[world.getBlockMetadata(x, y, z)].getOverlay();
+
         renderer.setOverrideBlockTexture(original);
         renderer.setRenderBoundsFromBlock(block);
         renderer.renderStandardBlock(block, x, y, z);
         renderer.clearOverrideBlockTexture();
-        
+
         renderer.setOverrideBlockTexture(overlay);
         renderer.setRenderBoundsFromBlock(block);
         renderer.renderStandardBlock(block, x, y, z);

@@ -4,18 +4,14 @@ import net.minecraft.block.Block;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.ForgeDirection;
-
-import ccm.compresstion.Compresstion;
 import ccm.compresstion.block.ModBlocks;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.inventory.container.element.TimedElement;
 import ccm.nucleum.omnium.tileentity.ProgressTE;
 import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
-import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
 
 public class CompressorTile extends ProgressTE implements ISidedInventory
 {
@@ -48,7 +44,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
 
         if (!worldObj.isRemote)
         {
-            if (getTimeLeft(burnBar) == 0 && canRun())
+            if ((getTimeLeft(burnBar) == 0) && canRun())
             {
                 int burnTime = TileEntityFurnace.getItemBurnTime(getInventory()[1]);
                 setTimeLeft(burnBar, burnTime);
@@ -70,7 +66,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 }
             }
 
-            if (getTimeLeft(burnBar) > 0 && canRun())
+            if ((getTimeLeft(burnBar) > 0) && canRun())
             {
                 update(progressBar, 1);
 
@@ -85,7 +81,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 setTimeLeft(burnBar, 0);
             }
 
-            if (burning != getTimeLeft(burnBar) > 0)
+            if (burning != (getTimeLeft(burnBar) > 0))
             {
                 done = true;
             }
@@ -110,14 +106,18 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 int meta = stack.getItemDamage();
                 // Reset for the actual output
                 stack = getCompressedItem();
-                if (isNormalBlock(block, meta))
+                if (isNormalBlock(block, meta) || block.blockID == ModBlocks.compressedBlock.blockID)
                 {
                     if (getStackInSlot(OUT) == null)
+                    {
                         return true;
-                    if (!getStackInSlot(OUT).isItemEqual(stack))
+                    }
+                    if (!ItemStack.areItemStacksEqual(getStackInSlot(OUT), stack))
+                    {
                         return false;
+                    }
                     int result = getStackInSlot(OUT).stackSize + stack.stackSize;
-                    return (result <= getInventoryStackLimit() && result <= stack.getMaxStackSize());
+                    return ((result <= getInventoryStackLimit()) && (result <= stack.getMaxStackSize()));
                 }
             }
         }
@@ -145,9 +145,10 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
             // if the stack is Ours
             if (block.blockID == ModBlocks.compressedBlock.blockID)
             {
-                if (meta + 1 <= 15)
+                int tmp = meta + 1;
+                if (tmp < 16)
                 {
-                    stack.setItemDamage(meta + 1);
+                    stack.setItemDamage(tmp);
                 } else
                 {
                     CCMLogger.DEFAULT_LOGGER.severe("WTF!!!!!!");
@@ -158,7 +159,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
             {
                 ItemStack tmp = new ItemStack(ModBlocks.compressedBlock, 1);
                 NBTHelper.setInteger(tmp, Archive.NBT_COMPRESSED_BLOCK_ID, block.blockID);
-                NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, meta);
+                NBTHelper.setByte(tmp, Archive.NBT_COMPRESSED_BLOCK_META, meta);
                 stack = tmp;
             }
         }
@@ -173,12 +174,12 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
         if (canRun())
         {
             ItemStack stack = getCompressedItem();
-            
+
             // Below it does all the item checking
             if (getStackInSlot(OUT) == null)
             {
-                getInventory()[OUT] = stack.copy();
-            } else if (getStackInSlot(OUT).isItemEqual(stack))
+                setInventorySlotContents(OUT, stack.copy());
+            } else if (ItemStack.areItemStacksEqual(getStackInSlot(OUT), stack))
             {
                 getInventory()[OUT].stackSize += stack.stackSize;
             }
@@ -187,7 +188,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
 
             if (getStackInSlot(IN).stackSize <= 0)
             {
-                getInventory()[IN] = null;
+                setInventorySlotContents(IN, null);
             }
         }
     }

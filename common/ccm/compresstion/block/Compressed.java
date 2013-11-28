@@ -14,31 +14,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
 import ccm.compresstion.item.block.CompressedItemBlock;
 import ccm.compresstion.tileentity.CompressedTile;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
-import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Compressed extends BlockContainer
 {
     public static final String name = "Compressed";
-    
+
     public Compressed(final int id)
     {
         super(id, Material.rock);
-        CCMLogger.DEFAULT_LOGGER.severe("BLOCK: " + id);
         setUnlocalizedName(name);
         GameRegistry.registerBlock(this, CompressedItemBlock.class, getUnlocalizedName());
         TileHandler.registerTile(name, CompressedTile.class);
@@ -51,6 +48,18 @@ public class Compressed extends BlockContainer
     }
 
     @Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+    {
+        int tmp = world.getBlockMetadata(x, y, z) + 1;
+        ItemStack stack = new ItemStack(world.getBlockId(x, y, z), 1, (tmp > 15 ? 15 : tmp));
+        CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
+        
+        NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
+        NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
+        return stack;
+    }
+
+    @Override
     public void registerIcons(IconRegister register)
     {
         for (CompressedType type : CompressedType.values())
@@ -58,17 +67,17 @@ public class Compressed extends BlockContainer
             type.setIcon(register.registerIcon("compresstion:condensedOverlay_" + type.ordinal()));
         }
     }
-    
+
     @Override
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack item)
     {
         super.onBlockPlacedBy(world, x, y, z, entity, item);
-        //createNewTileEntity(world);
+        // createNewTileEntity(world);
         CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
         tile.setBlockID(NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
         tile.setBlockMeta(NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
     }
-        
+
     @Override
     public ArrayList<ItemStack> getBlockDropped(final World world, final int x, final int y, final int z, final int metadata, final int fortune)
     {
@@ -91,19 +100,19 @@ public class Compressed extends BlockContainer
 
     private static Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
     {
-    	// TODO: Null checks, rather see sponge then a crash :P
-    	if(world.getBlockTileEntity(x, y, z) == null)
-    	{
-    		return Block.sponge;
-    	}
-    	
-    	Block block = ((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock();
-    	
-    	if(block == null)
-    	{
-    		return Block.sponge;
-    	}
-    	
+        // TODO: Null checks, rather see sponge then a crash :P
+        if (world.getBlockTileEntity(x, y, z) == null)
+        {
+            return Block.sponge;
+        }
+
+        Block block = ((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock();
+
+        if (block == null)
+        {
+            return Block.sponge;
+        }
+
         return block;
     }
 
@@ -238,7 +247,8 @@ public class Compressed extends BlockContainer
     {
         return CompressedBlockRenderer.id;
     }
-    
+
+    @Override
     public Icon getIcon(int side, int meta)
     {
         return Block.slowSand.getBlockTextureFromSide(side);

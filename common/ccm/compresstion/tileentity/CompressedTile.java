@@ -3,7 +3,6 @@ package ccm.compresstion.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.tileentity.BaseTE;
@@ -33,13 +32,13 @@ public class CompressedTile extends BaseTE
     {
         return meta;
     }
-    
+
     @Override
     public boolean canUpdate()
     {
         return false;
     }
-    
+
     @Override
     public void writeToNBT(final NBTTagCompound nbt)
     {
@@ -57,8 +56,8 @@ public class CompressedTile extends BaseTE
     }
 
     @Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) 
-	{
-		readFromNBT(packet.data);
-	}
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData packet)
+    {
+        readFromNBT(packet.data);
+    }
 }

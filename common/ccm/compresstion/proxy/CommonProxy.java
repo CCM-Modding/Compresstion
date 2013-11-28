@@ -18,7 +18,7 @@ public class CommonProxy
 {
     public void registerRenders()
     {}
-    
+
     public void registerGUI()
     {
         GuiHandler.addGui(Archive.COMPRESSOR, new ContainerCompressor(null), new GuiCompressor(null));

@@ -25,17 +25,17 @@ public class ClientProxy extends CommonProxy
     public void registerRenders()
     {
         super.registerRenders();
-        
+
         RenderingRegistry.registerBlockHandler(new CompressedBlockRenderer());
-        
+
         MinecraftForgeClient.registerItemRenderer(Item.itemsList[ModBlocks.compressedBlock.blockID].itemID, new CompressedItemRenderer());
     }
-    
+
     @Override
     public void registerGUI()
     {
         super.registerGUI();
-        
+
         ResourceHandler.addGUI(Compresstion.instance, Archive.COMPRESSOR);
     }
 }

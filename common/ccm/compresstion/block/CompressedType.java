@@ -4,9 +4,6 @@ import java.util.Locale;
 
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-
 import ccm.compresstion.utils.registry.recipe.DownConvertionRecipe;
 
 public enum CompressedType
@@ -27,10 +24,10 @@ public enum CompressedType
     QUATTORDECUPLE,
     QUINDECOUPLE,
     SEDECOUPLE;
-    
+
     private Icon overlay;
     public DownConvertionRecipe recipe = new DownConvertionRecipe(this);
-    
+
     public void setIcon(Icon icon)
     {
         overlay = icon;

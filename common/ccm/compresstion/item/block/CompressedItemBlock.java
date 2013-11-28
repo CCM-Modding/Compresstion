@@ -7,13 +7,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
-
 import ccm.compresstion.block.CompressedType;
 import ccm.compresstion.utils.lib.Archive;
-import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
+import ccm.nucleum.omnium.utils.lib.Properties;
 
 public class CompressedItemBlock extends ItemBlockWithMetadata
 {
@@ -21,7 +19,6 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     public CompressedItemBlock(int id, Block block)
     {
         super(id, block);
-        CCMLogger.DEFAULT_LOGGER.severe("ITEMBLOCK: " + id);
     }
 
     @Override
@@ -46,6 +43,11 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
         list.add("This Block contains: " + ((int) Math.pow(9, (type.ordinal() + 1))));
         list.add(getCompressedName(item));
 
+        if (Properties.DEBUG)
+        {
+            list.add("The Orginal Block has an ID of:" + NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
+            list.add("The Orginal Block has an Metadata of:" + NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
+        }
         super.addInformation(item, player, list, par4);
     }
 
@@ -55,12 +57,12 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
         int blockMeta = NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META);
 
         Block block = Block.blocksList[blockID];
-        
-        if(block == null)
+
+        if (block == null)
         {
-        	return StatCollector.translateToLocalFormatted("compressed.name", "ERROR");
+            return StatCollector.translateToLocalFormatted("compressed.name", "ERROR");
         }
-        
+
         List<ItemStack> list = new ArrayList<ItemStack>();
         block.getSubBlocks(blockID, null, list);
         ItemStack stack = list.get(blockMeta);

@@ -2,7 +2,6 @@ package ccm.compresstion.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-
 import ccm.compresstion.Compresstion;
 import ccm.compresstion.utils.lib.Archive;
 

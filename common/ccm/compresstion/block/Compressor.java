@@ -1,6 +1,5 @@
 package ccm.compresstion.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -9,10 +8,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-
-import ccm.compresstion.Compresstion;
 import ccm.compresstion.tileentity.CompressorTile;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.tileentity.BaseTE;
@@ -20,7 +15,7 @@ import ccm.nucleum.omnium.tileentity.InventoryTE;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
 import ccm.nucleum.omnium.utils.handler.gui.GuiHandler;
 import ccm.nucleum.omnium.utils.helper.CCMLogger;
-import ccm.nucleum.omnium.utils.helper.FunctionHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Compressor extends BlockContainer
 {
