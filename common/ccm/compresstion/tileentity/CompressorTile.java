@@ -11,6 +11,7 @@ import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.inventory.container.element.TimedElement;
 import ccm.nucleum.omnium.tileentity.ProgressTE;
 import ccm.nucleum.omnium.utils.helper.CCMLogger;
+import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class CompressorTile extends ProgressTE implements ISidedInventory
@@ -106,7 +107,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 int meta = stack.getItemDamage();
                 // Reset for the actual output
                 stack = getCompressedItem();
-                if (isNormalBlock(block, meta) || block.blockID == ModBlocks.compressedBlock.blockID)
+                if (FunctionHelper.isNormalBlock(block, meta) || (block.blockID == ModBlocks.compressedBlock.blockID))
                 {
                     if (getStackInSlot(OUT) == null)
                     {
@@ -191,19 +192,6 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 setInventorySlotContents(IN, null);
             }
         }
-    }
-
-    // TODO Move to Nucleum
-    public static boolean isNormalBlock(Block block, int meta)
-    {
-        return (block.isOpaqueCube() && (block.getRenderType() == 0) && (!block.hasTileEntity(meta)) && block.renderAsNormalBlock() && hasNormalBounds(block));
-    }
-
-    // TODO Move to Nucleum
-    public static boolean hasNormalBounds(Block block)
-    {
-        return ((block.getBlockBoundsMaxX() == 1) && (block.getBlockBoundsMaxY() == 1) && (block.getBlockBoundsMaxZ() == 1) && (block.getBlockBoundsMinX() == 0)
-                && (block.getBlockBoundsMinY() == 0) && (block.getBlockBoundsMinZ() == 0));
     }
 
     @Override

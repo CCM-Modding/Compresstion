@@ -37,8 +37,9 @@ public enum CompressedType
     {
         return overlay;
     }
-    
-    public static Icon getOverlay(int meta){
+
+    public static Icon getOverlay(int meta)
+    {
         return values()[meta].getOverlay();
     }
 

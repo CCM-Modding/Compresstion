@@ -52,7 +52,7 @@ public class Compressed extends BlockContainer
     {
         ItemStack stack = new ItemStack(world.getBlockId(x, y, z), 1, world.getBlockMetadata(x, y, z));
         CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
-        
+
         NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
         NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
         return stack;
