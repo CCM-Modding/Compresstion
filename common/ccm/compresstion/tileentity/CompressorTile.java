@@ -107,18 +107,21 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 int meta = stack.getItemDamage();
                 // Reset for the actual output
                 stack = getCompressedItem();
-                if (FunctionHelper.isNormalBlock(block, meta) || (block.blockID == ModBlocks.compressedBlock.blockID))
+                if (stack != null)
                 {
-                    if (getStackInSlot(OUT) == null)
+                    if (FunctionHelper.isNormalBlock(block, meta) || (block.blockID == ModBlocks.compressedBlock.blockID))
                     {
-                        return true;
+                        if (getStackInSlot(OUT) == null)
+                        {
+                            return true;
+                        }
+                        if (!ItemStack.areItemStacksEqual(getStackInSlot(OUT), stack))
+                        {
+                            return false;
+                        }
+                        int result = getStackInSlot(OUT).stackSize + stack.stackSize;
+                        return ((result <= getInventoryStackLimit()) && (result <= stack.getMaxStackSize()));
                     }
-                    if (!ItemStack.areItemStacksEqual(getStackInSlot(OUT), stack))
-                    {
-                        return false;
-                    }
-                    int result = getStackInSlot(OUT).stackSize + stack.stackSize;
-                    return ((result <= getInventoryStackLimit()) && (result <= stack.getMaxStackSize()));
                 }
             }
         }
