@@ -53,20 +53,36 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
 
     private String getCompressedName(ItemStack item)
     {
-        int blockID = NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID);
-        int blockMeta = NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META);
-
-        Block block = Block.blocksList[blockID];
-
-        if (block == null)
+        if (item != null)
         {
-            return StatCollector.translateToLocalFormatted("compressed.name", "ERROR");
+            int blockID = NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID);
+            int blockMeta = NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META);
+
+            Block block = Block.blocksList[blockID];
+
+            if (block == null)
+            {
+                return StatCollector.translateToLocalFormatted("compressed.name", "ERROR");
+            }
+
+            List<ItemStack> list = new ArrayList<ItemStack>();
+            block.getSubBlocks(blockID, null, list);
+            
+            ItemStack stack = null;
+            
+            for(ItemStack i : list){
+                if(i.getItemDamage() == blockMeta){
+                    stack = i;
+                    break;
+                }
+            }
+            
+            if(stack == null){
+                stack = new ItemStack(block);
+            }
+
+            return StatCollector.translateToLocalFormatted("compressed.name", stack.getDisplayName());
         }
-
-        List<ItemStack> list = new ArrayList<ItemStack>();
-        block.getSubBlocks(blockID, null, list);
-        ItemStack stack = list.get(blockMeta);
-
-        return StatCollector.translateToLocalFormatted("compressed.name", stack.getDisplayName());
+        return "ITEM IS NULL";
     }
 }
