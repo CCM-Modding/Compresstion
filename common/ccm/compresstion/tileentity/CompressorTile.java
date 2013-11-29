@@ -22,7 +22,6 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
 
     public static final int progressBar = 0;
     public static final int burnBar = 1;
-    private int currentItemBurnTime;
 
     public CompressorTile()
     {
@@ -47,9 +46,8 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
         {
             if ((getTimeLeft(burnBar) == 0) && canRun())
             {
-                int burnTime = TileEntityFurnace.getItemBurnTime(getInventory()[1]);
+                int burnTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
                 setTimeLeft(burnBar, burnTime);
-                currentItemBurnTime = burnTime;
 
                 if (getTimeLeft(burnBar) > 0)
                 {
@@ -57,11 +55,11 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
 
                     if (getStackInSlot(FUEL) != null)
                     {
-                        --getInventory()[FUEL].stackSize;
+                        changeSize(FUEL, -1);
 
                         if (getStackInSlot(FUEL).stackSize == 0)
                         {
-                            getInventory()[FUEL] = getStackInSlot(FUEL).getItem().getContainerItemStack(getStackInSlot(FUEL));
+                            setInventorySlotContents(FUEL, getStackInSlot(FUEL).getItem().getContainerItemStack(getStackInSlot(FUEL)));
                         }
                     }
                 }
@@ -99,28 +97,31 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
     {
         if (getStackInSlot(IN) != null)
         {
-            // get the current Item
-            ItemStack stack = getStackInSlot(IN);
-            Block block = getBlock(stack);
-            if (block != null)
+            if (getStackInSlot(IN).stackSize >= 9)
             {
-                int meta = stack.getItemDamage();
-                // Reset for the actual output
-                stack = getCompressedItem();
-                if (stack != null)
+                // get the current Item
+                ItemStack stack = getStackInSlot(IN);
+                Block block = getBlock(stack);
+                if (block != null)
                 {
-                    if (FunctionHelper.isNormalBlock(block, meta) || (block.blockID == ModBlocks.compressedBlock.blockID))
+                    int meta = stack.getItemDamage();
+                    // Reset for the actual output
+                    stack = getCompressedItem();
+                    if (stack != null)
                     {
-                        if (getStackInSlot(OUT) == null)
+                        if (FunctionHelper.isNormalBlock(block, meta) || (block.blockID == ModBlocks.compressedBlock.blockID))
                         {
-                            return true;
+                            if (getStackInSlot(OUT) == null)
+                            {
+                                return true;
+                            }
+                            if (!ItemStack.areItemStacksEqual(getStackInSlot(OUT), stack))
+                            {
+                                return false;
+                            }
+                            int result = getStackInSlot(OUT).stackSize + stack.stackSize;
+                            return ((result <= getInventoryStackLimit()) && (result <= stack.getMaxStackSize()));
                         }
-                        if (!ItemStack.areItemStacksEqual(getStackInSlot(OUT), stack))
-                        {
-                            return false;
-                        }
-                        int result = getStackInSlot(OUT).stackSize + stack.stackSize;
-                        return ((result <= getInventoryStackLimit()) && (result <= stack.getMaxStackSize()));
                     }
                 }
             }
@@ -184,10 +185,10 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 setInventorySlotContents(OUT, stack.copy());
             } else if (ItemStack.areItemStacksEqual(getStackInSlot(OUT), stack))
             {
-                getInventory()[OUT].stackSize += stack.stackSize;
+                changeSize(OUT, stack.stackSize);
             }
 
-            getInventory()[IN].stackSize -= 9;
+            changeSize(IN, -9);
 
             if (getStackInSlot(IN).stackSize <= 0)
             {

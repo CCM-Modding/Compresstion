@@ -231,14 +231,14 @@ public class Compressed extends BlockContainer
             final double explosionZ)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        return ((getBlock(world, x, y, z).getExplosionResistance(entity)) * ((int) Math.pow(1, 1 + metadata)));
+        return ((getBlock(world, x, y, z).getExplosionResistance(entity)) * ((int) Math.pow(2, 1 + metadata)));
     }
 
     @Override
     public float getBlockHardness(final World world, final int x, final int y, final int z)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        return ((getBlock(world, x, y, z).getBlockHardness(world, x, y, z)) * ((int) Math.pow(1, 1 + metadata)));
+        return ((getBlock(world, x, y, z).getBlockHardness(world, x, y, z)) * ((int) Math.pow(2, 1 + metadata)));
     }
 
     @Override
