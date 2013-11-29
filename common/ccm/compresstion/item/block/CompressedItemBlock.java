@@ -67,17 +67,20 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
 
             List<ItemStack> list = new ArrayList<ItemStack>();
             block.getSubBlocks(blockID, null, list);
-            
+
             ItemStack stack = null;
-            
-            for(ItemStack i : list){
-                if(i.getItemDamage() == blockMeta){
+
+            for (ItemStack i : list)
+            {
+                if (i.getItemDamage() == blockMeta)
+                {
                     stack = i;
                     break;
                 }
             }
-            
-            if(stack == null){
+
+            if (stack == null)
+            {
                 stack = new ItemStack(block);
             }
 

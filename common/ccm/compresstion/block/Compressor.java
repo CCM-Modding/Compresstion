@@ -73,14 +73,12 @@ public class Compressor extends BlockContainer
         if (hasTileEntity(world.getBlockMetadata(x, y, z)))
         {
             final BaseTE te = (BaseTE) world.getBlockTileEntity(x, y, z);
-            if (te != null)
-            {
-                GuiHandler.openGui(Archive.COMPRESSOR, player, x, y, z);
-                return true;
-            } else
+            if (te == null)
             {
                 CCMLogger.DEFAULT_LOGGER.debug("TileEntity at %s, %s, %s, was null", x, y, z);
+                return false;
             }
+            GuiHandler.openGui(Archive.COMPRESSOR, player, x, y, z);
         }
         return false;
     }

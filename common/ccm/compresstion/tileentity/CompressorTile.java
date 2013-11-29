@@ -159,8 +159,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                     return null;
                 }
             } else
-            // if it is not
-            {
+            { // if it is not
                 ItemStack tmp = new ItemStack(ModBlocks.compressedBlock);
                 NBTHelper.setInteger(tmp, Archive.NBT_COMPRESSED_BLOCK_ID, block.blockID);
                 NBTHelper.setByte(tmp, Archive.NBT_COMPRESSED_BLOCK_META, meta);
@@ -237,7 +236,7 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
     @Override
     public boolean canExtractItem(int slot, ItemStack item, int side)
     {
-        return (side == ForgeDirection.DOWN.ordinal() && slot == OUT) ? true : false;
+        return ((side == ForgeDirection.DOWN.ordinal()) && (slot == OUT)) ? true : false;
     }
 
     @Override

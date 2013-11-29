@@ -4,14 +4,14 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-import ccm.compresstion.Compresstion;
 import ccm.compresstion.block.CompressedType;
+import ccm.compresstion.block.ModBlocks;
 import ccm.compresstion.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class DownConvertionRecipe implements IRecipe
 {
-    private final int id = Compresstion.instance.getConfigHandler().getBlockId("Compressed") + 256;
+    private final int id = ModBlocks.compressedBlock.blockID;
 
     CompressedType currentType;
     CompressedType preType;
