@@ -68,7 +68,7 @@ public class Compressor extends BlockContainer
         }
         if (player.isSneaking())
         {
-            return false;
+            return true;
         }
         if (hasTileEntity(world.getBlockMetadata(x, y, z)))
         {
@@ -76,10 +76,10 @@ public class Compressor extends BlockContainer
             if (te == null)
             {
                 CCMLogger.DEFAULT_LOGGER.debug("TileEntity at %s, %s, %s, was null", x, y, z);
-                return false;
+                return true;
             }
             GuiHandler.openGui(Archive.COMPRESSOR, player, x, y, z);
         }
-        return false;
+        return true;
     }
 }

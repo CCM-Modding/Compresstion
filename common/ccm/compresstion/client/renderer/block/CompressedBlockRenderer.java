@@ -33,33 +33,43 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
-        TileEntity temp = world.getBlockTileEntity(x, y, z);
-        if (temp != null)
+        if(!renderer.hasOverrideBlockTexture())
         {
-            if (temp instanceof CompressedTile)
-            {
-                CompressedTile tile = (CompressedTile) temp;
-
-                if (tile.getBlock() != null)
-                {
-                    Icon original = tile.getBlock().getIcon(0, tile.getMeta());
-                    Icon overlay = CompressedType.getOverlay(tile.getBlockMetadata());
-
-                    renderer.setOverrideBlockTexture(original);
-                    renderer.setRenderBoundsFromBlock(block);
-                    renderer.renderStandardBlock(block, x, y, z);
-                    renderer.clearOverrideBlockTexture();
-
-                    renderer.setOverrideBlockTexture(overlay);
-                    renderer.setRenderBoundsFromBlock(block);
-                    renderer.renderStandardBlock(block, x, y, z);
-                    renderer.clearOverrideBlockTexture();
-
-                    return true;
-                }
-            }
-        }
+        	TileEntity temp = world.getBlockTileEntity(x, y, z);
+	        if (temp != null)
+	        {
+	            if (temp instanceof CompressedTile)
+	            {
+	                CompressedTile tile = (CompressedTile) temp;
+	
+	                if (tile.getBlock() != null)
+	                {
+	                    Icon original = tile.getBlock().getIcon(0, tile.getMeta());
+	                    Icon overlay = CompressedType.getOverlay(tile.getBlockMetadata());
+	
+	                    renderer.setOverrideBlockTexture(original);
+	                    renderer.setRenderBoundsFromBlock(block);
+	                    renderer.renderStandardBlock(block, x, y, z);
+	                    renderer.clearOverrideBlockTexture();
+	
+	                    renderer.setOverrideBlockTexture(overlay);
+	                    renderer.setRenderBoundsFromBlock(block);
+	                    renderer.renderStandardBlock(block, x, y, z);
+	                    renderer.clearOverrideBlockTexture();
+	
+	                    return true;
+	                }
+	            }
+	        }
+	        
         renderer.renderStandardBlock(Block.sponge, x, y, z);
+        }
+        
+        else
+        {
+        	renderer.renderStandardBlock(block, x, y, z);
+        }
+        
         return false;
     }
 
