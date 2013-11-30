@@ -15,6 +15,7 @@ import ccm.nucleum.omnium.tileentity.InventoryTE;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
 import ccm.nucleum.omnium.utils.handler.gui.GuiHandler;
 import ccm.nucleum.omnium.utils.helper.CCMLogger;
+import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Compressor extends BlockContainer
@@ -52,6 +53,13 @@ public class Compressor extends BlockContainer
         }
     }
 
+    @Override
+    public void breakBlock(World world, int x, int y, int z, int oldID, int oldMeta)
+    {
+        FunctionHelper.dropInventory(world, x, y, z);
+        super.breakBlock(world, x, y, z, oldID, oldMeta);
+    }
+    
     @Override
     public TileEntity createNewTileEntity(final World world)
     {

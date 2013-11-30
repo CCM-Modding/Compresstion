@@ -1,7 +1,6 @@
 package ccm.compresstion.block;
 
-import java.util.Locale;
-
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 import ccm.compresstion.utils.registry.recipe.DownConvertionRecipe;
@@ -26,7 +25,16 @@ public enum CompressedType
     SEDECOUPLE;
 
     private Icon overlay;
-    public DownConvertionRecipe recipe = new DownConvertionRecipe(this);
+    private DownConvertionRecipe recipe;
+
+    public IRecipe getRecipe()
+    {
+        if (recipe == null)
+        {
+            recipe = new DownConvertionRecipe(this);
+        }
+        return recipe;
+    }
 
     public void setIcon(Icon icon)
     {
@@ -46,6 +54,6 @@ public enum CompressedType
     @Override
     public String toString()
     {
-        return StatCollector.translateToLocal("compressed." + name().toUpperCase(Locale.US) + ".name");
+        return StatCollector.translateToLocal("compressed." + name().toUpperCase() + ".name");
     }
 }

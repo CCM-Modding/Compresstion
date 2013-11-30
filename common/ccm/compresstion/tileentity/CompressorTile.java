@@ -12,6 +12,7 @@ import ccm.nucleum.omnium.tileentity.ActiveTE;
 import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
+import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
 
 public class CompressorTile extends ActiveTE implements ISidedInventory
 {
@@ -47,8 +48,6 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
             if ((compressTime == 0) && canRun())
             {
                 currentItemCompressTime = compressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
-
-                CCMLogger.DEFAULT_LOGGER.debug("compressTime: ", compressTime);
                 
                 if (compressTime > 0)
                 {
@@ -69,7 +68,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
             if ((compressTime > 0) && canRun())
             {
                 ++compressorCompressionTime;
-
+                
                 if (compressorCompressionTime == 50)
                 {
                     compressorCompressionTime = 0;
@@ -114,7 +113,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                             {
                                 return true;
                             }
-                            if (!ItemStack.areItemStacksEqual(getStackInSlot(OUT), stack))
+                            if (!ItemHelper.compareNoSize(getStackInSlot(OUT), stack))
                             {
                                 return false;
                             }
@@ -153,6 +152,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 if (tmp < 16)
                 {
                     stack.setItemDamage(tmp);
+                   //stack.stackSize = 1;
                 } else
                 {
                     CCMLogger.DEFAULT_LOGGER.severe("WTF!!!!!!");
@@ -182,7 +182,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
             if (getStackInSlot(OUT) == null)
             {
                 setInventorySlotContents(OUT, stack.copy());
-            } else if (ItemStack.areItemStacksEqual(getStackInSlot(OUT), stack))
+            } else if (ItemHelper.compareNoSize(getStackInSlot(OUT), stack))
             {
                 changeSize(OUT, stack.stackSize);
             }

@@ -11,8 +11,6 @@ import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class DownConvertionRecipe implements IRecipe
 {
-    private final int id = ModBlocks.compressedBlock.blockID;
-
     CompressedType currentType;
     CompressedType previusType;
 
@@ -20,7 +18,7 @@ public class DownConvertionRecipe implements IRecipe
     {
         currentType = type;
 
-        if (currentType == CompressedType.SINGLE)
+        if (type == CompressedType.SINGLE)
         {
             previusType = null;
         } else
@@ -31,11 +29,14 @@ public class DownConvertionRecipe implements IRecipe
 
     public boolean matches(ItemStack s)
     {
-        if (s.itemID == id)
+        if (s != null)
         {
-            if (s.getItemDamage() == currentType.ordinal())
+            if (s.itemID == ModBlocks.compressedBlock.blockID)
             {
-                return true;
+                if (s.getItemDamage() == currentType.ordinal())
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -78,7 +79,7 @@ public class DownConvertionRecipe implements IRecipe
     @Override
     public ItemStack getRecipeOutput()
     {
-        return new ItemStack(id, 9, previusType.ordinal());
+        return new ItemStack(ModBlocks.compressedBlock, 9, previusType.ordinal());
     }
 
     public ItemStack getRecipeOutput(ItemStack item)
@@ -86,12 +87,12 @@ public class DownConvertionRecipe implements IRecipe
         ItemStack stack = null;
         if (previusType != null)
         {
-            stack = new ItemStack(id, 9, previusType.ordinal());
+            stack = new ItemStack(ModBlocks.compressedBlock, 9, previusType.ordinal());
             stack.setTagCompound(item.getTagCompound());
         } else
         {
             int item_id = NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID);
-            int item_meta = NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_META);
+            int item_meta = NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META);
             stack = new ItemStack(item_id, 9, item_meta);
         }
         return stack;

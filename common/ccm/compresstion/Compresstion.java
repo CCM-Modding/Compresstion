@@ -48,7 +48,7 @@ public class Compresstion extends CCMMod
 
         for (CompressedType type : CompressedType.values())
         {
-            GameRegistry.addRecipe(type.recipe);
+            GameRegistry.addRecipe(type.getRecipe());
         }
     }
 }

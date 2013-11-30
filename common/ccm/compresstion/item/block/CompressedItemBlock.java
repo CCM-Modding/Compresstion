@@ -24,15 +24,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     @Override
     public String getItemDisplayName(ItemStack item)
     {
-        StringBuilder name = new StringBuilder();
-
-        CompressedType type = CompressedType.values()[item.getItemDamage()];
-        name.append(type.toString());
-        name.append(" ");
-
-        name.append(getCompressedName(item));
-
-        return name.toString();
+        return getCompressedName(item);
     }
 
     @Override
@@ -40,7 +32,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     {
         CompressedType type = CompressedType.values()[item.getItemDamage()];
 
-        list.add("This Block contains: " + ((long) Math.pow(9, (type.ordinal() + 1))));
+        list.add("A single Block of this type contains: " + ((long) Math.pow(9, (type.ordinal() + 1))));
         list.add(getCompressedName(item));
 
         if (Properties.DEBUG)
@@ -60,31 +52,36 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
 
             Block block = Block.blocksList[blockID];
 
+            StringBuilder sb = new StringBuilder();
+            sb.append(StatCollector.translateToLocalFormatted(CompressedType.values()[item.getItemDamage()].toString()));
+            sb.append(" ");
+
             if (block == null)
             {
-                return StatCollector.translateToLocalFormatted("compressed.name", "ERROR");
-            }
-
-            List<ItemStack> list = new ArrayList<ItemStack>();
-            block.getSubBlocks(blockID, null, list);
-
-            ItemStack stack = null;
-
-            for (ItemStack i : list)
+                sb.append(StatCollector.translateToLocalFormatted("compressed.name", "ERROR"));
+            } else
             {
-                if (i.getItemDamage() == blockMeta)
+                List<ItemStack> list = new ArrayList<ItemStack>();
+                block.getSubBlocks(blockID, null, list);
+
+                ItemStack stack = null;
+
+                for (ItemStack i : list)
                 {
-                    stack = i;
-                    break;
+                    if (i.getItemDamage() == blockMeta)
+                    {
+                        stack = i;
+                        break;
+                    }
                 }
-            }
 
-            if (stack == null)
-            {
-                stack = new ItemStack(block);
+                if (stack == null)
+                {
+                    stack = new ItemStack(block);
+                }
+                sb.append(StatCollector.translateToLocalFormatted("compressed.name", stack.getDisplayName()));
             }
-
-            return StatCollector.translateToLocalFormatted("compressed.name", stack.getDisplayName());
+            return sb.toString();
         }
         return "ITEM IS NULL";
     }
