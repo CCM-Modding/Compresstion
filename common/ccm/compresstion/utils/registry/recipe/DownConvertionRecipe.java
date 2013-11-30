@@ -14,31 +14,41 @@ public class DownConvertionRecipe implements IRecipe
     private final int id = ModBlocks.compressedBlock.blockID;
 
     CompressedType currentType;
-    CompressedType preType;
+    CompressedType previusType;
 
     public DownConvertionRecipe(CompressedType type)
     {
         currentType = type;
-        try
+
+        if (currentType == CompressedType.SINGLE)
         {
-            preType = CompressedType.values()[type.ordinal() - 1];
-        } catch (Exception e)
+            previusType = null;
+        } else
         {
-            preType = null;
+            previusType = CompressedType.values()[type.ordinal() - 1];
         }
+    }
+
+    public boolean matches(ItemStack s)
+    {
+        if (s.itemID == id)
+        {
+            if (s.getItemDamage() == currentType.ordinal())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean matches(InventoryCrafting inventory, World world)
     {
-        if (inventory.getSizeInventory() == 1)
+        for (int i = 0; i <= inventory.getSizeInventory(); i++)
         {
-            if (inventory.getStackInSlot(0).itemID == id)
+            if (matches(inventory.getStackInSlot(i)))
             {
-                if (inventory.getStackInSlot(0).getItemDamage() == currentType.ordinal())
-                {
-                    return true;
-                }
+                return true;
             }
         }
         return false;
@@ -49,11 +59,13 @@ public class DownConvertionRecipe implements IRecipe
     {
         ItemStack result = null;
 
-        if (matches(inventory, null))
+        for (int i = 0; i <= inventory.getSizeInventory(); i++)
         {
-            result = getRecipeOutput(inventory.getStackInSlot(0));
+            if (matches(inventory.getStackInSlot(i)))
+            {
+                result = getRecipeOutput(inventory.getStackInSlot(i));
+            }
         }
-
         return result;
     }
 
@@ -66,15 +78,15 @@ public class DownConvertionRecipe implements IRecipe
     @Override
     public ItemStack getRecipeOutput()
     {
-        return new ItemStack(id, 9, preType.ordinal());
+        return new ItemStack(id, 9, previusType.ordinal());
     }
 
     public ItemStack getRecipeOutput(ItemStack item)
     {
         ItemStack stack = null;
-        if (preType != null)
+        if (previusType != null)
         {
-            stack = new ItemStack(id, 9, preType.ordinal());
+            stack = new ItemStack(id, 9, previusType.ordinal());
             stack.setTagCompound(item.getTagCompound());
         } else
         {
