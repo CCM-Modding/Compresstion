@@ -8,48 +8,49 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.ForgeDirection;
 import ccm.compresstion.block.ModBlocks;
 import ccm.compresstion.utils.lib.Archive;
-import ccm.nucleum.omnium.inventory.container.element.TimedElement;
-import ccm.nucleum.omnium.tileentity.ProgressTE;
+import ccm.nucleum.omnium.tileentity.ActiveTE;
 import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
-public class CompressorTile extends ProgressTE implements ISidedInventory
+public class CompressorTile extends ActiveTE implements ISidedInventory
 {
     public static final int IN = 0;
     public static final int FUEL = 1;
     public static final int OUT = 2;
 
-    public static final int progressBar = 0;
-    public static final int burnBar = 1;
+    /** The number of ticks that the compressor will keep compressing */
+    public int compressTime;
 
-    public CompressorTile()
-    {
-        progresses = new TimedElement[2];
-        progresses[progressBar] = new TimedElement();
-        progresses[burnBar] = new TimedElement();
-    }
+    /**
+     * The number of ticks that a fresh copy of the currently-burning item would keep the furnace burning for
+     */
+    public int currentItemCompressTime;
+
+    /** The number of ticks that the current item has been compressing for */
+    public int compressorCompressionTime;
 
     @Override
     public void updateEntity()
     {
         super.updateEntity();
-        boolean burning = getTimeLeft(burnBar) > 0;
+        boolean burning = compressTime > 0;
         boolean done = false;
 
-        if (getTimeLeft(burnBar) > 0)
+        if (compressTime > 0)
         {
-            update(burnBar, -1);
+            --compressTime;
         }
 
         if (!worldObj.isRemote)
         {
-            if ((getTimeLeft(burnBar) == 0) && canRun())
+            if ((compressTime == 0) && canRun())
             {
-                int burnTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
-                setTimeLeft(burnBar, burnTime);
+                currentItemCompressTime = compressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
 
-                if (getTimeLeft(burnBar) > 0)
+                CCMLogger.DEFAULT_LOGGER.debug("compressTime: ", compressTime);
+                
+                if (compressTime > 0)
                 {
                     done = true;
 
@@ -65,27 +66,25 @@ public class CompressorTile extends ProgressTE implements ISidedInventory
                 }
             }
 
-            if ((getTimeLeft(burnBar) > 0) && canRun())
+            if ((compressTime > 0) && canRun())
             {
-                update(progressBar, 1);
+                ++compressorCompressionTime;
 
-                if (getTimeLeft(progressBar) == 200)
+                if (compressorCompressionTime == 50)
                 {
-                    setTimeLeft(progressBar, 0);
+                    compressorCompressionTime = 0;
                     compressItem();
                     done = true;
                 }
             } else
             {
-                setTimeLeft(burnBar, 0);
+                compressorCompressionTime = 0;
             }
-
-            if (burning != (getTimeLeft(burnBar) > 0))
+            if (burning != (compressTime > 0))
             {
                 done = true;
             }
         }
-
         if (done)
         {
             onInventoryChanged();
