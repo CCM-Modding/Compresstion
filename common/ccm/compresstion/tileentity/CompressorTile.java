@@ -13,6 +13,7 @@ import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
+import ccm.nucleum.omnium.utils.lib.Properties;
 
 public class CompressorTile extends ActiveTE implements ISidedInventory
 {
@@ -48,7 +49,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
             if ((compressTime == 0) && canRun())
             {
                 currentItemCompressTime = compressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
-                
+
                 if (compressTime > 0)
                 {
                     done = true;
@@ -68,7 +69,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
             if ((compressTime > 0) && canRun())
             {
                 ++compressorCompressionTime;
-                
+
                 if (compressorCompressionTime == 50)
                 {
                     compressorCompressionTime = 0;
@@ -152,7 +153,8 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 if (tmp < 16)
                 {
                     stack.setItemDamage(tmp);
-                   //stack.stackSize = 1;
+                    if (!Properties.DEBUG)
+                        stack.stackSize = 1;
                 } else
                 {
                     CCMLogger.DEFAULT_LOGGER.severe("WTF!!!!!!");

@@ -99,20 +99,19 @@ public class Compressed extends BlockContainer
 
     private static Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
     {
-        // TODO: Null checks, rather see sponge then a crash :P
-        if (world.getBlockTileEntity(x, y, z) == null)
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        if (tile != null)
         {
-            return Block.sponge;
+            if (tile instanceof CompressedTile)
+            {
+                Block block = ((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock();
+                if (block != null)
+                {
+                    return block;
+                }
+            }
         }
-
-        Block block = ((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock();
-
-        if (block == null)
-        {
-            return Block.sponge;
-        }
-
-        return block;
+        return Block.sponge;
     }
 
     @Override

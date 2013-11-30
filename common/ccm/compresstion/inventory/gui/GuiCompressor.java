@@ -14,9 +14,18 @@ public class GuiCompressor extends BaseGui
     public GuiCompressor(Container container)
     {
         super(container, Archive.COMPRESSOR);
+        name = "tile.compressor.name";
         // FINISH
     }
 
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        //addElement(new FireElement(this, 0, 0));
+        //addElement(new ProgressElement(this, 50, 0));
+    }
+    
     @Override
     public Object getClientGuiElement(EntityPlayer player, World world, int x, int y, int z)
     {
