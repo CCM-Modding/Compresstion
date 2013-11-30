@@ -79,6 +79,7 @@ public class Compressor extends BlockContainer
                 return false;
             }
             GuiHandler.openGui(Archive.COMPRESSOR, player, x, y, z);
+            return true;
         }
         return false;
     }

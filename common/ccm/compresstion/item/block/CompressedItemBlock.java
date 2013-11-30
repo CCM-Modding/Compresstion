@@ -40,7 +40,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     {
         CompressedType type = CompressedType.values()[item.getItemDamage()];
 
-        list.add("This Block contains: " + ((int) Math.pow(9, (type.ordinal() + 1))));
+        list.add("This Block contains: " + ((long) Math.pow(9, (type.ordinal() + 1))));
         list.add(getCompressedName(item));
 
         if (Properties.DEBUG)
