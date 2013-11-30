@@ -45,8 +45,8 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
 
         if (Properties.DEBUG)
         {
-            list.add("The Orginal Block has an ID of:" + NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
-            list.add("The Orginal Block has an Metadata of:" + NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
+            list.add("The Orginal Block has an ID of: " + NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
+            list.add("The Orginal Block has an Metadata of: " + NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
         }
         super.addInformation(item, player, list, par4);
     }
