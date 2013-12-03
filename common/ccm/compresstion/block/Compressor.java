@@ -59,7 +59,7 @@ public class Compressor extends BlockContainer
         FunctionHelper.dropInventory(world, x, y, z);
         super.breakBlock(world, x, y, z, oldID, oldMeta);
     }
-    
+
     @Override
     public TileEntity createNewTileEntity(final World world)
     {

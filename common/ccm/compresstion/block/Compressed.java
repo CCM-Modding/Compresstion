@@ -47,14 +47,44 @@ public class Compressed extends BlockContainer
         return TileHandler.getTileInstance(name);
     }
 
+    private static CompressedTile getTile(final IBlockAccess world, final int x, final int y, final int z)
+    {
+        CompressedTile finished = null;
+        TileEntity tmp = world.getBlockTileEntity(x, y, z);
+        if (tmp != null)
+        {
+            if (tmp instanceof CompressedTile)
+            {
+                finished = (CompressedTile) tmp;
+            }
+        }
+        return finished;
+    }
+
+    private static Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
+    {
+        CompressedTile tmp = getTile(world, x, y, z);
+        if (tmp != null)
+        {
+            Block block = tmp.getBlock();
+            if (block != null)
+            {
+                return block;
+            }
+        }
+        return Block.sponge;
+    }
+
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
         ItemStack stack = new ItemStack(world.getBlockId(x, y, z), 1, world.getBlockMetadata(x, y, z));
-        CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
-
-        NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
-        NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
+        CompressedTile tile = getTile(world, x, y, z);
+        if (tile != null)
+        {
+            NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
+            NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
+        }
         return stack;
     }
 
@@ -71,47 +101,36 @@ public class Compressed extends BlockContainer
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack item)
     {
         super.onBlockPlacedBy(world, x, y, z, entity, item);
-        // createNewTileEntity(world);
-        CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
-        tile.setBlockID(NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
-        tile.setBlockMeta(NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
+
+        CompressedTile tile = getTile(world, x, y, z);
+        if (tile != null)
+        {
+            tile.setBlockID(NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
+            tile.setBlockMeta(NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
+        }
     }
 
     @Override
     public ArrayList<ItemStack> getBlockDropped(final World world, final int x, final int y, final int z, final int metadata, final int fortune)
     {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        CompressedTile tile = (CompressedTile) world.getBlockTileEntity(x, y, z);
-        int count = quantityDropped(metadata, fortune, world.rand);
-        for (int i = 0; i < count; i++)
-        {
-            int id = idDropped(metadata, world.rand, fortune);
-            if (id > 0)
-            {
-                ItemStack stack = new ItemStack(id, 1, metadata);
-                NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
-                NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
-                ret.add(stack);
-            }
-        }
-        return ret;
-    }
-
-    private static Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
-    {
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        CompressedTile tile = getTile(world, x, y, z);
         if (tile != null)
         {
-            if (tile instanceof CompressedTile)
+            int count = quantityDropped(metadata, fortune, world.rand);
+            for (int i = 0; i < count; i++)
             {
-                Block block = ((CompressedTile) world.getBlockTileEntity(x, y, z)).getBlock();
-                if (block != null)
+                int id = idDropped(metadata, world.rand, fortune);
+                if (id > 0)
                 {
-                    return block;
+                    ItemStack stack = new ItemStack(id, 1, metadata);
+                    NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
+                    NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
+                    ret.add(stack);
                 }
             }
         }
-        return Block.sponge;
+        return ret;
     }
 
     @Override

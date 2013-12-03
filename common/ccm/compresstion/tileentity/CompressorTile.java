@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.ForgeDirection;
 import ccm.compresstion.block.ModBlocks;
@@ -14,6 +15,8 @@ import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
 import ccm.nucleum.omnium.utils.lib.Properties;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class CompressorTile extends ActiveTE implements ISidedInventory
 {
@@ -25,12 +28,12 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     public int compressTime;
 
     /**
-     * The number of ticks that a fresh copy of the currently-burning item would keep the furnace burning for
+     * The number of ticks that a fresh copy of the currently-burning item would keep the compressor running for
      */
-    public int currentItemCompressTime;
+    public int currentCompressTime;
 
     /** The number of ticks that the current item has been compressing for */
-    public int compressorCompressionTime;
+    public int compressionTime;
 
     @Override
     public void updateEntity()
@@ -48,7 +51,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         {
             if ((compressTime == 0) && canRun())
             {
-                currentItemCompressTime = compressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
+                currentCompressTime = compressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
 
                 if (compressTime > 0)
                 {
@@ -68,17 +71,17 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
 
             if ((compressTime > 0) && canRun())
             {
-                ++compressorCompressionTime;
+                ++compressionTime;
 
-                if (compressorCompressionTime == 50)
+                if (compressionTime == 50)
                 {
-                    compressorCompressionTime = 0;
+                    compressionTime = 0;
                     compressItem();
                     done = true;
                 }
             } else
             {
-                compressorCompressionTime = 0;
+                compressionTime = 0;
             }
             if (burning != (compressTime > 0))
             {
@@ -128,6 +131,29 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         return false;
     }
 
+    /**
+     * Reads a tile entity from NBT.
+     */
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        compressTime = nbt.getShort("CompressTime");
+        compressionTime = nbt.getShort("CompressionTime");
+        currentCompressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
+    }
+
+    /**
+     * Writes a tile entity to NBT.
+     */
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setShort("CompressTime", (short) compressTime);
+        nbt.setShort("CompressionTime", (short) compressionTime);
+    }
+
     private Block getBlock(ItemStack stack)
     {
         Block block = null;
@@ -154,7 +180,9 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 {
                     stack.setItemDamage(tmp);
                     if (!Properties.DEBUG)
+                    {
                         stack.stackSize = 1;
+                    }
                 } else
                 {
                     CCMLogger.DEFAULT_LOGGER.severe("WTF!!!!!!");
@@ -196,6 +224,30 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 setInventorySlotContents(IN, null);
             }
         }
+    }
+
+    /**
+     * Returns an integer between 0 and the passed value representing how close the current item is to being completely compressed
+     */
+    @SideOnly(Side.CLIENT)
+    public int getCompressProgressScaled(int scale)
+    {
+        return (compressionTime * scale) / 200;
+    }
+
+    /**
+     * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel item, where 0 means that the item is exhausted and the passed
+     * value means that the item is fresh
+     */
+    @SideOnly(Side.CLIENT)
+    public int getCompressTimeScaled(int scale)
+    {
+        if (currentCompressTime == 0)
+        {
+            currentCompressTime = 200;
+        }
+
+        return (compressTime * scale) / currentCompressTime;
     }
 
     @Override

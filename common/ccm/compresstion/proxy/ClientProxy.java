@@ -10,6 +10,8 @@ import ccm.compresstion.block.ModBlocks;
 import ccm.compresstion.client.renderer.block.CompressedBlockRenderer;
 import ccm.compresstion.client.renderer.item.CompressedItemRenderer;
 import ccm.compresstion.utils.lib.Archive;
+import ccm.nucleum.omnium.inventory.gui.element.FireElement;
+import ccm.nucleum.omnium.inventory.gui.element.ProgressElement;
 import ccm.nucleum.omnium.utils.handler.ResourceHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -37,5 +39,8 @@ public class ClientProxy extends CommonProxy
         super.registerGUI();
 
         ResourceHandler.addGUI(Compresstion.instance, Archive.COMPRESSOR);
+
+        ResourceHandler.addElement(Compresstion.instance, FireElement.ELEMENT_NAME, Archive.COMPRESSOR);
+        ResourceHandler.addElement(Compresstion.instance, ProgressElement.ELEMENT_NAME, Archive.COMPRESSOR);
     }
 }
