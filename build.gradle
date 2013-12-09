@@ -15,7 +15,7 @@ buildscript {
 apply plugin: "forge"
 
 group = 'ccm.compresstion'
-version = "0.0.1.${System.env.BUILD_NUMBER}"
+version = "1.0.0.${System.env.BUILD_NUMBER}"
 archivesBaseName = 'Compresstion'
 
 sourceSets {
