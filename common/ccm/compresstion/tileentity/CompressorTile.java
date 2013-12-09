@@ -25,15 +25,18 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     public static final int OUT = 2;
 
     /** The number of ticks that the compressor will keep compressing */
-    public int compressTime;
+    private int compressTime;
 
     /**
      * The number of ticks that a fresh copy of the currently-burning item would keep the compressor running for
      */
-    public int currentCompressTime;
+    private int currentCompressTime;
 
     /** The number of ticks that the current item has been compressing for */
-    public int compressionTime;
+    private int compressionTime;
+
+    /** The maximum amount of time that you have to wait for the operation to be done */
+    private final int maxTime = (Properties.DEBUG ? 50 : 200);
 
     @Override
     public void updateEntity()
@@ -73,7 +76,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
             {
                 ++compressionTime;
 
-                if (compressionTime == 50)
+                if (compressionTime == maxTime)
                 {
                     compressionTime = 0;
                     compressItem();
@@ -232,7 +235,12 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     @SideOnly(Side.CLIENT)
     public int getCompressProgressScaled(int scale)
     {
-        return (compressionTime * scale) / 200;
+        return (compressionTime * scale) / maxTime;
+    }
+
+    public int getCompressProgress()
+    {
+        return compressionTime;
     }
 
     /**
@@ -244,10 +252,15 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     {
         if (currentCompressTime == 0)
         {
-            currentCompressTime = 200;
+            currentCompressTime = maxTime;
         }
 
         return (compressTime * scale) / currentCompressTime;
+    }
+
+    public int getCompressTime()
+    {
+        return compressTime;
     }
 
     @Override
