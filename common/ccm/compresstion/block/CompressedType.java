@@ -3,7 +3,7 @@ package ccm.compresstion.block;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
-import ccm.compresstion.utils.registry.recipe.DownConvertionRecipe;
+import ccm.compresstion.utils.helper.recipe.DownConvertionRecipe;
 
 public enum CompressedType
 {

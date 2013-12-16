@@ -1,4 +1,4 @@
-package ccm.compresstion.utils.registry.recipe;
+package ccm.compresstion.utils.helper.recipe;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
