@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import ccm.compresstion.tileentity.CompressorTile;
 import ccm.nucleum.omnium.inventory.container.BaseContainer;
+import net.minecraft.inventory.ICrafting;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerCompressor extends BaseContainer
 {
