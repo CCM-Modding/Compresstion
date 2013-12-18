@@ -52,7 +52,9 @@ public class ContainerCompressor extends BaseContainer
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         if (tile.canRun()){
-            for (ICrafting crafter : crafters){
+            for (Object o : crafters)
+            {
+                ICrafting crafter = (ICrafter) o
                 if(lastCompressTime != tile.getCompressTime())
                 {
                     crafter.sendProgressBarUpdate(this, 0, tile.getCompressTime());
@@ -78,7 +80,7 @@ public class ContainerCompressor extends BaseContainer
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    // @SideOnly(Side.CLIENT) ADD THIS @ HOME
     public void updateProgressBar(final int index, final int progress) 
     {
         switch (index)
