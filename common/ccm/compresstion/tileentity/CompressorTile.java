@@ -242,6 +242,11 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     {
         return compressionTime;
     }
+    
+    public void updateCompressProgress(int progress)
+    {
+        compressionTime = progress;
+    }
 
     /**
      * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel item, where 0 means that the item is exhausted and the passed
@@ -261,6 +266,11 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     public int getCompressTime()
     {
         return compressTime;
+    }
+
+    public void updateCompressTime(int time)
+    {
+        compressTime = time;
     }
 
     @Override
