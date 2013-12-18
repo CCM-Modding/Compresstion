@@ -11,6 +11,8 @@ import ccm.nucleum.omnium.inventory.container.BaseContainer;
 public class ContainerCompressor extends BaseContainer
 {
     private final CompressorTile tile;
+    private int lastCompressTime;
+    private int lastCompressProgress;
 
     public ContainerCompressor(IInventory inventory)
     {
@@ -41,9 +43,52 @@ public class ContainerCompressor extends BaseContainer
         return new ContainerCompressor(player, (IInventory) world.getBlockTileEntity(x, y, z));
     }
 
+    /**
+     * Looks for changes made in the container, sends them to every listener.
+     */
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slot)
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        if (tile.canRun()){
+            for (ICrafting crafter : crafters){
+                if(lastCompressTime != tile.getCompressTime())
+                {
+                    crafter.sendProgressBarUpdate(this, 0, tile.getCompressTime());
+                }
+                if (lastCompressProgress != tile.getCompressTime())
+                {
+                    crafter.sendProgressBarUpdate(this, 1, tile.getCompressProgress());
+                }
+            }
+            lastCompressTime = tile.getCompressTime();
+            lastCompressProgress = tile.getCompressProgress();
+        } else
+        {
+            lastCompressTime = 0;
+            lastCompressProgress = 0;
+        }
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(final EntityPlayer entityPlayer, final int slotIndex) 
     {
         return null;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(final int index, final int progress) 
+    {
+        switch (index)
+        {
+            case 0:
+                tile.updateCompressTime(progress);
+                break;
+            case 1:
+                tile.updateCompressProgress(progress);
+                break;
+            default:
+                break;
+        }
     }
 }
