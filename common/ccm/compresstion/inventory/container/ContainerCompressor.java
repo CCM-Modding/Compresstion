@@ -54,7 +54,7 @@ public class ContainerCompressor extends BaseContainer
         if (tile.canRun()){
             for (Object o : crafters)
             {
-                ICrafting crafter = (ICrafter) o
+                ICrafting crafter = (ICrafter) o;
                 if(lastCompressTime != tile.getCompressTime())
                 {
                     crafter.sendProgressBarUpdate(this, 0, tile.getCompressTime());
