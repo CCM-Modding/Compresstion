@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import ccm.compresstion.tileentity.CompressorTile;
 import ccm.nucleum.omnium.inventory.container.BaseContainer;
-import net.minecraft.inventory.ICrafting;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerCompressor extends BaseContainer
@@ -54,7 +53,7 @@ public class ContainerCompressor extends BaseContainer
         if (tile.canRun()){
             for (Object o : crafters)
             {
-                ICrafting crafter = (ICrafter) o;
+                ICrafting crafter = (ICrafting) o;
                 if(lastCompressTime != tile.getCompressTime())
                 {
                     crafter.sendProgressBarUpdate(this, 0, tile.getCompressTime());
