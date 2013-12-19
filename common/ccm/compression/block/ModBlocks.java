@@ -13,8 +13,15 @@ public final class ModBlocks
 
     public static void init()
     {
-        compressor = new Compressor(Compression.instance.getConfigHandler().getBlockId(Archive.COMPRESSOR)).setCreativeTab(CreativeTabs.tabBlock);
+        compressor = new Compressor(getID(Archive.COMPRESSOR)).setCreativeTab(CreativeTabs.tabBlock);
 
-        compressedBlock = new Compressed(Compression.instance.getConfigHandler().getBlockId(Compressed.name));
+        compressedBlock = new Compressed(getID(Compressed.name));
+    }
+
+    private static int getID(String name)
+    {
+        int id = Compression.instance.config().getBlockId(name);
+        Compression.instance.logger().debug("Getting id: %s for block: %s", id, name);
+        return id;
     }
 }

@@ -8,7 +8,6 @@ import static ccm.compression.utils.lib.Archive.MOD_NAME;
 import static ccm.compression.utils.lib.Locations.CLIENT_PROXY;
 import static ccm.compression.utils.lib.Locations.SERVER_PROXY;
 import static ccm.nucleum.omnium.utils.lib.Archive.MOD_CHANNEL;
-import net.minecraft.server.MinecraftServer;
 import ccm.compression.block.CompressedType;
 import ccm.compression.block.ModBlocks;
 import ccm.compression.proxy.CommonProxy;
@@ -19,6 +18,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -33,16 +33,16 @@ public class Compression extends CCMMod
     @SidedProxy(serverSide = SERVER_PROXY, clientSide = CLIENT_PROXY)
     public static CommonProxy proxy;
 
-    /**
-     * The current MC Server Instance
-     */
-    public static MinecraftServer server;
-
     @EventHandler
     public void preInit(final FMLPreInitializationEvent event)
     {
         loadMod(this, event, new CompresstionConfig());
         ModBlocks.init();
+    }
+
+    @EventHandler
+    public void init(final FMLInitializationEvent event)
+    {
         proxy.registerRenders();
         proxy.registerGUI();
 
