@@ -3,6 +3,7 @@
  */
 package ccm.compression.utils.handler.config;
 
+import lib.cofh.util.ConfigHandler;
 import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.configuration.IConfig;
 
@@ -15,7 +16,7 @@ import ccm.nucleum.omnium.utils.handler.configuration.IConfig;
 public class CompresstionConfig extends IConfig
 {
     @Override
-    public void init()
+    public void init(ConfigHandler config)
     {
         config.addBlockEntry(Archive.COMPRESSOR);
 

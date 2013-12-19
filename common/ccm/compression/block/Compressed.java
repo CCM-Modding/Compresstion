@@ -93,7 +93,7 @@ public class Compressed extends BlockContainer
     {
         for (CompressedType type : CompressedType.values())
         {
-            type.setIcon(register.registerIcon("compresstion:condensedOverlay_" + type.ordinal()));
+            type.setIcon(register.registerIcon(Archive.MOD_ID + ":condensedOverlay_" + type.ordinal()));
         }
     }
 
