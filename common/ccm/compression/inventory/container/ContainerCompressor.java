@@ -39,12 +39,6 @@ public class ContainerCompressor extends BaseContainer
         crafter.sendProgressBarUpdate(this, 1, tile.getCompressProgress());
     }
 
-    @Override
-    public Object getServerGuiElement(EntityPlayer player, World world, int x, int y, int z)
-    {
-        return new ContainerCompressor(player, (IInventory) world.getBlockTileEntity(x, y, z));
-    }
-
     /**
      * Looks for changes made in the container, sends them to every listener.
      */
@@ -96,5 +90,11 @@ public class ContainerCompressor extends BaseContainer
             default:
                 break;
         }
+    }
+
+    @Override
+    public Object getServerGuiElement(EntityPlayer player, World world, int x, int y, int z)
+    {
+        return new ContainerCompressor(player, (IInventory) world.getBlockTileEntity(x, y, z));
     }
 }

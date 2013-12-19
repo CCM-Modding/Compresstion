@@ -1,5 +1,6 @@
 package ccm.compression.inventory.gui;
 
+import lib.cofh.gui.element.ElementDualScaled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.World;
@@ -13,25 +14,23 @@ import ccm.nucleum.omnium.inventory.gui.element.ProgressElement;
 
 public class GuiCompressor extends BaseGui
 {
-    private final FireElement fire;
-    private final ProgressElement progress;
     private final CompressorTile tile;
+    private ElementDualScaled fire;
+    private ElementDualScaled progress;
 
     public GuiCompressor(BaseContainer container)
     {
         super(container, Archive.COMPRESSOR);
         tile = (CompressorTile) ((container != null) && (container.getIInventory() instanceof CompressorTile) ? container.getIInventory() : null);
         name = "tile.compressor.name";
-        fire = new FireElement(this, 148, 65, Archive.COMPRESSOR);
-        progress = new ProgressElement(this, 220, 72, Archive.COMPRESSOR);
     }
 
     @Override
     public void initGui()
     {
         super.initGui();
-        addElement(fire);
-        addElement(progress);
+        fire = (ElementDualScaled) addElement(new FireElement(this, 24, 28, Archive.COMPRESSOR));
+        progress = (ElementDualScaled) addElement(new ProgressElement(this, 95, 35, Archive.COMPRESSOR));
     }
 
     @Override
