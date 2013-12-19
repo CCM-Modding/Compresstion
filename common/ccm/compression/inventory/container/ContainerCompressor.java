@@ -66,6 +66,12 @@ public class ContainerCompressor extends BaseContainer
         {
             lastCompressTime = 0;
             lastCompressProgress = 0;
+            for (Object o : crafters)
+            {
+                ICrafting crafter = (ICrafting) o;
+                crafter.sendProgressBarUpdate(this, 0, tile.getCompressTime());
+                crafter.sendProgressBarUpdate(this, 1, tile.getCompressProgress());
+            }
         }
     }
 
