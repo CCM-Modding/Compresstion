@@ -55,7 +55,7 @@ public class ContainerCompressor extends BaseContainer
                 {
                     crafter.sendProgressBarUpdate(this, 0, tile.getCompressTime());
                 }
-                if (lastCompressProgress != tile.getCompressTime())
+                if (lastCompressProgress != tile.getCompressProgress())
                 {
                     crafter.sendProgressBarUpdate(this, 1, tile.getCompressProgress());
                 }
