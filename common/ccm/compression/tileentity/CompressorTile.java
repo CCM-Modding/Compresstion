@@ -14,7 +14,6 @@ import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
-import ccm.nucleum.omnium.utils.lib.Properties;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -36,7 +35,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     private int compressionTime;
 
     /** The maximum amount of time that you have to wait for the operation to be done */
-    private final int maxTime = (Properties.DEBUG ? 50 : 400);
+    private final int maxTime = 400;
 
     /**
      * Returns true if the furnace is currently burning
@@ -110,7 +109,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     {
         if (getStackInSlot(IN) != null)
         {
-            if (getStackInSlot(IN).stackSize >= (Properties.DEBUG ? 1 : 9))
+            if (getStackInSlot(IN).stackSize >= 9)
             {
                 // get the current Item
                 ItemStack stack = getStackInSlot(IN);
@@ -179,6 +178,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     private ItemStack getCompressedItem()
     {
         ItemStack stack = getStackInSlot(IN).copy();
+        stack.stackSize = 1;
         Block block = getBlock(stack);
         if (block != null)
         {
@@ -190,10 +190,6 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 if (tmp < 16)
                 {
                     stack.setItemDamage(tmp);
-                    if (!Properties.DEBUG)
-                    {
-                        stack.stackSize = 1;
-                    }
                 } else
                 {
                     CCMLogger.DEFAULT_LOGGER.severe("WTF!!!!!!");
@@ -228,7 +224,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 changeSize(OUT, stack.stackSize);
             }
 
-            changeSize(IN, (Properties.DEBUG ? -1 : -9));
+            changeSize(IN, -9);
 
             if (getStackInSlot(IN).stackSize <= 0)
             {
