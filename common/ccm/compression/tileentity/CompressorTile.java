@@ -30,22 +30,30 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     /**
      * The number of ticks that a fresh copy of the currently-burning item would keep the compressor running for
      */
-    private int currentCompressTime;
+    private int totalCompressTime;
 
     /** The number of ticks that the current item has been compressing for */
     private int compressionTime;
 
     /** The maximum amount of time that you have to wait for the operation to be done */
-    private final int maxTime = (Properties.DEBUG ? 50 : 200);
+    private final int maxTime = (Properties.DEBUG ? 50 : 400);
+
+    /**
+     * Returns true if the furnace is currently burning
+     */
+    public boolean isCompressing()
+    {
+        return compressTime > 0;
+    }
 
     @Override
     public void updateEntity()
     {
         super.updateEntity();
-        boolean burning = compressTime > 0;
-        boolean done = false;
+        boolean burning = isCompressing();
+        boolean invChanged = false;
 
-        if (compressTime > 0)
+        if (isCompressing())
         {
             --compressTime;
         }
@@ -54,11 +62,11 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         {
             if ((compressTime == 0) && canRun())
             {
-                currentCompressTime = compressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
+                totalCompressTime = compressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
 
-                if (compressTime > 0)
+                if (isCompressing())
                 {
-                    done = true;
+                    invChanged = true;
 
                     if (getStackInSlot(FUEL) != null)
                     {
@@ -72,7 +80,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 }
             }
 
-            if ((compressTime > 0) && canRun())
+            if (isCompressing() && canRun())
             {
                 ++compressionTime;
 
@@ -80,18 +88,18 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 {
                     compressionTime = 0;
                     compressItem();
-                    done = true;
+                    invChanged = true;
                 }
             } else
             {
                 compressionTime = 0;
             }
-            if (burning != (compressTime > 0))
+            if (burning != isCompressing())
             {
-                done = true;
+                invChanged = true;
             }
         }
-        if (done)
+        if (invChanged)
         {
             onInventoryChanged();
         }
@@ -102,7 +110,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     {
         if (getStackInSlot(IN) != null)
         {
-            if (getStackInSlot(IN).stackSize >= 9)
+            if (getStackInSlot(IN).stackSize >= (Properties.DEBUG ? 1 : 9))
             {
                 // get the current Item
                 ItemStack stack = getStackInSlot(IN);
@@ -143,7 +151,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         super.readFromNBT(nbt);
         compressTime = nbt.getShort("CompressTime");
         compressionTime = nbt.getShort("CompressionTime");
-        currentCompressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
+        totalCompressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
     }
 
     /**
@@ -220,7 +228,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 changeSize(OUT, stack.stackSize);
             }
 
-            changeSize(IN, -9);
+            changeSize(IN, (Properties.DEBUG ? -1 : -9));
 
             if (getStackInSlot(IN).stackSize <= 0)
             {
@@ -242,7 +250,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     {
         return compressionTime;
     }
-    
+
     public void updateCompressProgress(int progress)
     {
         compressionTime = progress;
@@ -255,12 +263,16 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     @SideOnly(Side.CLIENT)
     public int getCompressTimeScaled(int scale)
     {
-        if (currentCompressTime == 0)
+        if (getStackInSlot(FUEL) != null)
         {
-            currentCompressTime = maxTime;
-        }
+            if (totalCompressTime == 0)
+            {
+                totalCompressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
+            }
 
-        return (compressTime * scale) / currentCompressTime;
+            return (compressTime * scale) / totalCompressTime;
+        }
+        return 0;
     }
 
     public int getCompressTime()

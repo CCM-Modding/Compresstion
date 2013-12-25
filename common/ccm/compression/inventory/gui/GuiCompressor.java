@@ -37,7 +37,7 @@ public class GuiCompressor extends BaseGui
     protected void updateElements()
     {
         super.updateElements();
-        fire.setQuantity(tile.getCompressTimeScaled(14));
+        fire.setQuantity(tile.getCompressTimeScaled(12));
         progress.setQuantity(tile.getCompressProgressScaled(24));
     }
 
