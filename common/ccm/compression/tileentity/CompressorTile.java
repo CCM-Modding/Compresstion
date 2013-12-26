@@ -14,6 +14,7 @@ import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -56,21 +57,19 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         {
             --compressTime;
         }
-
         if (!worldObj.isRemote)
         {
             if ((compressTime == 0) && canRun())
             {
                 totalCompressTime = compressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
-
+                // SEND PACKET to make sure tile is up to date for the client
+                PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 10, worldObj.provider.dimensionId, getDescriptionPacket());
                 if (isCompressing())
                 {
                     invChanged = true;
-
                     if (getStackInSlot(FUEL) != null)
                     {
                         changeSize(FUEL, -1);
-
                         if (getStackInSlot(FUEL).stackSize == 0)
                         {
                             setInventorySlotContents(FUEL, getStackInSlot(FUEL).getItem().getContainerItemStack(getStackInSlot(FUEL)));
@@ -78,11 +77,9 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                     }
                 }
             }
-
             if (isCompressing() && canRun())
             {
                 ++compressionTime;
-
                 if (compressionTime == maxTime)
                 {
                     compressionTime = 0;
@@ -110,8 +107,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         if (getStackInSlot(IN) != null)
         {
             if (getStackInSlot(IN).stackSize >= 9)
-            {
-                // get the current Item
+            {// get the current Item
                 ItemStack stack = getStackInSlot(IN);
                 Block block = getBlock(stack);
                 if (block != null)
@@ -214,7 +210,6 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         if (canRun())
         {
             ItemStack stack = getCompressedItem();
-
             // Below it does all the item checking
             if (getStackInSlot(OUT) == null)
             {
@@ -223,9 +218,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
             {
                 changeSize(OUT, stack.stackSize);
             }
-
             changeSize(IN, -9);
-
             if (getStackInSlot(IN).stackSize <= 0)
             {
                 setInventorySlotContents(IN, null);
@@ -259,16 +252,11 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     @SideOnly(Side.CLIENT)
     public int getCompressTimeScaled(int scale)
     {
-        if (getStackInSlot(FUEL) != null)
+        if (totalCompressTime == 0)
         {
-            if (totalCompressTime == 0)
-            {
-                totalCompressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
-            }
-
-            return (compressTime * scale) / totalCompressTime;
+            totalCompressTime = maxTime;
         }
-        return 0;
+        return (compressTime * scale) / totalCompressTime;
     }
 
     public int getCompressTime()
