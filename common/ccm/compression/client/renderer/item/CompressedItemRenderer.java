@@ -2,12 +2,11 @@ package ccm.compression.client.renderer.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraftforge.client.IItemRenderer;
-
-import org.lwjgl.opengl.GL11;
-
+import net.minecraftforge.common.ForgeDirection;
 import ccm.compression.block.CompressedType;
 import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
@@ -29,26 +28,53 @@ public class CompressedItemRenderer implements IItemRenderer
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data)
     {
-        GL11.glPushMatrix();
-
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-
-        Block block = Block.blocksList[item.itemID];
         RenderBlocks renderer = (RenderBlocks) data[0];
+        Tessellator tessellator = Tessellator.instance;
+        Block block = Block.stone;
 
-        Icon original = Block.blocksList[NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID)].getIcon(0, NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
+        Block doner = Block.blocksList[NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID)];
+        int donerMeta = NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META);
+
+        Icon backup = doner.getIcon(0, donerMeta);
         Icon overlay = CompressedType.getOverlay(item.getItemDamage());
+        if (backup == null)
+        {
+            return;
+        }
 
-        renderer.setOverrideBlockTexture(original);
         renderer.setRenderBoundsFromBlock(block);
-        renderer.renderBlockAsItem(block, item.getItemDamage(), 1.0F);
-        renderer.clearOverrideBlockTexture();
+        tessellator.startDrawingQuads();
 
-        renderer.setOverrideBlockTexture(overlay);
-        renderer.setRenderBoundsFromBlock(block);
-        renderer.renderBlockAsItem(block, item.getItemDamage(), 1.0F);
-        renderer.clearOverrideBlockTexture();
+        Icon sided = doner.getIcon(ForgeDirection.DOWN.ordinal(), donerMeta);
+        tessellator.setNormal(0.0F, -1.0F, 0.0F);
+        renderer.renderFaceYNeg(block, 0, 0, 0, sided != null ? sided : backup);
+        renderer.renderFaceYNeg(block, 0, 0, 0, overlay);
 
-        GL11.glPopMatrix();
+        sided = doner.getIcon(ForgeDirection.UP.ordinal(), donerMeta);
+        tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        renderer.renderFaceYPos(block, 0, 0, 0, sided != null ? sided : backup);
+        renderer.renderFaceYPos(block, 0, 0, 0, overlay);
+
+        sided = doner.getIcon(ForgeDirection.NORTH.ordinal(), donerMeta);
+        tessellator.setNormal(0.0F, 0.0F, -1.0F);
+        renderer.renderFaceZNeg(block, 0, 0, 0, sided != null ? sided : backup);
+        renderer.renderFaceZNeg(block, 0, 0, 0, overlay);
+
+        sided = doner.getIcon(ForgeDirection.SOUTH.ordinal(), donerMeta);
+        tessellator.setNormal(0.0F, 0.0F, 1.0F);
+        renderer.renderFaceZPos(block, 0, 0, 0, sided != null ? sided : backup);
+        renderer.renderFaceZPos(block, 0, 0, 0, overlay);
+
+        sided = doner.getIcon(ForgeDirection.WEST.ordinal(), donerMeta);
+        tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXNeg(block, 0, 0, 0, sided != null ? sided : backup);
+        renderer.renderFaceXNeg(block, 0, 0, 0, overlay);
+
+        sided = doner.getIcon(ForgeDirection.EAST.ordinal(), donerMeta);
+        tessellator.setNormal(1.0F, 0.0F, 0.0F);
+        renderer.renderFaceXPos(block, 0, 0, 0, sided != null ? sided : backup);
+        renderer.renderFaceXPos(block, 0, 0, 0, overlay);
+
+        tessellator.draw();
     }
 }
