@@ -79,7 +79,7 @@ public class DownConvertionRecipe implements IRecipe
     @Override
     public ItemStack getRecipeOutput()
     {
-        return new ItemStack(ModBlocks.compressedBlock, 9, previusType.ordinal());
+        return new ItemStack(ModBlocks.compressedBlock, 9, previusType != null ? previusType.ordinal() : 0);
     }
 
     public ItemStack getRecipeOutput(ItemStack item)
