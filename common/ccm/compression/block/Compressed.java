@@ -136,7 +136,7 @@ public class Compressed extends BlockContainer
     @Override
     public Icon getBlockTexture(final IBlockAccess world, final int x, final int y, final int z, final int side)
     {
-        return getBlock(world, x, y, z).getBlockTexture(world, x, y, z, side);
+        return getBlock(world, x, y, z).getIcon(side, ((CompressedTile) world.getBlockTileEntity(x, y, z)).getMeta());
     }
 
     /**
