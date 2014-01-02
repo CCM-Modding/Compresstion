@@ -13,8 +13,6 @@ public class Archive
 {
     public static final String MOD_ID = "compression";
 
-    public static final String MOD_NAME = "Compression";
-
     static final String NBT = "CCM." + MOD_ID.toUpperCase() + ".ITEM.BLOCK.COMPRESSED";
 
     public static final String NBT_COMPRESSED_BLOCK_ID = NBT + ".ID";

@@ -33,9 +33,9 @@ public class Compressor extends BlockContainer
     @Override
     public void registerIcons(IconRegister register)
     {
-        top = register.registerIcon(Archive.MOD_NAME.toLowerCase() + ":compressorTop");
-        sides = register.registerIcon(Archive.MOD_NAME.toLowerCase() + ":compressorSide");
-        bottom = register.registerIcon(Archive.MOD_NAME.toLowerCase() + ":compressorBottom");
+        top = register.registerIcon(Archive.MOD_ID + ":compressorTop");
+        sides = register.registerIcon(Archive.MOD_ID + ":compressorSide");
+        bottom = register.registerIcon(Archive.MOD_ID + ":compressorBottom");
     }
 
     @Override

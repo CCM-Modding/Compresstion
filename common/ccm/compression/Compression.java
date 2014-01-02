@@ -4,7 +4,6 @@
 package ccm.compression;
 
 import static ccm.compression.utils.lib.Archive.MOD_ID;
-import static ccm.compression.utils.lib.Archive.MOD_NAME;
 import static ccm.compression.utils.lib.Locations.CLIENT_PROXY;
 import static ccm.compression.utils.lib.Locations.SERVER_PROXY;
 import static ccm.nucleum.omnium.utils.lib.Archive.MOD_CHANNEL;
@@ -23,7 +22,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid = MOD_ID, name = MOD_NAME, useMetadata = true, dependencies = "required-after:nucleum_omnium")
+@Mod(modid = MOD_ID, useMetadata = true)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = MOD_CHANNEL, packetHandler = PacketHandler.class)
 public class Compression extends CCMMod
 {
