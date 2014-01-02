@@ -16,10 +16,9 @@ import ccm.nucleum.omnium.utils.handler.configuration.IConfig;
 public class CompresstionConfig extends IConfig
 {
     @Override
-    public void init(ConfigHandler config)
+    protected void initCommon(ConfigHandler config)
     {
-        config.addBlockEntry(Archive.COMPRESSOR);
-
-        config.addBlockEntry("Compressed");
+        config.addBlock(Archive.COMPRESSOR);
+        config.addBlock("Compressed");
     }
 }

@@ -20,7 +20,7 @@ public final class ModBlocks
 
     private static int getID(String name)
     {
-        int id = Compression.instance.config().getBlockId(name);
+        int id = Compression.instance.config().getBlockID(name);
         Compression.instance.logger().debug("Getting id: %s for block: %s", id, name);
         return id;
     }
