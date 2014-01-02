@@ -6,9 +6,11 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,6 +21,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import ccm.compression.client.renderer.block.CompressedBlockRenderer;
 import ccm.compression.item.block.CompressedItemBlock;
 import ccm.compression.tileentity.CompressedTile;
@@ -260,6 +263,204 @@ public class Compressed extends BlockContainer
     }
 
     @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, int oldmeta)
+    {
+        getBlock(world, x, y, z).onNeighborBlockChange(world, x, y, z, oldmeta);
+    }
+
+    @Override
+    public void onNeighborTileChange(World world, int x, int y, int z, int tileX, int tileY, int tileZ)
+    {
+        getBlock(world, x, y, z).onNeighborTileChange(world, x, y, z, tileX, tileY, tileZ);
+    }
+
+    @Override
+    public boolean canBeReplacedByLeaves(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).canBeReplacedByLeaves(world, x, y, z);
+    }
+
+    @Override
+    public boolean canBlockStay(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).canBlockStay(world, x, y, z);
+    }
+
+    @Override
+    public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
+    {
+        return getBlock(world, x, y, z).canConnectRedstone(world, x, y, z, side);
+    }
+
+    @Override
+    public boolean canEntityDestroy(World world, int x, int y, int z, Entity entity)
+    {
+        return getBlock(world, x, y, z).canEntityDestroy(world, x, y, z, entity);
+    }
+
+    @Override
+    public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
+    {
+        return getBlock(world, x, y, z).canSilkHarvest(world, player, x, y, z, metadata);
+    }
+
+    @Override
+    public boolean canSustainLeaves(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).canSustainLeaves(world, x, y, z);
+    }
+
+    @Override
+    public float getAmbientOcclusionLightValue(IBlockAccess world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).getAmbientOcclusionLightValue(world, x, y, z);
+    }
+
+    @Override
+    public boolean getBlocksMovement(IBlockAccess world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).getBlocksMovement(world, x, y, z);
+    }
+
+    @Override
+    public int getComparatorInputOverride(World world, int x, int y, int z, int par5)
+    {
+        return getBlock(world, x, y, z).getComparatorInputOverride(world, x, y, z, par5);
+    }
+
+    @Override
+    public int getFireSpreadSpeed(World world, int x, int y, int z, int metadata, ForgeDirection face)
+    {
+        return (getBlock(world, x, y, z).getFireSpreadSpeed(world, x, y, z, metadata, face)) / 9;
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+    {
+        return (getBlock(world, x, y, z).getFlammability(world, x, y, z, metadata, face)) * 9;
+    }
+
+    @Override
+    public int getLightOpacity(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).getLightOpacity(world, x, y, z);
+    }
+
+    @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).getLightValue(world, x, y, z);
+    }
+
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).canCreatureSpawn(type, world, x, y, z);
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).canPlaceBlockAt(world, x, y, z);
+    }
+
+    @Override
+    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int par5, ItemStack par6ItemStack)
+    {
+        return getBlock(world, x, y, z).canPlaceBlockOnSide(world, x, y, z, par5, par6ItemStack);
+    }
+
+    @Override
+    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int par5)
+    {
+        return getBlock(world, x, y, z).canPlaceBlockOnSide(world, x, y, z, par5);
+    }
+
+    @Override
+    public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).canPlaceTorchOnTop(world, x, y, z);
+    }
+
+    @Override
+    public float getEnchantPowerBonus(World world, int x, int y, int z)
+    {
+        return (getBlock(world, x, y, z).getEnchantPowerBonus(world, x, y, z)) * 9;
+    }
+
+    @Override
+    public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).getPlayerRelativeBlockHardness(player, world, x, y, z);
+    }
+
+    @Override
+    public ForgeDirection[] getValidRotations(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).getValidRotations(world, x, y, z);
+    }
+
+    @Override
+    public boolean isBeaconBase(World world, int x, int y, int z, int beaconX, int beaconY, int beaconZ)
+    {
+        return getBlock(world, x, y, z).isBeaconBase(world, x, y, z, beaconX, beaconY, beaconZ);
+    }
+
+    @Override
+    public boolean isBlockBurning(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).isBlockBurning(world, x, y, z);
+    }
+
+    @Override
+    public boolean isBlockFoliage(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).isBlockFoliage(world, x, y, z);
+    }
+
+    @Override
+    public boolean isFertile(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).isFertile(world, x, y, z);
+    }
+
+    @Override
+    public boolean isFireSource(World world, int x, int y, int z, int metadata, ForgeDirection side)
+    {
+        return getBlock(world, x, y, z).isFireSource(world, x, y, z, metadata, side);
+    }
+
+    @Override
+    public boolean isFlammable(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+    {
+        return getBlock(world, x, y, z).isFlammable(world, x, y, z, metadata, face);
+    }
+
+    @Override
+    public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int par5)
+    {
+        return getBlock(world, x, y, z).isProvidingStrongPower(world, x, y, z, par5);
+    }
+
+    @Override
+    public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int par5)
+    {
+        return getBlock(world, x, y, z).isProvidingWeakPower(world, x, y, z, par5);
+    }
+
+    @Override
+    public boolean isWood(World world, int x, int y, int z)
+    {
+        return getBlock(world, x, y, z).isWood(world, x, y, z);
+    }
+
+    @Override
+    public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
+    {
+        return getBlock(world, x, y, z).shouldCheckWeakPower(world, x, y, z, side);
+    }
+
+    @Override
     public int getRenderType()
     {
         return CompressedBlockRenderer.id;
@@ -269,5 +470,18 @@ public class Compressed extends BlockContainer
     public Icon getIcon(int side, int meta)
     {
         return Block.slowSand.getBlockTextureFromSide(side);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean addBlockDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer)
+    { // TODO REPLACE
+        return getBlock(world, x, y, z).addBlockDestroyEffects(world, x, y, z, meta, effectRenderer);
+    }
+
+    @Override
+    public boolean addBlockHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer)
+    { // TODO REDO
+        return getBlock(world, target.blockX, target.blockY, target.blockZ).addBlockHitEffects(world, target, effectRenderer);
     }
 }
