@@ -347,12 +347,6 @@ public class Compressed extends BlockContainer
     }
 
     @Override
-    public int getLightValue(IBlockAccess world, int x, int y, int z)
-    {
-        return getBlock(world, x, y, z).getLightValue(world, x, y, z);
-    }
-
-    @Override
     public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z)
     {
         return getBlock(world, x, y, z).canCreatureSpawn(type, world, x, y, z);
