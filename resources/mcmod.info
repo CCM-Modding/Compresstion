@@ -13,7 +13,7 @@
     ],
     "dependencies": [
       "required-after:nucleum_omnium"
-    ],
-    "useDependencyInformation": "true"
+    ]
+    #"useDependencyInformation": "true"
   }
 ]
