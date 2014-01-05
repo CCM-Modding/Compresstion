@@ -20,7 +20,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid = MOD_ID, useMetadata = true)
+@Mod(modid = MOD_ID, dependencies = "required-after:nucleum_omnium", useMetadata = true)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class Compression extends CCMMod
 {
