@@ -6,12 +6,10 @@ package ccm.compression;
 import static ccm.compression.utils.lib.Archive.MOD_ID;
 import static ccm.compression.utils.lib.Locations.CLIENT_PROXY;
 import static ccm.compression.utils.lib.Locations.SERVER_PROXY;
-import static ccm.nucleum.omnium.utils.lib.Archive.MOD_CHANNEL;
 import ccm.compression.block.CompressedType;
 import ccm.compression.block.ModBlocks;
 import ccm.compression.proxy.CommonProxy;
 import ccm.compression.utils.handler.config.CompresstionConfig;
-import ccm.nucleum.network.PacketHandler;
 import ccm.nucleum.omnium.CCMMod;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -23,7 +21,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = MOD_ID, useMetadata = true)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = MOD_CHANNEL, packetHandler = PacketHandler.class)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class Compression extends CCMMod
 {
     @Instance(MOD_ID)
