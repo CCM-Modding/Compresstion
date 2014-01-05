@@ -9,7 +9,7 @@
     "mcversion": "${mcversion}",
     "url": "https://github.com/CCM-Modding/Compresstion",
     "updateUrl": "http://dries007.net:8080/view/CCM/job/Compresstion/",
-    "useDependencyInformation": "true",
+    "useDependencyInformation": true,
     "dependencies": [
       "required-after:nucleum_omnium"
     ],
