@@ -9,7 +9,7 @@ import static ccm.compression.utils.lib.Locations.SERVER_PROXY;
 import ccm.compression.block.CompressedType;
 import ccm.compression.block.ModBlocks;
 import ccm.compression.proxy.CommonProxy;
-import ccm.compression.utils.handler.config.CompresstionConfig;
+import ccm.compression.utils.handler.configuration.CompresstionConfig;
 import ccm.nucleum.omnium.CCMMod;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -30,13 +30,15 @@ public class Compression extends CCMMod
     public static CommonProxy proxy;
 
     @EventHandler
+    @SuppressWarnings("unused")
     public void preInit(final FMLPreInitializationEvent event)
     {
-        loadMod(this, event, new CompresstionConfig());
+        loadMod(this, new CompresstionConfig());
         ModBlocks.init();
     }
 
     @EventHandler
+    @SuppressWarnings("unused")
     public void init(final FMLInitializationEvent event)
     {
         proxy.registerRenders();

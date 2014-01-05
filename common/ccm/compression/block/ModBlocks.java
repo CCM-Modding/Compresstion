@@ -8,7 +8,7 @@ import ccm.compression.utils.lib.Archive;
 public final class ModBlocks
 {
     public static Block compressor;
-    public static Block compressedBlock;
+    public static Compressed compressedBlock;
 
     public static void init()
     {

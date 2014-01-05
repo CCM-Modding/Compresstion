@@ -183,7 +183,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                     stack.setItemDamage(tmp);
                 } else
                 {
-                    CCMLogger.DEFAULT_LOGGER.severe("WTF!!!!!!");
+                    CCMLogger.DEFAULT.severe("WTF!!!!!!");
                     return null;
                 }
             } else

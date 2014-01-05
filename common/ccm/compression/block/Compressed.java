@@ -1,6 +1,7 @@
 package ccm.compression.block;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -8,6 +9,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -89,6 +91,18 @@ public class Compressed extends BlockContainer
             NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
         }
         return stack;
+    }
+
+    @Override
+    public void getSubBlocks(int id, CreativeTabs tab, List list)
+    {
+        for (CompressedType type : CompressedType.values())
+        {
+            ItemStack stack = new ItemStack(blockID, 1, type.ordinal());
+            NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, Block.cobblestone.blockID);
+            NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, (byte) 0);
+            list.add(stack);
+        }
     }
 
     @Override

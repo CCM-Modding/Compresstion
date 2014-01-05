@@ -4,7 +4,6 @@
 package ccm.compression.proxy;
 
 import ccm.compression.inventory.container.ContainerCompressor;
-import ccm.compression.inventory.gui.GuiCompressor;
 import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.gui.GuiHandler;
 
@@ -21,6 +20,6 @@ public class CommonProxy
 
     public void registerGUI()
     {
-        GuiHandler.addGui(Archive.COMPRESSOR, new ContainerCompressor(null), new GuiCompressor(null));
+        GuiHandler.addContainer(Archive.COMPRESSOR, new ContainerCompressor(null));
     }
 }
