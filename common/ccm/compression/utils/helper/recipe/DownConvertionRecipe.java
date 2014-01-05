@@ -17,7 +17,6 @@ public class DownConvertionRecipe implements IRecipe
     public DownConvertionRecipe(CompressedType type)
     {
         currentType = type;
-
         if (type == CompressedType.SINGLE)
         {
             previusType = null;
@@ -59,7 +58,6 @@ public class DownConvertionRecipe implements IRecipe
     public ItemStack getCraftingResult(InventoryCrafting inventory)
     {
         ItemStack result = null;
-
         for (int i = 0; i <= inventory.getSizeInventory(); i++)
         {
             if (matches(inventory.getStackInSlot(i)))

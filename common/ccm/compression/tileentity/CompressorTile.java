@@ -23,18 +23,14 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     public static final int IN = 0;
     public static final int FUEL = 1;
     public static final int OUT = 2;
-
     /** The number of ticks that the compressor will keep compressing */
     private int compressTime;
-
     /**
      * The number of ticks that a fresh copy of the currently-burning item would keep the compressor running for
      */
     private int totalCompressTime;
-
     /** The number of ticks that the current item has been compressing for */
     private int compressionTime;
-
     /** The maximum amount of time that you have to wait for the operation to be done */
     private final int maxTime = 400;
 
@@ -52,7 +48,6 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         super.updateEntity();
         boolean burning = isCompressing();
         boolean invChanged = false;
-
         if (isCompressing())
         {
             --compressTime;
@@ -246,7 +241,8 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     }
 
     /**
-     * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel item, where 0 means that the item is exhausted and the passed
+     * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel item, where 0 means
+     * that the item is exhausted and the passed
      * value means that the item is fresh
      */
     @SideOnly(Side.CLIENT)
@@ -274,16 +270,13 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     {
         if (side == ForgeDirection.UP.ordinal())
         {
-            return new int[]
-            { IN };
+            return new int[] { IN };
         } else if (side == ForgeDirection.DOWN.ordinal())
         {
-            return new int[]
-            { OUT };
+            return new int[] { OUT };
         } else
         {
-            return new int[]
-            { FUEL };
+            return new int[] { FUEL };
         }
     }
 

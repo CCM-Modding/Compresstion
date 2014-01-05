@@ -67,8 +67,15 @@ public class Compressor extends BlockContainer
     }
 
     @Override
-    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player, final int wut, final float clickX, final float clickY,
-            final float clockZ)
+    public boolean onBlockActivated(final World world,
+                                    final int x,
+                                    final int y,
+                                    final int z,
+                                    final EntityPlayer player,
+                                    final int wut,
+                                    final float clickX,
+                                    final float clickY,
+                                    final float clockZ)
     {
         if (world.isRemote)
         {

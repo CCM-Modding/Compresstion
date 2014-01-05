@@ -8,13 +8,11 @@ import ccm.compression.utils.lib.Archive;
 public final class ModBlocks
 {
     public static Block compressor;
-
     public static Block compressedBlock;
 
     public static void init()
     {
         compressor = new Compressor(getID(Archive.COMPRESSOR)).setCreativeTab(CreativeTabs.tabBlock);
-
         compressedBlock = new Compressed(getID(Compressed.name));
     }
 

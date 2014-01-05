@@ -28,7 +28,6 @@ public class Compression extends CCMMod
 {
     @Instance(MOD_ID)
     public static Compression instance;
-
     @SidedProxy(serverSide = SERVER_PROXY, clientSide = CLIENT_PROXY)
     public static CommonProxy proxy;
 
@@ -44,7 +43,6 @@ public class Compression extends CCMMod
     {
         proxy.registerRenders();
         proxy.registerGUI();
-
         for (CompressedType type : CompressedType.values())
         {
             GameRegistry.addRecipe(type.getRecipe());

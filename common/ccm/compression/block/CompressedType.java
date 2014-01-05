@@ -23,7 +23,6 @@ public enum CompressedType
     QUATTORDECUPLE,
     QUINDECOUPLE,
     SEDECOUPLE;
-
     private Icon overlay;
     private DownConvertionRecipe recipe;
 

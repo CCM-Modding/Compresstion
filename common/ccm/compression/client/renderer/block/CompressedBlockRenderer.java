@@ -42,19 +42,15 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
                 if (temp instanceof CompressedTile)
                 {
                     CompressedTile tile = (CompressedTile) temp;
-
                     if (tile.getBlock() != null)
                     {
                         Icon overlay = CompressedType.getOverlay(tile.getBlockMetadata());
-
                         renderer.setRenderBoundsFromBlock(block);
                         renderer.renderStandardBlock(block, x, y, z);
-
                         renderer.setOverrideBlockTexture(overlay);
                         renderer.setRenderBoundsFromBlock(block);
                         renderer.renderStandardBlock(block, x, y, z);
                         renderer.clearOverrideBlockTexture();
-
                         return true;
                     }
                 }
@@ -69,37 +65,30 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
     {
         Tessellator tessellator = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, -1.0F, 0.0F);
         renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, ForgeDirection.DOWN.ordinal(), metadata));
         tessellator.draw();
-
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 1.0F, 0.0F);
         renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, ForgeDirection.UP.ordinal(), metadata));
         tessellator.draw();
-
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 0.0F, -1.0F);
         renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, ForgeDirection.NORTH.ordinal(), metadata));
         tessellator.draw();
-
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 0.0F, 1.0F);
         renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, ForgeDirection.SOUTH.ordinal(), metadata));
         tessellator.draw();
-
         tessellator.startDrawingQuads();
         tessellator.setNormal(-1.0F, 0.0F, 0.0F);
         renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, ForgeDirection.WEST.ordinal(), metadata));
         tessellator.draw();
-
         tessellator.startDrawingQuads();
         tessellator.setNormal(1.0F, 0.0F, 0.0F);
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, ForgeDirection.EAST.ordinal(), metadata));
         tessellator.draw();
-
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
     }
 }

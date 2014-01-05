@@ -104,7 +104,6 @@ public class Compressed extends BlockContainer
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack item)
     {
         super.onBlockPlacedBy(world, x, y, z, entity, item);
-
         CompressedTile tile = getTile(world, x, y, z);
         if (tile != null)
         {
@@ -201,7 +200,8 @@ public class Compressed extends BlockContainer
     }
 
     /**
-     * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a different metadata value, but before the new metadata value
+     * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a different metadata
+     * value, but before the new metadata value
      * is set. Args: World, x, y, z, old block ID, old metadata
      */
     @Override
@@ -232,8 +232,15 @@ public class Compressed extends BlockContainer
      * Called upon block activation (right click on the block.)
      */
     @Override
-    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player, final int par6, final float par7, final float par8,
-            final float par9)
+    public boolean onBlockActivated(final World world,
+                                    final int x,
+                                    final int y,
+                                    final int z,
+                                    final EntityPlayer player,
+                                    final int par6,
+                                    final float par7,
+                                    final float par8,
+                                    final float par9)
     {
         return getBlock(world, x, y, z).onBlockActivated(world, x, y, z, player, 0, 0.0F, 0.0F, 0.0F);
     }
@@ -248,8 +255,14 @@ public class Compressed extends BlockContainer
     }
 
     @Override
-    public float getExplosionResistance(final Entity entity, final World world, final int x, final int y, final int z, final double explosionX, final double explosionY,
-            final double explosionZ)
+    public float getExplosionResistance(final Entity entity,
+                                        final World world,
+                                        final int x,
+                                        final int y,
+                                        final int z,
+                                        final double explosionX,
+                                        final double explosionY,
+                                        final double explosionZ)
     {
         int metadata = world.getBlockMetadata(x, y, z);
         return ((getBlock(world, x, y, z).getExplosionResistance(entity)) * ((int) Math.pow(2, 1 + metadata)));
