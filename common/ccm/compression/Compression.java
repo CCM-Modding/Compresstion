@@ -6,6 +6,10 @@ package ccm.compression;
 import static ccm.compression.utils.lib.Archive.MOD_ID;
 import static ccm.compression.utils.lib.Locations.CLIENT_PROXY;
 import static ccm.compression.utils.lib.Locations.SERVER_PROXY;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import ccm.compression.block.CompressedType;
 import ccm.compression.block.ModBlocks;
 import ccm.compression.proxy.CommonProxy;
@@ -47,5 +51,7 @@ public class Compression extends CCMMod
         {
             GameRegistry.addRecipe(type.getRecipe());
         }
+        // THIS IS WHAT HAPPENS WHEN I MAKE THE RECIPE!!
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.compressor), "xax", "i i", "xxx", 'a', Block.anvil,'i' , Item.ingotIron, 'x', "cobblestone"));
     }
 }

@@ -54,16 +54,15 @@ public class Compressed extends BlockContainer
 
     private static CompressedTile getTile(final IBlockAccess world, final int x, final int y, final int z)
     {
-        CompressedTile finished = null;
         TileEntity tmp = world.getBlockTileEntity(x, y, z);
         if (tmp != null)
         {
             if (tmp instanceof CompressedTile)
             {
-                finished = (CompressedTile) tmp;
+                return (CompressedTile) tmp;
             }
         }
-        return finished;
+        return null;
     }
 
     private static Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
