@@ -6,7 +6,7 @@ Contributing to Compression
 * Make sure you are running the latest version of Forge, Nucleum Omnium, and Compression.
 * Make sure you list your Nucleum Omnium, and Forge version at the top of any issue.
 * Render related issues with Optifine (that work fine without it) are not accepted.
-* Post the FML log (The one named ForgeModLoader-client-0.log if there's a crash) on [Gist](https://gist.github.com/) or any other pastebin.
+* Post the FML log (The one named ForgeModLoader-SOMETHING.log if there's a crash) on [Gist](https://gist.github.com/) or any other pastebin.
 * Refer what mods you are running, if the game didn't crash.
 * Explain what you were doing Before the game crashed.
 
