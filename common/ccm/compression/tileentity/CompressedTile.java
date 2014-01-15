@@ -2,6 +2,7 @@ package ccm.compression.tileentity;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+
 import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.tileentity.BaseTE;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;

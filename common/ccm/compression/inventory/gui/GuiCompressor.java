@@ -1,9 +1,9 @@
 package ccm.compression.inventory.gui;
 
-import lib.cofh.gui.element.ElementDualScaled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.World;
+
 import ccm.compression.inventory.container.ContainerCompressor;
 import ccm.compression.tileentity.CompressorTile;
 import ccm.compression.utils.lib.Archive;
@@ -11,6 +11,8 @@ import ccm.nucleum.omnium.inventory.container.BaseContainer;
 import ccm.nucleum.omnium.inventory.gui.BaseGui;
 import ccm.nucleum.omnium.inventory.gui.element.FireElement;
 import ccm.nucleum.omnium.inventory.gui.element.ProgressElement;
+
+import lib.cofh.gui.element.ElementDualScaled;
 
 public class GuiCompressor extends BaseGui
 {

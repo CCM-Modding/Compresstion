@@ -3,11 +3,13 @@
  */
 package ccm.compression.utils.handler.configuration;
 
-import lib.cofh.util.ConfigHandler;
 import net.minecraft.block.Block;
+
 import ccm.compression.utils.lib.Archive;
 import ccm.compression.utils.lib.Properties;
 import ccm.nucleum.omnium.utils.handler.configuration.IConfig;
+
+import lib.cofh.util.ConfigHandler;
 
 /**
  * CompresstionConfig

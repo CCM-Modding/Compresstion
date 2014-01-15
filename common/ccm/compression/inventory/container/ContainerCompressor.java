@@ -5,10 +5,12 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import ccm.compression.tileentity.CompressorTile;
-import ccm.nucleum.omnium.inventory.container.BaseContainer;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import ccm.compression.tileentity.CompressorTile;
+import ccm.nucleum.omnium.inventory.container.BaseContainer;
 
 public class ContainerCompressor extends BaseContainer
 {
