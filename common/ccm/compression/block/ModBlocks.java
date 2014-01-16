@@ -9,18 +9,17 @@ import ccm.compression.utils.lib.Archive;
 public final class ModBlocks
 {
     public static Block compressor;
-    public static Compressed compressedBlock;
+    public static CompressedBlock compressedBlock;
 
     public static void init()
     {
-        compressor = new Compressor(getID(Archive.COMPRESSOR)).setCreativeTab(CreativeTabs.tabBlock);
-        compressedBlock = new Compressed(getID(Compressed.name));
+        compressor = new CompressorBlock(getID(Archive.COMPRESSOR)).setCreativeTab(CreativeTabs.tabBlock);
+        compressedBlock = new CompressedBlock(getID(Archive.COMPRESSED));
     }
 
     private static int getID(String name)
     {
         int id = Compression.instance.config().getBlockID(name);
-        Compression.instance.logger().debug("Getting id: %s for block: %s", id, name);
         return id;
     }
 }

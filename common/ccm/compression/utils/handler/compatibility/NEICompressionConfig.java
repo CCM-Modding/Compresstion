@@ -13,10 +13,9 @@ import net.minecraft.item.ItemStack;
 import ccm.compression.Compression;
 import ccm.compression.block.CompressedType;
 import ccm.compression.block.ModBlocks;
-import ccm.compression.utils.lib.Archive;
+import ccm.compression.tileentity.CompressedTile;
 import ccm.compression.utils.lib.Properties;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
-import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class NEICompressionConfig implements IConfigureNEI
 {
@@ -32,8 +31,7 @@ public class NEICompressionConfig implements IConfigureNEI
             for (CompressedType type : CompressedType.values())
             {
                 ItemStack stack = new ItemStack(ModBlocks.compressedBlock.blockID, 1, type.ordinal());
-                NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, id);
-                NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, (byte) 0);
+                CompressedTile.fakeSave(stack, id);
                 API.addNBTItem(stack);
             }
         }

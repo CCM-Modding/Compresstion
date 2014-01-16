@@ -5,15 +5,25 @@ package ccm.compression.utils.lib;
 
 /**
  * Archive
- * <p>
  * 
  * @author Captain_Shadows
  */
 public class Archive
 {
     public static final String MOD_ID = "compression";
-    static final String NBT = "CCM." + MOD_ID.toUpperCase() + ".ITEM.BLOCK.COMPRESSED";
-    public static final String NBT_COMPRESSED_BLOCK_ID = NBT + ".ID";
-    public static final String NBT_COMPRESSED_BLOCK_META = NBT + ".META";
     public static final String COMPRESSOR = "Compressor";
+    public static final String COMPRESSED = "Compressed";
+    public static final String NBT_ORIGEN = "original";
+    public static final String NBT_BLOCK_ID = "id";
+    public static final String NBT_BLOCK_META = "meta";
+    public static final String NBT_BLOCK_DATA = "data";
+    public static final String NBT_TICK = "tick";
+    public static final String NBT_HAS_TICK = NBT_TICK + ".has";
+    public static final String NBT_ICONS = "icons";
+    public static final String NBT_ICONS_DOWN = "DOWN";
+    public static final String NBT_ICONS_UP = "UP";
+    public static final String NBT_ICONS_NORTH = "NORTH";
+    public static final String NBT_ICONS_SOUTH = "SOUTH";
+    public static final String NBT_ICONS_WEST = "WEST";
+    public static final String NBT_ICONS_EAST = "EAST";
 }

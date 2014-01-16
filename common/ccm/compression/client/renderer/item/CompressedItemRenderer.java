@@ -34,10 +34,10 @@ public class CompressedItemRenderer implements IItemRenderer
             RenderBlocks renderer = (RenderBlocks) data[0];
             Tessellator tessellator = Tessellator.instance;
             Block block = Block.stone;
-            Block doner = Block.blocksList[NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID)];
+            Block doner = Block.blocksList[NBTHelper.getInteger(item, Archive.NBT_BLOCK_ID)];
             if (doner != null)
             {
-                int donerMeta = NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META);
+                int donerMeta = NBTHelper.getByte(item, Archive.NBT_BLOCK_META);
                 Icon backup = doner.getIcon(0, donerMeta);
                 Icon overlay = CompressedType.getOverlay(item.getItemDamage());
                 if (backup == null)

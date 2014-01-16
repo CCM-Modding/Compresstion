@@ -34,24 +34,21 @@ import ccm.compression.item.block.CompressedItemBlock;
 import ccm.compression.tileentity.CompressedTile;
 import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
-import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
-public class Compressed extends BlockContainer
+public class CompressedBlock extends BlockContainer
 {
-    public static final String name = "Compressed";
-
-    public Compressed(final int id)
+    public CompressedBlock(final int id)
     {
         super(id, Material.rock);
-        setUnlocalizedName(name);
+        setUnlocalizedName(Archive.COMPRESSED);
         GameRegistry.registerBlock(this, CompressedItemBlock.class, getUnlocalizedName());
-        TileHandler.registerTile(name, CompressedTile.class);
+        TileHandler.registerTile(Archive.COMPRESSED, CompressedTile.class);
     }
 
     @Override
     public TileEntity createNewTileEntity(final World world)
     {
-        return TileHandler.getTileInstance(name);
+        return TileHandler.getTileInstance(Archive.COMPRESSED);
     }
 
     private static CompressedTile getTile(final IBlockAccess world, final int x, final int y, final int z)
@@ -88,8 +85,7 @@ public class Compressed extends BlockContainer
         CompressedTile tile = getTile(world, x, y, z);
         if (tile != null)
         {
-            NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
-            NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
+            tile.saveToItemStack(stack);
         }
         return stack;
     }
@@ -100,8 +96,7 @@ public class Compressed extends BlockContainer
         for (CompressedType type : CompressedType.values())
         {
             ItemStack stack = new ItemStack(blockID, 1, type.ordinal());
-            NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, Block.cobblestone.blockID);
-            NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, (byte) 0);
+            CompressedTile.fakeSave(stack, Block.cobblestone.blockID);
             list.add(stack);
         }
     }
@@ -111,7 +106,7 @@ public class Compressed extends BlockContainer
     {
         for (CompressedType type : CompressedType.values())
         {
-            type.setIcon(register.registerIcon(Archive.MOD_ID + ":condensedOverlay_" + type.ordinal()));
+            type.setOverlay(register.registerIcon(Archive.MOD_ID + ":condensedOverlay_" + type.ordinal()));
         }
     }
 
@@ -122,8 +117,7 @@ public class Compressed extends BlockContainer
         CompressedTile tile = getTile(world, x, y, z);
         if (tile != null)
         {
-            tile.setBlockID(NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
-            tile.setBlockMeta(NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
+            tile.loadFromItemStack(item);
         }
     }
 
@@ -141,8 +135,7 @@ public class Compressed extends BlockContainer
                 if (id > 0)
                 {
                     ItemStack stack = new ItemStack(id, 1, metadata);
-                    NBTHelper.setInteger(stack, Archive.NBT_COMPRESSED_BLOCK_ID, tile.getBlock().blockID);
-                    NBTHelper.setByte(stack, Archive.NBT_COMPRESSED_BLOCK_META, tile.getMeta());
+                    tile.saveToItemStack(stack);
                     ret.add(stack);
                 }
             }

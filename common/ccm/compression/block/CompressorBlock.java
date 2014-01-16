@@ -20,11 +20,11 @@ import ccm.nucleum.omnium.utils.handler.gui.GuiHandler;
 import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 
-public class Compressor extends BlockContainer
+public class CompressorBlock extends BlockContainer
 {
     private Icon top, bottom, sides;
 
-    public Compressor(final int id)
+    public CompressorBlock(final int id)
     {
         super(id, Material.rock);
         setUnlocalizedName(Archive.COMPRESSOR.toLowerCase());

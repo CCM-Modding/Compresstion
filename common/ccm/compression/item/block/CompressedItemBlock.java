@@ -35,8 +35,8 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
         list.add(getCompressedName(item));
         if (Properties.DEBUG)
         {
-            list.add("The Orginal Block has an ID of: " + NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID));
-            list.add("The Orginal Block has an Metadata of: " + NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META));
+            list.add("The Orginal Block has an ID of: " + NBTHelper.getInteger(item, Archive.NBT_BLOCK_ID));
+            list.add("The Orginal Block has an Metadata of: " + NBTHelper.getByte(item, Archive.NBT_BLOCK_META));
         }
         super.addInformation(item, player, list, par4);
     }
@@ -45,8 +45,8 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     {
         if (item != null)
         {
-            int blockID = NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID);
-            int blockMeta = NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META);
+            int blockID = NBTHelper.getInteger(item, Archive.NBT_BLOCK_ID);
+            int blockMeta = NBTHelper.getByte(item, Archive.NBT_BLOCK_META);
             Block block = Block.blocksList[blockID];
             StringBuilder sb = new StringBuilder();
             sb.append(StatCollector.translateToLocalFormatted(CompressedType.values()[item.getItemDamage()].toString()));

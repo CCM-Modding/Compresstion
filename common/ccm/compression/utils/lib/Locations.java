@@ -5,7 +5,6 @@ package ccm.compression.utils.lib;
 
 /**
  * Locations
- * <p>
  * 
  * @author Captain_Shadows
  */

@@ -4,6 +4,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import ccm.compression.utils.helper.recipe.DownConvertionRecipe;
 
 public enum CompressedType
@@ -24,6 +27,7 @@ public enum CompressedType
     QUATTORDECUPLE,
     QUINDECOUPLE,
     SEDECOUPLE;
+    @SideOnly(Side.CLIENT)
     private Icon overlay;
     private DownConvertionRecipe recipe;
 
@@ -36,24 +40,41 @@ public enum CompressedType
         return recipe;
     }
 
-    public void setIcon(Icon icon)
+    public boolean hasParent()
+    {
+        return !(this == SINGLE);
+    }
+
+    public CompressedType getParent()
+    {
+        if (hasParent())
+        {
+            return values()[ordinal() - 1];
+        }
+        return null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setOverlay(Icon icon)
     {
         overlay = icon;
     }
 
-    public Icon getOverlay()
+    @SideOnly(Side.CLIENT)
+    public Icon overlay()
     {
         return overlay;
     }
 
+    @SideOnly(Side.CLIENT)
     public static Icon getOverlay(int meta)
     {
-        return values()[meta].getOverlay();
+        return values()[meta].overlay();
     }
 
     @Override
     public String toString()
     {
-        return StatCollector.translateToLocal("compressed." + name().toUpperCase() + ".name");
+        return StatCollector.translateToLocal("compressed.stage." + (ordinal() + 1));
     }
 }

@@ -23,7 +23,7 @@ public class CompresstionConfig extends IConfig
     protected void initCommon(ConfigHandler config)
     {
         config.addBlock(Archive.COMPRESSOR);
-        config.addBlock("Compressed");
+        config.addBlock(Archive.COMPRESSED);
         String tmp = getBlackList();
         String blackList = config.get(UNIVERSAL, "BlackList", tmp);
         String[] ids = blackList.split(",");

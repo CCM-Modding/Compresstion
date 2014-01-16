@@ -191,8 +191,8 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
             } else
             { // if it is not
                 ItemStack tmp = new ItemStack(ModBlocks.compressedBlock);
-                NBTHelper.setInteger(tmp, Archive.NBT_COMPRESSED_BLOCK_ID, block.blockID);
-                NBTHelper.setByte(tmp, Archive.NBT_COMPRESSED_BLOCK_META, meta);
+                NBTHelper.setInteger(tmp, Archive.NBT_BLOCK_ID, block.blockID);
+                NBTHelper.setByte(tmp, Archive.NBT_BLOCK_META, meta);
                 stack = tmp;
             }
         }

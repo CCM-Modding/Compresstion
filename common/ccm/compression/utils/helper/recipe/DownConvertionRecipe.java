@@ -12,19 +12,11 @@ import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class DownConvertionRecipe implements IRecipe
 {
-    CompressedType currentType;
-    CompressedType previusType;
+    private CompressedType type;
 
     public DownConvertionRecipe(CompressedType type)
     {
-        currentType = type;
-        if (type == CompressedType.SINGLE)
-        {
-            previusType = null;
-        } else
-        {
-            previusType = CompressedType.values()[type.ordinal() - 1];
-        }
+        this.type = type;
     }
 
     public boolean matches(ItemStack s)
@@ -33,7 +25,7 @@ public class DownConvertionRecipe implements IRecipe
         {
             if (s.itemID == ModBlocks.compressedBlock.blockID)
             {
-                if (s.getItemDamage() == currentType.ordinal())
+                if (s.getItemDamage() == type.ordinal())
                 {
                     return true;
                 }
@@ -58,15 +50,15 @@ public class DownConvertionRecipe implements IRecipe
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inventory)
     {
-        ItemStack result = null;
         for (int i = 0; i <= inventory.getSizeInventory(); i++)
         {
-            if (matches(inventory.getStackInSlot(i)))
+            ItemStack current = inventory.getStackInSlot(i);
+            if (matches(current))
             {
-                result = getRecipeOutput(inventory.getStackInSlot(i));
+                return getRecipeOutput(current);
             }
         }
-        return result;
+        return null;
     }
 
     @Override
@@ -78,21 +70,21 @@ public class DownConvertionRecipe implements IRecipe
     @Override
     public ItemStack getRecipeOutput()
     {
-        return new ItemStack(ModBlocks.compressedBlock, 9, previusType != null ? previusType.ordinal() : 0);
+        return new ItemStack(ModBlocks.compressedBlock, 9, type.hasParent() ? type.getParent().ordinal() : 0);
     }
 
     public ItemStack getRecipeOutput(ItemStack item)
     {
         ItemStack stack = null;
-        if (previusType != null)
+        if (type.hasParent())
         {
-            stack = new ItemStack(ModBlocks.compressedBlock, 9, previusType.ordinal());
+            stack = new ItemStack(ModBlocks.compressedBlock, 9, type.getParent().ordinal());
             stack.setTagCompound(item.getTagCompound());
         } else
         {
-            int item_id = NBTHelper.getInteger(item, Archive.NBT_COMPRESSED_BLOCK_ID);
-            int item_meta = NBTHelper.getByte(item, Archive.NBT_COMPRESSED_BLOCK_META);
-            stack = new ItemStack(item_id, 9, item_meta);
+            int id = NBTHelper.getInteger(item, Archive.NBT_BLOCK_ID);
+            int meta = NBTHelper.getByte(item, Archive.NBT_BLOCK_META);
+            stack = new ItemStack(id, 9, meta);
         }
         return stack;
     }
