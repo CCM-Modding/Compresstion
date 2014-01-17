@@ -9,8 +9,7 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.ForgeDirection;
 
 import ccm.compression.block.CompressedType;
-import ccm.compression.utils.lib.Archive;
-import ccm.nucleum.omnium.utils.helper.NBTHelper;
+import ccm.compression.tileentity.CompressedTile;
 
 public class CompressedItemRenderer implements IItemRenderer
 {
@@ -31,44 +30,33 @@ public class CompressedItemRenderer implements IItemRenderer
     {
         if (item.getTagCompound() != null)
         {
+            CompressedTile tile = new CompressedTile();
+            tile.loadFromItemStack(item);
             RenderBlocks renderer = (RenderBlocks) data[0];
             Tessellator tessellator = Tessellator.instance;
             Block block = Block.stone;
-            Block doner = Block.blocksList[NBTHelper.getInteger(item, Archive.NBT_BLOCK_ID)];
-            if (doner != null)
+            if (tile.getBlock() != null)
             {
-                int donerMeta = NBTHelper.getByte(item, Archive.NBT_BLOCK_META);
-                Icon backup = doner.getIcon(0, donerMeta);
                 Icon overlay = CompressedType.getOverlay(item.getItemDamage());
-                if (backup == null)
-                {
-                    return;
-                }
                 renderer.setRenderBoundsFromBlock(block);
                 tessellator.startDrawingQuads();
-                Icon sided = doner.getIcon(ForgeDirection.DOWN.ordinal(), donerMeta);
                 tessellator.setNormal(0.0F, -1.0F, 0.0F);
-                renderer.renderFaceYNeg(block, 0, 0, 0, sided != null ? sided : backup);
+                renderer.renderFaceYNeg(block, 0, 0, 0, tile.getIcon(ForgeDirection.DOWN));
                 renderer.renderFaceYNeg(block, 0, 0, 0, overlay);
-                sided = doner.getIcon(ForgeDirection.UP.ordinal(), donerMeta);
                 tessellator.setNormal(0.0F, 1.0F, 0.0F);
-                renderer.renderFaceYPos(block, 0, 0, 0, sided != null ? sided : backup);
+                renderer.renderFaceYPos(block, 0, 0, 0, tile.getIcon(ForgeDirection.UP));
                 renderer.renderFaceYPos(block, 0, 0, 0, overlay);
-                sided = doner.getIcon(ForgeDirection.NORTH.ordinal(), donerMeta);
                 tessellator.setNormal(0.0F, 0.0F, -1.0F);
-                renderer.renderFaceZNeg(block, 0, 0, 0, sided != null ? sided : backup);
+                renderer.renderFaceZNeg(block, 0, 0, 0, tile.getIcon(ForgeDirection.NORTH));
                 renderer.renderFaceZNeg(block, 0, 0, 0, overlay);
-                sided = doner.getIcon(ForgeDirection.SOUTH.ordinal(), donerMeta);
                 tessellator.setNormal(0.0F, 0.0F, 1.0F);
-                renderer.renderFaceZPos(block, 0, 0, 0, sided != null ? sided : backup);
+                renderer.renderFaceZPos(block, 0, 0, 0, tile.getIcon(ForgeDirection.SOUTH));
                 renderer.renderFaceZPos(block, 0, 0, 0, overlay);
-                sided = doner.getIcon(ForgeDirection.WEST.ordinal(), donerMeta);
                 tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-                renderer.renderFaceXNeg(block, 0, 0, 0, sided != null ? sided : backup);
+                renderer.renderFaceXNeg(block, 0, 0, 0, tile.getIcon(ForgeDirection.WEST));
                 renderer.renderFaceXNeg(block, 0, 0, 0, overlay);
-                sided = doner.getIcon(ForgeDirection.EAST.ordinal(), donerMeta);
                 tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                renderer.renderFaceXPos(block, 0, 0, 0, sided != null ? sided : backup);
+                renderer.renderFaceXPos(block, 0, 0, 0, tile.getIcon(ForgeDirection.EAST));
                 renderer.renderFaceXPos(block, 0, 0, 0, overlay);
                 tessellator.draw();
             }

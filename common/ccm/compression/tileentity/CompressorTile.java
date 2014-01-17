@@ -12,12 +12,10 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import ccm.compression.Compression;
 import ccm.compression.block.ModBlocks;
-import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.tileentity.ActiveTE;
-import ccm.nucleum.omnium.utils.helper.CCMLogger;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
-import ccm.nucleum.omnium.utils.helper.NBTHelper;
 import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
 
 public class CompressorTile extends ActiveTE implements ISidedInventory
@@ -185,14 +183,13 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                     stack.setItemDamage(tmp);
                 } else
                 {
-                    CCMLogger.DEFAULT.severe("WTF!!!!!!");
+                    Compression.instance.logger().debug("Compressing last compression...");
                     return null;
                 }
             } else
             { // if it is not
                 ItemStack tmp = new ItemStack(ModBlocks.compressedBlock);
-                NBTHelper.setInteger(tmp, Archive.NBT_BLOCK_ID, block.blockID);
-                NBTHelper.setByte(tmp, Archive.NBT_BLOCK_META, meta);
+                CompressedTile.save(tmp, stack);
                 stack = tmp;
             }
         }

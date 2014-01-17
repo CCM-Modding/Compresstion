@@ -96,7 +96,7 @@ public class CompressedBlock extends BlockContainer
         for (CompressedType type : CompressedType.values())
         {
             ItemStack stack = new ItemStack(blockID, 1, type.ordinal());
-            CompressedTile.fakeSave(stack, Block.cobblestone.blockID);
+            CompressedTile.fakeSave(stack, Block.cobblestone.blockID, 0);
             list.add(stack);
         }
     }

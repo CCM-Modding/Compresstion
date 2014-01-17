@@ -31,7 +31,7 @@ public class NEICompressionConfig implements IConfigureNEI
             for (CompressedType type : CompressedType.values())
             {
                 ItemStack stack = new ItemStack(ModBlocks.compressedBlock.blockID, 1, type.ordinal());
-                CompressedTile.fakeSave(stack, id);
+                CompressedTile.fakeSave(stack, id, 0);
                 API.addNBTItem(stack);
             }
         }

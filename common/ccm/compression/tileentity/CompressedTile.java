@@ -84,15 +84,21 @@ public class CompressedTile extends BaseTE
 
     public void setTick(final String tickTile)
     {
-        hasTick = true;
-        this.tickTile = tickTile;
+        if (tickTile != null && !tickTile.equalsIgnoreCase(""))
+        {
+            hasTick = true;
+            this.tickTile = tickTile;
+        }
     }
 
     public void setTick(final ITileTick tick)
     {
-        hasTick = true;
-        this.tick = tick;
-        tickTile = tick.getClass().getCanonicalName();
+        if (tick != null)
+        {
+            hasTick = true;
+            this.tick = tick;
+            tickTile = tick.getClass().getCanonicalName();
+        }
     }
 
     public ITileTick getTick()
@@ -305,20 +311,13 @@ public class CompressedTile extends BaseTE
         // Getting Origin
         NBTTagCompound origin = NBTHelper.getTag(item, Archive.NBT_ORIGEN);
         // Getting Block stuff
-        id = NBTHelper.getInteger(origin, Archive.NBT_BLOCK_ID);
-        meta = NBTHelper.getByte(origin, Archive.NBT_BLOCK_META);
-        data = NBTHelper.getTag(origin, Archive.NBT_BLOCK_DATA);
+        setBlockID(NBTHelper.getInteger(origin, Archive.NBT_BLOCK_ID));
+        setBlockMeta(NBTHelper.getByte(origin, Archive.NBT_BLOCK_META));
+        setData(NBTHelper.getTag(origin, Archive.NBT_BLOCK_DATA));
         // Getting Tick Stuff
-        hasTick = NBTHelper.getBoolean(origin, Archive.NBT_HAS_TICK);
-        tickTile = NBTHelper.getString(origin, Archive.NBT_TICK);
+        setTick(NBTHelper.getString(origin, Archive.NBT_TICK));
         // Getting icons
-        NBTTagCompound icons = NBTHelper.getTag(origin, Archive.NBT_ICONS);
-        down = NBTHelper.getString(icons, Archive.NBT_ICONS_DOWN);
-        up = NBTHelper.getString(icons, Archive.NBT_ICONS_UP);
-        north = NBTHelper.getString(icons, Archive.NBT_ICONS_NORTH);
-        south = NBTHelper.getString(icons, Archive.NBT_ICONS_SOUTH);
-        west = NBTHelper.getString(icons, Archive.NBT_ICONS_WEST);
-        east = NBTHelper.getString(icons, Archive.NBT_ICONS_EAST);
+        setIcons(NBTHelper.getTag(origin, Archive.NBT_ICONS));
     }
 
     public void saveToItemStack(ItemStack item)
@@ -344,14 +343,35 @@ public class CompressedTile extends BaseTE
         NBTHelper.setTag(item, Archive.NBT_ORIGEN, origin);
     }
 
-    public static void fakeSave(ItemStack item, int id)
+    public static void fakeSave(ItemStack item, int id, int meta)
     {
         Block block = Block.blocksList[id];
         CompressedTile tmp = new CompressedTile();
         tmp.setBlockID(id);
-        tmp.setBlockMeta((byte) 0);
-        tmp.setIcons(block);
+        tmp.setBlockMeta((byte) meta);
+        tmp.setIcons(block, meta);
         tmp.saveToItemStack(item);
+    }
+
+    public static void save(ItemStack item, ItemStack other)
+    {
+        Block block = Block.blocksList[other.itemID];
+        CompressedTile tmp = new CompressedTile();
+        tmp.setBlockID(other.itemID);
+        tmp.setBlockMeta((byte) other.getItemDamage());
+        tmp.setData(other.getTagCompound());
+        tmp.setIcons(block, other.getItemDamage());
+        tmp.saveToItemStack(item);
+    }
+
+    public void setIcons(NBTTagCompound nbt)
+    {
+        down = NBTHelper.getString(nbt, Archive.NBT_ICONS_DOWN);
+        up = NBTHelper.getString(nbt, Archive.NBT_ICONS_UP);
+        north = NBTHelper.getString(nbt, Archive.NBT_ICONS_NORTH);
+        south = NBTHelper.getString(nbt, Archive.NBT_ICONS_SOUTH);
+        west = NBTHelper.getString(nbt, Archive.NBT_ICONS_WEST);
+        east = NBTHelper.getString(nbt, Archive.NBT_ICONS_EAST);
     }
 
     /*
@@ -389,20 +409,13 @@ public class CompressedTile extends BaseTE
         // Getting Origin
         NBTTagCompound origin = NBTHelper.getTag(nbt, Archive.NBT_ORIGEN);
         // Getting Block stuff
-        id = NBTHelper.getInteger(origin, Archive.NBT_BLOCK_ID);
-        meta = NBTHelper.getByte(origin, Archive.NBT_BLOCK_META);
-        data = NBTHelper.getTag(origin, Archive.NBT_BLOCK_DATA);
+        setBlockID(NBTHelper.getInteger(origin, Archive.NBT_BLOCK_ID));
+        setBlockMeta(NBTHelper.getByte(origin, Archive.NBT_BLOCK_META));
+        setData(NBTHelper.getTag(origin, Archive.NBT_BLOCK_DATA));
         // Getting Tick Stuff
-        hasTick = NBTHelper.getBoolean(origin, Archive.NBT_HAS_TICK);
-        tickTile = NBTHelper.getString(origin, Archive.NBT_TICK);
+        setTick(NBTHelper.getString(origin, Archive.NBT_TICK));
         // Getting icons
-        NBTTagCompound icons = NBTHelper.getTag(origin, Archive.NBT_ICONS);
-        down = NBTHelper.getString(icons, Archive.NBT_ICONS_DOWN);
-        up = NBTHelper.getString(icons, Archive.NBT_ICONS_UP);
-        north = NBTHelper.getString(icons, Archive.NBT_ICONS_NORTH);
-        south = NBTHelper.getString(icons, Archive.NBT_ICONS_SOUTH);
-        west = NBTHelper.getString(icons, Archive.NBT_ICONS_WEST);
-        east = NBTHelper.getString(icons, Archive.NBT_ICONS_EAST);
+        setIcons(NBTHelper.getTag(origin, Archive.NBT_ICONS));
     }
 
     /*
