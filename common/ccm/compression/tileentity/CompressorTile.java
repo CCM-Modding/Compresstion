@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import ccm.compression.Compression;
 import ccm.compression.block.ModBlocks;
+import ccm.compression.utils.lib.Properties;
 import ccm.nucleum.omnium.tileentity.ActiveTE;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
@@ -101,7 +102,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     {
         if (getStackInSlot(IN) != null)
         {
-            if (getStackInSlot(IN).stackSize >= 9)
+            if (getStackInSlot(IN).stackSize >= 9 && !Properties.blackList.contains(getStackInSlot(IN)))
             {// get the current Item
                 ItemStack stack = getStackInSlot(IN);
                 Block block = getBlock(stack);
@@ -112,7 +113,9 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                     stack = getCompressedItem();
                     if (stack != null)
                     {
-                        if (FunctionHelper.isNormalBlock(block, meta) || (block.blockID == ModBlocks.compressedBlock.blockID))
+                        if (FunctionHelper.isNormalBlock(block, meta)
+                            || (block.blockID == ModBlocks.compressedBlock.blockID)
+                            || Properties.whiteList.contains(getStackInSlot(IN)))
                         {
                             if (getStackInSlot(OUT) == null)
                             {
@@ -172,15 +175,13 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         stack.stackSize = 1;
         Block block = getBlock(stack);
         if (block != null)
-        {
-            byte meta = (byte) stack.getItemDamage();
-            // if the stack is Ours
+        {// if the stack is Ours
             if (block.blockID == ModBlocks.compressedBlock.blockID)
             {
-                int tmp = meta + 1;
-                if (tmp < 16)
+                int meta = stack.getItemDamage() + 1;
+                if (meta < 16)
                 {
-                    stack.setItemDamage(tmp);
+                    stack.setItemDamage(meta);
                 } else
                 {
                     Compression.instance.logger().debug("Compressing last compression...");
@@ -282,9 +283,9 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     @Override
     public boolean canInsertItem(int slot, ItemStack item, int side)
     {
-        if (side != ForgeDirection.DOWN.ordinal())
+        if (slot != OUT)
         {
-            if (side != ForgeDirection.UP.ordinal())
+            if (slot != IN)
             {
                 if (TileEntityFurnace.isItemFuel(item))
                 {
@@ -301,7 +302,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     @Override
     public boolean canExtractItem(int slot, ItemStack item, int side)
     {
-        return ((side == ForgeDirection.DOWN.ordinal()) && (slot == OUT)) ? true : false;
+        return (slot != OUT) ? false : true;
     }
 
     @Override

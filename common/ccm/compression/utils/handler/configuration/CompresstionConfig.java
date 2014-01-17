@@ -13,7 +13,6 @@ import lib.cofh.util.ConfigHandler;
 
 /**
  * CompresstionConfig
- * <p>
  * 
  * @author Captain_Shadows
  */
@@ -24,8 +23,7 @@ public class CompresstionConfig extends IConfig
     {
         config.addBlock(Archive.COMPRESSOR);
         config.addBlock(Archive.COMPRESSED);
-        String tmp = getBlackList();
-        String blackList = config.get(UNIVERSAL, "BlackList", tmp);
+        String blackList = config.get(UNIVERSAL, "BlackList", getBlackList());
         String[] ids = blackList.split(",");
         for (String s : ids)
         {
