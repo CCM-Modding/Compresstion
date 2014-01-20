@@ -105,96 +105,74 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         {
             if ((getStackInSlot(IN).stackSize >= 9))
             {
-                ItemStack stack = getCompressedItem();
-                if (stack != null)
+                ItemStack stack = getStackInSlot(IN).copy();
+                if (!CompressedPermissions.blackListed(stack))
                 {
-                    if (getStackInSlot(OUT) == null)
+                    if (!CompressedPermissions.whiteListed(stack))
                     {
-                        return true;
+                        Block block = getBlock(stack);
+                        if (block != null)
+                        {
+                            if (!(FunctionHelper.isNormalBlock(block, stack.getItemDamage()) || block.blockID == ModBlocks.compressedBlock.blockID))
+                            {
+                                return false;
+                            }
+                        } else
+                        {
+                            return false;
+                        }
                     }
-                    if (!ItemHelper.compareNoSize(getStackInSlot(OUT), stack))
+                    stack = getCompressedItem();
+                    if (stack != null)
                     {
-                        return false;
+                        if (getStackInSlot(OUT) == null)
+                        {
+                            return true;
+                        }
+                        if (!ItemHelper.compareNoSize(getStackInSlot(OUT), stack))
+                        {
+                            return false;
+                        }
+                        int result = getStackInSlot(OUT).stackSize + stack.stackSize;
+                        return ((result <= getInventoryStackLimit()) && (result <= stack.getMaxStackSize()));
                     }
-                    int result = getStackInSlot(OUT).stackSize + stack.stackSize;
-                    return ((result <= getInventoryStackLimit()) && (result <= stack.getMaxStackSize()));
                 }
             }
         }
         return false;
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        compressTime = nbt.getShort("CompressTime");
-        compressionTime = nbt.getShort("CompressionTime");
-        totalCompressTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL));
-    }
-
-    /**
-     * Writes a tile entity to NBT.
-     */
-    @Override
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        nbt.setShort("CompressTime", (short) compressTime);
-        nbt.setShort("CompressionTime", (short) compressionTime);
-    }
-
-    private Block getBlock(ItemStack stack)
-    {
-        Block block = null;
-        if (stack.getItem() instanceof ItemBlock)
-        {
-            ItemBlock item = (ItemBlock) stack.getItem();
-            block = Block.blocksList[item.getBlockID()];
-        }
-        return block;
-    }
-
     private ItemStack getCompressedItem()
     {
         ItemStack stack = null;
-        if (!CompressedPermissions.blackListed(stack))
+        if (!CompressedPermissions.whiteListed(getStackInSlot(IN)))
         {
-            if (!CompressedPermissions.whiteListed(stack))
+            stack = getStackInSlot(IN).copy();
+            Block block = getBlock(stack);
+            if (block != null)
             {
-                stack = getStackInSlot(IN).copy();
-                Block block = getBlock(stack);
-                if (block != null)
-                {
-                    if (FunctionHelper.isNormalBlock(block, stack.getItemDamage()) || (block.blockID == ModBlocks.compressedBlock.blockID))
+                stack.stackSize = 1;
+                if (block.blockID == ModBlocks.compressedBlock.blockID)
+                {// if the stack is Ours
+                    int meta = stack.getItemDamage() + 1;
+                    if (meta < 16)
                     {
-                        stack.stackSize = 1;
-                        if (block.blockID == ModBlocks.compressedBlock.blockID)
-                        {// if the stack is Ours
-                            int meta = stack.getItemDamage() + 1;
-                            if (meta < 16)
-                            {
-                                stack.setItemDamage(meta);
-                            } else
-                            {
-                                Compression.instance.logger().debug("Compressing last compression...");
-                                return null;
-                            }
-                        } else
-                        { // if it is not
-                            ItemStack tmp = new ItemStack(ModBlocks.compressedBlock);
-                            CompressedData.writeToItemStack(tmp, stack);
-                            stack = tmp;
-                        }
+                        stack.setItemDamage(meta);
+                    } else
+                    {
+                        Compression.instance.logger().debug("Compressing last compression...");
+                        return null;
                     }
+                } else
+                { // if it is not
+                    ItemStack tmp = new ItemStack(ModBlocks.compressedBlock);
+                    CompressedData.writeToItemStack(tmp, stack);
+                    stack = tmp;
                 }
-            } else
-            {
-                stack = CompressedPermissions.getWhiteListData(stack);
             }
+        } else
+        {
+            stack = CompressedPermissions.getWhiteListData(stack);
         }
         return stack;
     }
@@ -221,6 +199,40 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 setInventorySlotContents(IN, null);
             }
         }
+    }
+
+    private Block getBlock(ItemStack stack)
+    {
+        Block block = null;
+        if (stack.getItem() instanceof ItemBlock)
+        {
+            ItemBlock item = (ItemBlock) stack.getItem();
+            block = Block.blocksList[item.getBlockID()];
+        }
+        return block;
+    }
+
+    /**
+     * Reads a tile entity from NBT.
+     */
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        compressTime = nbt.getShort("CompressTime");
+        compressionTime = nbt.getShort("CompressionTime");
+        totalCompressTime = getStackInSlot(FUEL) != null ? TileEntityFurnace.getItemBurnTime(getStackInSlot(FUEL)) : compressTime;
+    }
+
+    /**
+     * Writes a tile entity to NBT.
+     */
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setShort("CompressTime", (short) compressTime);
+        nbt.setShort("CompressionTime", (short) compressionTime);
     }
 
     /**
