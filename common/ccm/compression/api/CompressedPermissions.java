@@ -15,12 +15,15 @@ public final class CompressedPermissions
 
     public static void addWhiteList(ItemStack s)
     {
-        whiteList.add(s);
+        if (s != null)
+        {
+            whiteList.add(s);
+        }
     }
 
     public static ItemStack getWhiteListData(ItemStack s)
     {
-        return whiteList.get(whiteList.indexOf(s));
+        return s != null ? whiteList.get(whiteList.indexOf(s)) : null;
     }
 
     public static boolean whiteListed(ItemStack s)
@@ -30,7 +33,10 @@ public final class CompressedPermissions
 
     public static void addBlackList(ItemStack s)
     {
-        blackList.add(s);
+        if (s != null)
+        {
+            blackList.add(s);
+        }
     }
 
     public static boolean blackListed(ItemStack s)
@@ -40,20 +46,26 @@ public final class CompressedPermissions
 
     private static boolean isListed(ItemStack s, List<ItemStack> list)
     {
-        for (ItemStack tmp : list)
+        if (s != null)
         {
-            if (tmp.itemID == s.itemID)
+            for (ItemStack tmp : list)
             {
-                if ((tmp.getItemDamage() == s.getItemDamage()) || (tmp.getItemDamage() == OreDictionary.WILDCARD_VALUE))
+                if (tmp != null)
                 {
-                    if ((tmp.getTagCompound() == null) && (s.getTagCompound() == null))
+                    if (tmp.itemID == s.itemID)
                     {
-                        return true;
-                    } else if ((tmp.getTagCompound() != null) && (s.getTagCompound() != null))
-                    {
-                        if (NBTHelper.getBoolean(tmp, "wildcard") || tmp.getTagCompound().equals(s.getTagCompound()))
+                        if ((tmp.getItemDamage() == s.getItemDamage()) || (tmp.getItemDamage() == OreDictionary.WILDCARD_VALUE))
                         {
-                            return true;
+                            if ((tmp.getTagCompound() == null) && (s.getTagCompound() == null))
+                            {
+                                return true;
+                            } else if ((tmp.getTagCompound() != null) && (s.getTagCompound() != null))
+                            {
+                                if (NBTHelper.getBoolean(tmp, "wildcard") || tmp.getTagCompound().equals(s.getTagCompound()))
+                                {
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }

@@ -37,26 +37,37 @@ public class CompressedItemRenderer implements IItemRenderer
             Block block = Block.stone;
             if (cData.getBlock() != null)
             {
+                Icon backup = cData.getBlock().getIcon(0, cData.getMeta());
                 Icon overlay = CompressedType.getOverlay(item.getItemDamage());
+                if (backup == null)
+                {
+                    return;
+                }
                 renderer.setRenderBoundsFromBlock(block);
                 tessellator.startDrawingQuads();
+                Icon sided = cData.getBlock().getIcon(ForgeDirection.DOWN.ordinal(), cData.getMeta());
                 tessellator.setNormal(0.0F, -1.0F, 0.0F);
-                renderer.renderFaceYNeg(block, 0, 0, 0, cData.getIcon(ForgeDirection.DOWN));
+                renderer.renderFaceYNeg(block, 0, 0, 0, sided != null ? sided : backup);
                 renderer.renderFaceYNeg(block, 0, 0, 0, overlay);
+                sided = cData.getBlock().getIcon(ForgeDirection.UP.ordinal(), cData.getMeta());
                 tessellator.setNormal(0.0F, 1.0F, 0.0F);
-                renderer.renderFaceYPos(block, 0, 0, 0, cData.getIcon(ForgeDirection.UP));
+                renderer.renderFaceYPos(block, 0, 0, 0, sided != null ? sided : backup);
                 renderer.renderFaceYPos(block, 0, 0, 0, overlay);
+                sided = cData.getBlock().getIcon(ForgeDirection.NORTH.ordinal(), cData.getMeta());
                 tessellator.setNormal(0.0F, 0.0F, -1.0F);
-                renderer.renderFaceZNeg(block, 0, 0, 0, cData.getIcon(ForgeDirection.NORTH));
+                renderer.renderFaceZNeg(block, 0, 0, 0, sided != null ? sided : backup);
                 renderer.renderFaceZNeg(block, 0, 0, 0, overlay);
+                sided = cData.getBlock().getIcon(ForgeDirection.SOUTH.ordinal(), cData.getMeta());
                 tessellator.setNormal(0.0F, 0.0F, 1.0F);
-                renderer.renderFaceZPos(block, 0, 0, 0, cData.getIcon(ForgeDirection.SOUTH));
+                renderer.renderFaceZPos(block, 0, 0, 0, sided != null ? sided : backup);
                 renderer.renderFaceZPos(block, 0, 0, 0, overlay);
+                sided = cData.getBlock().getIcon(ForgeDirection.WEST.ordinal(), cData.getMeta());
                 tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-                renderer.renderFaceXNeg(block, 0, 0, 0, cData.getIcon(ForgeDirection.WEST));
+                renderer.renderFaceXNeg(block, 0, 0, 0, sided != null ? sided : backup);
                 renderer.renderFaceXNeg(block, 0, 0, 0, overlay);
+                sided = cData.getBlock().getIcon(ForgeDirection.EAST.ordinal(), cData.getMeta());
                 tessellator.setNormal(1.0F, 0.0F, 0.0F);
-                renderer.renderFaceXPos(block, 0, 0, 0, cData.getIcon(ForgeDirection.EAST));
+                renderer.renderFaceXPos(block, 0, 0, 0, sided != null ? sided : backup);
                 renderer.renderFaceXPos(block, 0, 0, 0, overlay);
                 tessellator.draw();
             }

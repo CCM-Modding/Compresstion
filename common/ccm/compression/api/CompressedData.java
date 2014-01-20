@@ -1,19 +1,11 @@
 package ccm.compression.api;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeDirection;
 
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import ccm.compression.Compression;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
@@ -33,13 +25,6 @@ public final class CompressedData
     public static final String NBT_TICK = "tick";
     public static final String NBT_TICK_NAME = "name";
     public static final String NBT_TICK_HAS = "has";
-    public static final String NBT_ICONS = "icons";
-    public static final String NBT_ICONS_DOWN = "DOWN";
-    public static final String NBT_ICONS_UP = "UP";
-    public static final String NBT_ICONS_NORTH = "NORTH";
-    public static final String NBT_ICONS_SOUTH = "SOUTH";
-    public static final String NBT_ICONS_WEST = "WEST";
-    public static final String NBT_ICONS_EAST = "EAST";
     /*
      * Block data
      */
@@ -183,212 +168,27 @@ public final class CompressedData
     }
 
     /*
-     * ICONS
-     */
-    /** -Y */
-    private String down;
-    /** +Y */
-    private String up;
-    /** -Z */
-    private String north;
-    /** +Z */
-    private String south;
-    /** -X */
-    private String west;
-    /** +X */
-    private String east;
-
-    public void setIcons(final Block block)
-    {
-        setIcons(block, 0);
-    }
-
-    public void setIcons(final Block block, final int meta)
-    {
-        setDown(block.getIcon(ForgeDirection.DOWN.ordinal(), meta).getIconName());
-        setUp(block.getIcon(ForgeDirection.UP.ordinal(), meta).getIconName());
-        setNorth(block.getIcon(ForgeDirection.NORTH.ordinal(), meta).getIconName());
-        setSouth(block.getIcon(ForgeDirection.SOUTH.ordinal(), meta).getIconName());
-        setWest(block.getIcon(ForgeDirection.WEST.ordinal(), meta).getIconName());
-        setEast(block.getIcon(ForgeDirection.EAST.ordinal(), meta).getIconName());
-    }
-
-    public void setDown(final ResourceLocation icon)
-    {
-        setDown(icon.toString());
-    }
-
-    public void setUp(final ResourceLocation icon)
-    {
-        setUp(icon.toString());
-    }
-
-    public void setNorth(final ResourceLocation icon)
-    {
-        setNorth(icon.toString());
-    }
-
-    public void setSouth(final ResourceLocation icon)
-    {
-        setSouth(icon.toString());
-    }
-
-    public void setWest(final ResourceLocation icon)
-    {
-        setWest(icon.toString());
-    }
-
-    public void setEast(final ResourceLocation icon)
-    {
-        setEast(icon.toString());
-    }
-
-    public void setIcons(final ResourceLocation all)
-    {
-        setDown(all.toString());
-        setUp(all.toString());
-        setNorth(all.toString());
-        setSouth(all.toString());
-        setWest(all.toString());
-        setEast(all.toString());
-    }
-
-    public void setDown(final String icon)
-    {
-        down = icon;
-    }
-
-    public void setUp(final String icon)
-    {
-        up = icon;
-    }
-
-    public void setNorth(final String icon)
-    {
-        north = icon;
-    }
-
-    public void setSouth(final String icon)
-    {
-        south = icon;
-    }
-
-    public void setWest(final String icon)
-    {
-        west = icon;
-    }
-
-    public void setEast(final String icon)
-    {
-        east = icon;
-    }
-
-    public void setIcons(final String all)
-    {
-        setDown(all);
-        setUp(all);
-        setNorth(all);
-        setSouth(all);
-        setWest(all);
-        setEast(all);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Icon getDown()
-    {
-        return ((TextureMap) Minecraft.getMinecraft().renderEngine.getTexture(TextureMap.locationBlocksTexture)).getTextureExtry(down);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Icon getUp()
-    {
-        return ((TextureMap) Minecraft.getMinecraft().renderEngine.getTexture(TextureMap.locationBlocksTexture)).getTextureExtry(up);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Icon getNorth()
-    {
-        return ((TextureMap) Minecraft.getMinecraft().renderEngine.getTexture(TextureMap.locationBlocksTexture)).getTextureExtry(north);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Icon getSouth()
-    {
-        return ((TextureMap) Minecraft.getMinecraft().renderEngine.getTexture(TextureMap.locationBlocksTexture)).getTextureExtry(south);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Icon getWest()
-    {
-        return ((TextureMap) Minecraft.getMinecraft().renderEngine.getTexture(TextureMap.locationBlocksTexture)).getTextureExtry(west);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Icon getEast()
-    {
-        return ((TextureMap) Minecraft.getMinecraft().renderEngine.getTexture(TextureMap.locationBlocksTexture)).getTextureExtry(east);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Icon getIcon(final ForgeDirection dir)
-    {
-        switch (dir)
-        {
-            case DOWN:
-                return getDown();
-            case UP:
-                return getUp();
-            case NORTH:
-                return getNorth();
-            case SOUTH:
-                return getSouth();
-            case WEST:
-                return getWest();
-            case EAST:
-                return getEast();
-            default:
-                return null;
-        }
-    }
-
-    /*
      * NBT STUFF
      */
-    public void setIcons(NBTTagCompound nbt)
-    {
-        down = NBTHelper.getString(nbt, NBT_ICONS_DOWN);
-        up = NBTHelper.getString(nbt, NBT_ICONS_UP);
-        north = NBTHelper.getString(nbt, NBT_ICONS_NORTH);
-        south = NBTHelper.getString(nbt, NBT_ICONS_SOUTH);
-        west = NBTHelper.getString(nbt, NBT_ICONS_WEST);
-        east = NBTHelper.getString(nbt, NBT_ICONS_EAST);
-    }
-
     public void writeToNBT(final NBTTagCompound nbt)
     {
         NBTTagCompound origin = new NBTTagCompound();
         // Adding Block stuff
         origin.setInteger(NBT_BLOCK_ID, getID());
         origin.setByte(NBT_BLOCK_META, getMeta());
-        origin.setTag(NBT_BLOCK_DATA, getData());
+        if (getData() != null)
+        {
+            origin.setTag(NBT_BLOCK_DATA, getData());
+        }
         // Done adding that. Adding Tick stuff
         NBTTagCompound tick = new NBTTagCompound();
         tick.setBoolean(NBT_TICK_HAS, tick());
-        tick.setString(NBT_TICK_NAME, tickTile);
         if (tick())
         {
+            tick.setString(NBT_TICK_NAME, tickTile);
             getTick().writeToNBT(tick);
         }
         origin.setCompoundTag(NBT_TICK, tick);
-        // Done adding that. Add Icons to nbt
-        NBTTagCompound icons = new NBTTagCompound();
-        icons.setTag(NBT_ICONS_DOWN, new NBTTagString(down));
-        icons.setTag(NBT_ICONS_UP, new NBTTagString(up));
-        icons.setTag(NBT_ICONS_NORTH, new NBTTagString(north));
-        icons.setTag(NBT_ICONS_SOUTH, new NBTTagString(south));
-        icons.setTag(NBT_ICONS_WEST, new NBTTagString(west));
-        icons.setTag(NBT_ICONS_EAST, new NBTTagString(east));
-        origin.setCompoundTag(NBT_ICONS, icons);
         // Done adding them
         nbt.setCompoundTag(NBT_ORIGEN, origin);
     }
@@ -408,8 +208,6 @@ public final class CompressedData
         {
             getTick().readFromNBT(tick);
         }
-        // Getting icons
-        setIcons(NBTHelper.getTag(origin, NBT_ICONS));
     }
 
     /*
@@ -436,11 +234,9 @@ public final class CompressedData
      */
     public static void writeToItemStack(ItemStack item, int id, int meta)
     {
-        Block block = Block.blocksList[id];
         CompressedData tmp = new CompressedData();
         tmp.setBlockID(id);
         tmp.setBlockMeta((byte) meta);
-        tmp.setIcons(block, meta);
         tmp.writeToItemStack(item);
     }
 
@@ -452,12 +248,10 @@ public final class CompressedData
      */
     public static void writeToItemStack(ItemStack item, ItemStack other)
     {
-        Block block = Block.blocksList[other.itemID];
         CompressedData tmp = new CompressedData();
         tmp.setBlockID(other.itemID);
         tmp.setBlockMeta((byte) other.getItemDamage());
         tmp.setData(other.getTagCompound());
-        tmp.setIcons(block, other.getItemDamage());
         tmp.writeToItemStack(item);
     }
 
@@ -469,12 +263,6 @@ public final class CompressedData
         id = 0;
         meta = 0;
         data = null;
-        down = null;
-        up = null;
-        north = null;
-        south = null;
-        west = null;
-        east = null;
         hasTick = false;
         tickTile = null;
     }
@@ -485,12 +273,6 @@ public final class CompressedData
         id = 0;
         meta = 0;
         data = null;
-        down = null;
-        up = null;
-        north = null;
-        south = null;
-        west = null;
-        east = null;
         hasTick = false;
         tickTile = null;
     }
@@ -509,16 +291,10 @@ public final class CompressedData
         final int prime = 31;
         int result = 1;
         result = (prime * result) + ((data == null) ? 0 : data.hashCode());
-        result = (prime * result) + ((down == null) ? 0 : down.hashCode());
-        result = (prime * result) + ((east == null) ? 0 : east.hashCode());
         result = (prime * result) + (hasTick ? 1231 : 1237);
         result = (prime * result) + id;
         result = (prime * result) + meta;
-        result = (prime * result) + ((north == null) ? 0 : north.hashCode());
-        result = (prime * result) + ((south == null) ? 0 : south.hashCode());
         result = (prime * result) + ((tickTile == null) ? 0 : tickTile.hashCode());
-        result = (prime * result) + ((up == null) ? 0 : up.hashCode());
-        result = (prime * result) + ((west == null) ? 0 : west.hashCode());
         return result;
     }
 
@@ -536,18 +312,6 @@ public final class CompressedData
         builder.append(hasTick);
         builder.append(", tickTile=");
         builder.append(tickTile);
-        builder.append(", down=");
-        builder.append(down);
-        builder.append(", up=");
-        builder.append(up);
-        builder.append(", north=");
-        builder.append(north);
-        builder.append(", south=");
-        builder.append(south);
-        builder.append(", west=");
-        builder.append(west);
-        builder.append(", east=");
-        builder.append(east);
         builder.append("]");
         return builder.toString();
     }
@@ -578,26 +342,6 @@ public final class CompressedData
         {
             return false;
         }
-        if (down == null)
-        {
-            if (other.down != null)
-            {
-                return false;
-            }
-        } else if (!down.equals(other.down))
-        {
-            return false;
-        }
-        if (east == null)
-        {
-            if (other.east != null)
-            {
-                return false;
-            }
-        } else if (!east.equals(other.east))
-        {
-            return false;
-        }
         if (hasTick != other.hasTick)
         {
             return false;
@@ -610,26 +354,6 @@ public final class CompressedData
         {
             return false;
         }
-        if (north == null)
-        {
-            if (other.north != null)
-            {
-                return false;
-            }
-        } else if (!north.equals(other.north))
-        {
-            return false;
-        }
-        if (south == null)
-        {
-            if (other.south != null)
-            {
-                return false;
-            }
-        } else if (!south.equals(other.south))
-        {
-            return false;
-        }
         if (tickTile == null)
         {
             if (other.tickTile != null)
@@ -637,26 +361,6 @@ public final class CompressedData
                 return false;
             }
         } else if (!tickTile.equals(other.tickTile))
-        {
-            return false;
-        }
-        if (up == null)
-        {
-            if (other.up != null)
-            {
-                return false;
-            }
-        } else if (!up.equals(other.up))
-        {
-            return false;
-        }
-        if (west == null)
-        {
-            if (other.west != null)
-            {
-                return false;
-            }
-        } else if (!west.equals(other.west))
         {
             return false;
         }
