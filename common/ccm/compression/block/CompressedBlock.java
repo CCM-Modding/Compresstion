@@ -32,6 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ccm.compression.client.renderer.block.CompressedBlockRenderer;
 import ccm.compression.item.block.CompressedItemBlock;
 import ccm.compression.tileentity.CompressedTile;
+import ccm.compression.utils.helper.CompressedData;
 import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
 
@@ -69,7 +70,7 @@ public class CompressedBlock extends BlockContainer
         CompressedTile tmp = getTile(world, x, y, z);
         if (tmp != null)
         {
-            Block block = tmp.getBlock();
+            Block block = tmp.data().getBlock();
             if (block != null)
             {
                 return block;
@@ -85,7 +86,7 @@ public class CompressedBlock extends BlockContainer
         CompressedTile tile = getTile(world, x, y, z);
         if (tile != null)
         {
-            tile.saveToItemStack(stack);
+            tile.data().writeToItemStack(stack);
         }
         return stack;
     }
@@ -96,7 +97,7 @@ public class CompressedBlock extends BlockContainer
         for (CompressedType type : CompressedType.values())
         {
             ItemStack stack = new ItemStack(blockID, 1, type.ordinal());
-            CompressedTile.fakeSave(stack, Block.cobblestone.blockID, 0);
+            CompressedData.writeToItemStack(stack, Block.cobblestone.blockID, 0);
             list.add(stack);
         }
     }
@@ -117,7 +118,7 @@ public class CompressedBlock extends BlockContainer
         CompressedTile tile = getTile(world, x, y, z);
         if (tile != null)
         {
-            tile.loadFromItemStack(item);
+            tile.data().readFromNBT(item.getTagCompound());
         }
     }
 
@@ -135,7 +136,7 @@ public class CompressedBlock extends BlockContainer
                 if (id > 0)
                 {
                     ItemStack stack = new ItemStack(id, 1, metadata);
-                    tile.saveToItemStack(stack);
+                    tile.data().writeToItemStack(stack);
                     ret.add(stack);
                 }
             }
@@ -146,7 +147,7 @@ public class CompressedBlock extends BlockContainer
     @Override
     public Icon getBlockTexture(final IBlockAccess world, final int x, final int y, final int z, final int side)
     {
-        return getBlock(world, x, y, z).getIcon(side, ((CompressedTile) world.getBlockTileEntity(x, y, z)).getMeta());
+        return getBlock(world, x, y, z).getIcon(side, ((CompressedTile) world.getBlockTileEntity(x, y, z)).data().getMeta());
     }
 
     /**

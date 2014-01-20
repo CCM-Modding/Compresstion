@@ -10,8 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import ccm.compression.block.CompressedType;
-import ccm.compression.utils.lib.Archive;
-import ccm.nucleum.omnium.utils.helper.NBTHelper;
+import ccm.compression.utils.helper.CompressedData;
 import ccm.nucleum.omnium.utils.lib.Properties;
 
 public class CompressedItemBlock extends ItemBlockWithMetadata
@@ -30,13 +29,14 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     @Override
     public void addInformation(ItemStack item, EntityPlayer player, List list, boolean par4)
     {
-        CompressedType type = CompressedType.values()[item.getItemDamage()];
-        list.add("A single Block of this type contains: " + ((long) Math.pow(9, (type.ordinal() + 1))));
+        list.add("A single Block of this type contains: " + ((long) Math.pow(9, (item.getItemDamage() + 1))));
         list.add(getCompressedName(item));
         if (Properties.DEBUG)
         {
-            list.add("The Orginal Block has an ID of: " + NBTHelper.getInteger(item, Archive.NBT_BLOCK_ID));
-            list.add("The Orginal Block has an Metadata of: " + NBTHelper.getByte(item, Archive.NBT_BLOCK_META));
+            CompressedData data = new CompressedData();
+            data.readFromNBT(item.getTagCompound());
+            list.add("The Orginal Block has an ID of: " + data.getID());
+            list.add("The Orginal Block has an Metadata of: " + data.getMeta());
         }
         super.addInformation(item, player, list, par4);
     }
@@ -45,23 +45,22 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
     {
         if (item != null)
         {
-            int blockID = NBTHelper.getInteger(item, Archive.NBT_BLOCK_ID);
-            int blockMeta = NBTHelper.getByte(item, Archive.NBT_BLOCK_META);
-            Block block = Block.blocksList[blockID];
+            CompressedData data = new CompressedData();
+            data.readFromNBT(item.getTagCompound());
             StringBuilder sb = new StringBuilder();
             sb.append(StatCollector.translateToLocalFormatted(CompressedType.values()[item.getItemDamage()].toString()));
             sb.append(" ");
-            if (block == null)
+            if (data.getBlock() == null)
             {
                 sb.append(StatCollector.translateToLocalFormatted("compressed.name", "ERROR"));
             } else
             {
                 List<ItemStack> list = new ArrayList<ItemStack>();
-                block.getSubBlocks(blockID, null, list);
+                data.getBlock().getSubBlocks(data.getID(), null, list);
                 ItemStack stack = null;
                 for (ItemStack i : list)
                 {
-                    if (i.getItemDamage() == blockMeta)
+                    if (i.getItemDamage() == data.getMeta())
                     {
                         stack = i;
                         break;
@@ -69,7 +68,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
                 }
                 if (stack == null)
                 {
-                    stack = new ItemStack(block);
+                    stack = new ItemStack(data.getBlock());
                 }
                 sb.append(StatCollector.translateToLocalFormatted("compressed.name", stack.getDisplayName()));
             }

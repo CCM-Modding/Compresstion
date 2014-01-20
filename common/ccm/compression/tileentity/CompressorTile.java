@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import ccm.compression.Compression;
 import ccm.compression.block.ModBlocks;
+import ccm.compression.utils.helper.CompressedData;
 import ccm.compression.utils.lib.Properties;
 import ccm.nucleum.omnium.tileentity.ActiveTE;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
@@ -102,7 +103,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     {
         if (getStackInSlot(IN) != null)
         {
-            if (getStackInSlot(IN).stackSize >= 9 && !Properties.blackList.contains(getStackInSlot(IN)))
+            if ((getStackInSlot(IN).stackSize >= 9) && !Properties.blackList.contains(getStackInSlot(IN)))
             {// get the current Item
                 ItemStack stack = getStackInSlot(IN);
                 Block block = getBlock(stack);
@@ -190,7 +191,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
             } else
             { // if it is not
                 ItemStack tmp = new ItemStack(ModBlocks.compressedBlock);
-                CompressedTile.save(tmp, stack);
+                CompressedData.writeToItemStack(tmp, stack);
                 stack = tmp;
             }
         }

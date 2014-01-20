@@ -43,7 +43,7 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
                 if (temp instanceof CompressedTile)
                 {
                     CompressedTile tile = (CompressedTile) temp;
-                    if (tile.getBlock() != null)
+                    if (tile.data().getBlock() != null)
                     {
                         Icon overlay = CompressedType.getOverlay(tile.getBlockMetadata());
                         renderer.setRenderBoundsFromBlock(block);
