@@ -9,8 +9,8 @@ import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import ccm.compression.api.CompressedData;
 import ccm.compression.block.CompressedType;
-import ccm.compression.utils.helper.CompressedData;
 import ccm.nucleum.omnium.utils.lib.Properties;
 
 public class CompressedItemBlock extends ItemBlockWithMetadata

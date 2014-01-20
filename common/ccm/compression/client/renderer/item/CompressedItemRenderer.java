@@ -8,8 +8,8 @@ import net.minecraft.util.Icon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.ForgeDirection;
 
+import ccm.compression.api.CompressedData;
 import ccm.compression.block.CompressedType;
-import ccm.compression.utils.helper.CompressedData;
 
 public class CompressedItemRenderer implements IItemRenderer
 {

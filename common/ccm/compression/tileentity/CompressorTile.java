@@ -13,8 +13,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import ccm.compression.Compression;
+import ccm.compression.api.CompressedData;
+import ccm.compression.api.CompressedPermissions;
 import ccm.compression.block.ModBlocks;
-import ccm.compression.utils.helper.CompressedData;
 import ccm.compression.utils.lib.Properties;
 import ccm.nucleum.omnium.tileentity.ActiveTE;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
@@ -104,32 +105,20 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
         if (getStackInSlot(IN) != null)
         {
             if ((getStackInSlot(IN).stackSize >= 9) && !Properties.blackList.contains(getStackInSlot(IN)))
-            {// get the current Item
-                ItemStack stack = getStackInSlot(IN);
-                Block block = getBlock(stack);
-                if (block != null)
+            {
+                ItemStack stack = getCompressedItem();
+                if (stack != null)
                 {
-                    int meta = stack.getItemDamage();
-                    // Reset for the actual output
-                    stack = getCompressedItem();
-                    if (stack != null)
+                    if (getStackInSlot(OUT) == null)
                     {
-                        if (FunctionHelper.isNormalBlock(block, meta)
-                            || (block.blockID == ModBlocks.compressedBlock.blockID)
-                            || Properties.whiteList.contains(getStackInSlot(IN)))
-                        {
-                            if (getStackInSlot(OUT) == null)
-                            {
-                                return true;
-                            }
-                            if (!ItemHelper.compareNoSize(getStackInSlot(OUT), stack))
-                            {
-                                return false;
-                            }
-                            int result = getStackInSlot(OUT).stackSize + stack.stackSize;
-                            return ((result <= getInventoryStackLimit()) && (result <= stack.getMaxStackSize()));
-                        }
+                        return true;
                     }
+                    if (!ItemHelper.compareNoSize(getStackInSlot(OUT), stack))
+                    {
+                        return false;
+                    }
+                    int result = getStackInSlot(OUT).stackSize + stack.stackSize;
+                    return ((result <= getInventoryStackLimit()) && (result <= stack.getMaxStackSize()));
                 }
             }
         }
@@ -172,27 +161,42 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
 
     private ItemStack getCompressedItem()
     {
-        ItemStack stack = getStackInSlot(IN).copy();
-        stack.stackSize = 1;
-        Block block = getBlock(stack);
-        if (block != null)
-        {// if the stack is Ours
-            if (block.blockID == ModBlocks.compressedBlock.blockID)
+        ItemStack stack = null;
+        if (!CompressedPermissions.blackListed(stack))
+        {
+            if (!CompressedPermissions.whiteListed(stack))
             {
-                int meta = stack.getItemDamage() + 1;
-                if (meta < 16)
+                stack = getStackInSlot(IN).copy();
+                Block block = getBlock(stack);
+                if (block != null)
                 {
-                    stack.setItemDamage(meta);
-                } else
-                {
-                    Compression.instance.logger().debug("Compressing last compression...");
-                    return null;
+                    if (FunctionHelper.isNormalBlock(block, stack.getItemDamage())
+                        || (block.blockID == ModBlocks.compressedBlock.blockID)
+                        || Properties.whiteList.contains(getStackInSlot(IN)))
+                    {
+                        stack.stackSize = 1;
+                        if (block.blockID == ModBlocks.compressedBlock.blockID)
+                        {// if the stack is Ours
+                            int meta = stack.getItemDamage() + 1;
+                            if (meta < 16)
+                            {
+                                stack.setItemDamage(meta);
+                            } else
+                            {
+                                Compression.instance.logger().debug("Compressing last compression...");
+                                return null;
+                            }
+                        } else
+                        { // if it is not
+                            ItemStack tmp = new ItemStack(ModBlocks.compressedBlock);
+                            CompressedData.writeToItemStack(tmp, stack);
+                            stack = tmp;
+                        }
+                    }
                 }
             } else
-            { // if it is not
-                ItemStack tmp = new ItemStack(ModBlocks.compressedBlock);
-                CompressedData.writeToItemStack(tmp, stack);
-                stack = tmp;
+            {
+                stack = CompressedPermissions.getWhiteListData(stack);
             }
         }
         return stack;

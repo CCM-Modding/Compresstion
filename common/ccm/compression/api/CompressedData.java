@@ -1,4 +1,4 @@
-package ccm.compression.utils.helper;
+package ccm.compression.api;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -16,19 +16,30 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import ccm.compression.Compression;
-import ccm.compression.api.ITileTick;
-import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 /**
  * CompressedData
- * <p>
- * TODO RENAME
  * 
  * @author Captain_Shadows
  */
 public final class CompressedData
 {
+    /* NBT NAMES */
+    public static final String NBT_ORIGEN = "original";
+    public static final String NBT_BLOCK_ID = "id";
+    public static final String NBT_BLOCK_META = "meta";
+    public static final String NBT_BLOCK_DATA = "data";
+    public static final String NBT_TICK = "tick";
+    public static final String NBT_TICK_NAME = "name";
+    public static final String NBT_TICK_HAS = "has";
+    public static final String NBT_ICONS = "icons";
+    public static final String NBT_ICONS_DOWN = "DOWN";
+    public static final String NBT_ICONS_UP = "UP";
+    public static final String NBT_ICONS_NORTH = "NORTH";
+    public static final String NBT_ICONS_SOUTH = "SOUTH";
+    public static final String NBT_ICONS_WEST = "WEST";
+    public static final String NBT_ICONS_EAST = "EAST";
     /*
      * Block data
      */
@@ -98,7 +109,7 @@ public final class CompressedData
     /** The path to it's {@link ITileTick} */
     private String tickTile;
     /** A temporally stored version so that it dosen't have to be created every time */
-    private ITileTick tick = null;
+    private transient ITileTick tick = null;
 
     /**
      * @return True if the Tile is allowed to tick
@@ -345,60 +356,60 @@ public final class CompressedData
      */
     public void setIcons(NBTTagCompound nbt)
     {
-        down = NBTHelper.getString(nbt, Archive.NBT_ICONS_DOWN);
-        up = NBTHelper.getString(nbt, Archive.NBT_ICONS_UP);
-        north = NBTHelper.getString(nbt, Archive.NBT_ICONS_NORTH);
-        south = NBTHelper.getString(nbt, Archive.NBT_ICONS_SOUTH);
-        west = NBTHelper.getString(nbt, Archive.NBT_ICONS_WEST);
-        east = NBTHelper.getString(nbt, Archive.NBT_ICONS_EAST);
+        down = NBTHelper.getString(nbt, NBT_ICONS_DOWN);
+        up = NBTHelper.getString(nbt, NBT_ICONS_UP);
+        north = NBTHelper.getString(nbt, NBT_ICONS_NORTH);
+        south = NBTHelper.getString(nbt, NBT_ICONS_SOUTH);
+        west = NBTHelper.getString(nbt, NBT_ICONS_WEST);
+        east = NBTHelper.getString(nbt, NBT_ICONS_EAST);
     }
 
     public void writeToNBT(final NBTTagCompound nbt)
     {
         NBTTagCompound origin = new NBTTagCompound();
         // Adding Block stuff
-        origin.setInteger(Archive.NBT_BLOCK_ID, getID());
-        origin.setByte(Archive.NBT_BLOCK_META, getMeta());
-        origin.setTag(Archive.NBT_BLOCK_DATA, getData());
+        origin.setInteger(NBT_BLOCK_ID, getID());
+        origin.setByte(NBT_BLOCK_META, getMeta());
+        origin.setTag(NBT_BLOCK_DATA, getData());
         // Done adding that. Adding Tick stuff
         NBTTagCompound tick = new NBTTagCompound();
-        tick.setBoolean(Archive.NBT_TICK_HAS, tick());
-        tick.setString(Archive.NBT_TICK_NAME, tickTile);
+        tick.setBoolean(NBT_TICK_HAS, tick());
+        tick.setString(NBT_TICK_NAME, tickTile);
         if (tick())
         {
             getTick().writeToNBT(tick);
         }
-        origin.setCompoundTag(Archive.NBT_TICK, tick);
+        origin.setCompoundTag(NBT_TICK, tick);
         // Done adding that. Add Icons to nbt
         NBTTagCompound icons = new NBTTagCompound();
-        icons.setTag(Archive.NBT_ICONS_DOWN, new NBTTagString(down));
-        icons.setTag(Archive.NBT_ICONS_UP, new NBTTagString(up));
-        icons.setTag(Archive.NBT_ICONS_NORTH, new NBTTagString(north));
-        icons.setTag(Archive.NBT_ICONS_SOUTH, new NBTTagString(south));
-        icons.setTag(Archive.NBT_ICONS_WEST, new NBTTagString(west));
-        icons.setTag(Archive.NBT_ICONS_EAST, new NBTTagString(east));
-        origin.setCompoundTag(Archive.NBT_ICONS, icons);
+        icons.setTag(NBT_ICONS_DOWN, new NBTTagString(down));
+        icons.setTag(NBT_ICONS_UP, new NBTTagString(up));
+        icons.setTag(NBT_ICONS_NORTH, new NBTTagString(north));
+        icons.setTag(NBT_ICONS_SOUTH, new NBTTagString(south));
+        icons.setTag(NBT_ICONS_WEST, new NBTTagString(west));
+        icons.setTag(NBT_ICONS_EAST, new NBTTagString(east));
+        origin.setCompoundTag(NBT_ICONS, icons);
         // Done adding them
-        nbt.setCompoundTag(Archive.NBT_ORIGEN, origin);
+        nbt.setCompoundTag(NBT_ORIGEN, origin);
     }
 
     public void readFromNBT(final NBTTagCompound nbt)
     {
         // Getting Origin
-        NBTTagCompound origin = NBTHelper.getTag(nbt, Archive.NBT_ORIGEN);
+        NBTTagCompound origin = NBTHelper.getTag(nbt, NBT_ORIGEN);
         // Getting Block stuff
-        setBlockID(NBTHelper.getInteger(origin, Archive.NBT_BLOCK_ID));
-        setBlockMeta(NBTHelper.getByte(origin, Archive.NBT_BLOCK_META));
-        setData(NBTHelper.getTag(origin, Archive.NBT_BLOCK_DATA));
+        setBlockID(NBTHelper.getInteger(origin, NBT_BLOCK_ID));
+        setBlockMeta(NBTHelper.getByte(origin, NBT_BLOCK_META));
+        setData(NBTHelper.getTag(origin, NBT_BLOCK_DATA));
         // Getting Tick Stuff
-        NBTTagCompound tick = NBTHelper.getTag(origin, Archive.NBT_TICK);
-        setTick(NBTHelper.getString(tick, Archive.NBT_TICK_NAME));
+        NBTTagCompound tick = NBTHelper.getTag(origin, NBT_TICK);
+        setTick(NBTHelper.getString(tick, NBT_TICK_NAME));
         if (tick())
         {
             getTick().readFromNBT(tick);
         }
         // Getting icons
-        setIcons(NBTHelper.getTag(origin, Archive.NBT_ICONS));
+        setIcons(NBTHelper.getTag(origin, NBT_ICONS));
     }
 
     /*
@@ -450,16 +461,38 @@ public final class CompressedData
         tmp.writeToItemStack(item);
     }
 
-    private final TileEntity parent;
+    private transient final TileEntity parent;
 
     public CompressedData()
     {
         parent = null;
+        id = 0;
+        meta = 0;
+        data = null;
+        down = null;
+        up = null;
+        north = null;
+        south = null;
+        west = null;
+        east = null;
+        hasTick = false;
+        tickTile = null;
     }
 
     public CompressedData(TileEntity tile)
     {
         parent = tile;
+        id = 0;
+        meta = 0;
+        data = null;
+        down = null;
+        up = null;
+        north = null;
+        south = null;
+        west = null;
+        east = null;
+        hasTick = false;
+        tickTile = null;
     }
 
     /**
@@ -468,5 +501,165 @@ public final class CompressedData
     public TileEntity getParent()
     {
         return parent;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = (prime * result) + ((data == null) ? 0 : data.hashCode());
+        result = (prime * result) + ((down == null) ? 0 : down.hashCode());
+        result = (prime * result) + ((east == null) ? 0 : east.hashCode());
+        result = (prime * result) + (hasTick ? 1231 : 1237);
+        result = (prime * result) + id;
+        result = (prime * result) + meta;
+        result = (prime * result) + ((north == null) ? 0 : north.hashCode());
+        result = (prime * result) + ((south == null) ? 0 : south.hashCode());
+        result = (prime * result) + ((tickTile == null) ? 0 : tickTile.hashCode());
+        result = (prime * result) + ((up == null) ? 0 : up.hashCode());
+        result = (prime * result) + ((west == null) ? 0 : west.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("CompressedData [id=");
+        builder.append(id);
+        builder.append(", meta=");
+        builder.append(meta);
+        builder.append(", data=");
+        builder.append(data);
+        builder.append(", hasTick=");
+        builder.append(hasTick);
+        builder.append(", tickTile=");
+        builder.append(tickTile);
+        builder.append(", down=");
+        builder.append(down);
+        builder.append(", up=");
+        builder.append(up);
+        builder.append(", north=");
+        builder.append(north);
+        builder.append(", south=");
+        builder.append(south);
+        builder.append(", west=");
+        builder.append(west);
+        builder.append(", east=");
+        builder.append(east);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (!(obj instanceof CompressedData))
+        {
+            return false;
+        }
+        CompressedData other = (CompressedData) obj;
+        if (data == null)
+        {
+            if (other.data != null)
+            {
+                return false;
+            }
+        } else if (!data.equals(other.data))
+        {
+            return false;
+        }
+        if (down == null)
+        {
+            if (other.down != null)
+            {
+                return false;
+            }
+        } else if (!down.equals(other.down))
+        {
+            return false;
+        }
+        if (east == null)
+        {
+            if (other.east != null)
+            {
+                return false;
+            }
+        } else if (!east.equals(other.east))
+        {
+            return false;
+        }
+        if (hasTick != other.hasTick)
+        {
+            return false;
+        }
+        if (id != other.id)
+        {
+            return false;
+        }
+        if (meta != other.meta)
+        {
+            return false;
+        }
+        if (north == null)
+        {
+            if (other.north != null)
+            {
+                return false;
+            }
+        } else if (!north.equals(other.north))
+        {
+            return false;
+        }
+        if (south == null)
+        {
+            if (other.south != null)
+            {
+                return false;
+            }
+        } else if (!south.equals(other.south))
+        {
+            return false;
+        }
+        if (tickTile == null)
+        {
+            if (other.tickTile != null)
+            {
+                return false;
+            }
+        } else if (!tickTile.equals(other.tickTile))
+        {
+            return false;
+        }
+        if (up == null)
+        {
+            if (other.up != null)
+            {
+                return false;
+            }
+        } else if (!up.equals(other.up))
+        {
+            return false;
+        }
+        if (west == null)
+        {
+            if (other.west != null)
+            {
+                return false;
+            }
+        } else if (!west.equals(other.west))
+        {
+            return false;
+        }
+        return true;
     }
 }

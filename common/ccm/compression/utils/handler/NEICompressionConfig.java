@@ -1,4 +1,4 @@
-package ccm.compression.utils.handler.compatibility;
+package ccm.compression.utils.handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +11,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import ccm.compression.Compression;
+import ccm.compression.api.CompressedData;
 import ccm.compression.block.CompressedType;
 import ccm.compression.block.ModBlocks;
-import ccm.compression.utils.helper.CompressedData;
 import ccm.compression.utils.lib.Properties;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 

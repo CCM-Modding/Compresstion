@@ -3,7 +3,7 @@ package ccm.compression.tileentity;
 import net.minecraft.nbt.NBTTagCompound;
 
 import ccm.compression.Compression;
-import ccm.compression.utils.helper.CompressedData;
+import ccm.compression.api.CompressedData;
 import ccm.nucleum.omnium.tileentity.BaseTE;
 
 public class CompressedTile extends BaseTE

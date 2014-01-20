@@ -7,7 +7,7 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import ccm.compression.utils.helper.recipe.DownConvertionRecipe;
+import ccm.compression.utils.helper.DownConvertionRecipe;
 
 public enum CompressedType
 {

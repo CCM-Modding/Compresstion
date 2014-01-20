@@ -17,6 +17,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -24,7 +25,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import ccm.compression.block.CompressedType;
 import ccm.compression.block.ModBlocks;
 import ccm.compression.proxy.CommonProxy;
-import ccm.compression.utils.handler.configuration.CompresstionConfig;
+import ccm.compression.utils.handler.CompresstionConfig;
+import ccm.compression.utils.helper.IMCHandler;
 import ccm.nucleum.omnium.CCMMod;
 
 @Mod(modid = MOD_ID, useMetadata = true, dependencies = "required-after:nucleum_omnium")
@@ -65,5 +67,11 @@ public class Compression extends CCMMod
                                                    Item.ingotIron,
                                                    'x',
                                                    "cobblestone"));
+    }
+
+    @EventHandler
+    public void handleIMCMessages(IMCEvent event)
+    {
+        IMCHandler.processIMCMessages(event);
     }
 }

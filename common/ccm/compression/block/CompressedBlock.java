@@ -29,10 +29,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import ccm.compression.api.CompressedData;
 import ccm.compression.client.renderer.block.CompressedBlockRenderer;
 import ccm.compression.item.block.CompressedItemBlock;
 import ccm.compression.tileentity.CompressedTile;
-import ccm.compression.utils.helper.CompressedData;
 import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.handler.TileHandler;
 

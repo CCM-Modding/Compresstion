@@ -1,7 +1,7 @@
 /**
  * CCM Modding, Compression
  */
-package ccm.compression.utils.handler.configuration;
+package ccm.compression.utils.handler;
 
 import net.minecraft.block.Block;
 

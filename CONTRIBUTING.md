@@ -12,6 +12,6 @@ Contributing to Compression
 
 ##Formatting
 
-[Formatter](http://goo.gl/utmX3o). This formatter used in all CCM projects whos dev is [Captain_Shadows](https://github.com/CaptainShadows). This includes Nucleum.
+[Formatter](http://goo.gl/utmX3o). This formatter used in all CCM projects who's dev is [Captain_Shadows](https://github.com/CaptainShadows). This includes Compression.
 
 **Please use this to try to reduce the difference to what you've actually changed.**

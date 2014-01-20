@@ -1,14 +1,13 @@
-package ccm.compression.utils.helper.recipe;
+package ccm.compression.utils.helper;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
+import ccm.compression.api.CompressedData;
 import ccm.compression.block.CompressedType;
 import ccm.compression.block.ModBlocks;
-import ccm.compression.utils.lib.Archive;
-import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class DownConvertionRecipe implements IRecipe
 {
@@ -78,13 +77,15 @@ public class DownConvertionRecipe implements IRecipe
         ItemStack stack = null;
         if (type.hasParent())
         {
-            stack = new ItemStack(ModBlocks.compressedBlock, 9, type.getParent().ordinal());
-            stack.setTagCompound(item.getTagCompound());
+            stack = item.copy();
+            stack.setItemDamage(type.getParent().ordinal());
+            stack.stackSize = 9;
         } else
         {
-            int id = NBTHelper.getInteger(item, Archive.NBT_BLOCK_ID);
-            int meta = NBTHelper.getByte(item, Archive.NBT_BLOCK_META);
-            stack = new ItemStack(id, 9, meta);
+            CompressedData tmp = new CompressedData();
+            tmp.readFromNBT(item.getTagCompound());
+            stack = new ItemStack(tmp.getID(), 9, tmp.getMeta());
+            stack.setTagCompound(tmp.getData());
         }
         return stack;
     }
