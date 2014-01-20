@@ -16,7 +16,6 @@ import ccm.compression.Compression;
 import ccm.compression.api.CompressedData;
 import ccm.compression.api.CompressedPermissions;
 import ccm.compression.block.ModBlocks;
-import ccm.compression.utils.lib.Properties;
 import ccm.nucleum.omnium.tileentity.ActiveTE;
 import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 import ccm.nucleum.omnium.utils.helper.item.ItemHelper;
@@ -104,7 +103,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
     {
         if (getStackInSlot(IN) != null)
         {
-            if ((getStackInSlot(IN).stackSize >= 9) && !Properties.blackList.contains(getStackInSlot(IN)))
+            if ((getStackInSlot(IN).stackSize >= 9))
             {
                 ItemStack stack = getCompressedItem();
                 if (stack != null)
@@ -170,9 +169,7 @@ public class CompressorTile extends ActiveTE implements ISidedInventory
                 Block block = getBlock(stack);
                 if (block != null)
                 {
-                    if (FunctionHelper.isNormalBlock(block, stack.getItemDamage())
-                        || (block.blockID == ModBlocks.compressedBlock.blockID)
-                        || Properties.whiteList.contains(getStackInSlot(IN)))
+                    if (FunctionHelper.isNormalBlock(block, stack.getItemDamage()) || (block.blockID == ModBlocks.compressedBlock.blockID))
                     {
                         stack.stackSize = 1;
                         if (block.blockID == ModBlocks.compressedBlock.blockID)

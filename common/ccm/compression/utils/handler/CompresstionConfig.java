@@ -5,9 +5,10 @@ package ccm.compression.utils.handler;
 
 import net.minecraft.block.Block;
 
+import ccm.compression.api.CompressedPermissions;
 import ccm.compression.utils.lib.Archive;
-import ccm.compression.utils.lib.Properties;
 import ccm.nucleum.omnium.utils.handler.configuration.IConfig;
+import ccm.nucleum.omnium.utils.helper.FunctionHelper;
 
 import lib.cofh.util.ConfigHandler;
 
@@ -27,7 +28,7 @@ public class CompresstionConfig extends IConfig
         String[] ids = blackList.split(",");
         for (String s : ids)
         {
-            Properties.blackList.add(Integer.valueOf(s));
+            CompressedPermissions.addBlackList(FunctionHelper.getItemFromString(s, ":"));
         }
     }
 
