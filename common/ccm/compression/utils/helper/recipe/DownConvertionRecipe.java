@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 import ccm.compression.block.CompressedType;
 import ccm.compression.block.ModBlocks;
-import ccm.compression.utils.helper.CompressedData;
+import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 public class DownConvertionRecipe implements IRecipe
@@ -82,8 +82,8 @@ public class DownConvertionRecipe implements IRecipe
             stack.setTagCompound(item.getTagCompound());
         } else
         {
-            int id = NBTHelper.getInteger(item, CompressedData.NBT_BLOCK_ID);
-            int meta = NBTHelper.getByte(item, CompressedData.NBT_BLOCK_META);
+            int id = NBTHelper.getInteger(item, Archive.NBT_BLOCK_ID);
+            int meta = NBTHelper.getByte(item, Archive.NBT_BLOCK_META);
             stack = new ItemStack(id, 9, meta);
         }
         return stack;

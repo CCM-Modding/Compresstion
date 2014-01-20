@@ -17,6 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import ccm.compression.Compression;
 import ccm.compression.api.ITileTick;
+import ccm.compression.utils.lib.Archive;
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
 /**
@@ -28,21 +29,6 @@ import ccm.nucleum.omnium.utils.helper.NBTHelper;
  */
 public final class CompressedData
 {
-    /** Static Data */
-    public static final String NBT_ORIGEN = "original";
-    public static final String NBT_BLOCK_ID = "id";
-    public static final String NBT_BLOCK_META = "meta";
-    public static final String NBT_BLOCK_DATA = "data";
-    public static final String NBT_TICK = "tick";
-    public static final String NBT_TICK_NAME = "name";
-    public static final String NBT_TICK_HAS = "has";
-    public static final String NBT_ICONS = "icons";
-    public static final String NBT_ICONS_DOWN = "DOWN";
-    public static final String NBT_ICONS_UP = "UP";
-    public static final String NBT_ICONS_NORTH = "NORTH";
-    public static final String NBT_ICONS_SOUTH = "SOUTH";
-    public static final String NBT_ICONS_WEST = "WEST";
-    public static final String NBT_ICONS_EAST = "EAST";
     /*
      * Block data
      */
@@ -359,60 +345,60 @@ public final class CompressedData
      */
     public void setIcons(NBTTagCompound nbt)
     {
-        down = NBTHelper.getString(nbt, NBT_ICONS_DOWN);
-        up = NBTHelper.getString(nbt, NBT_ICONS_UP);
-        north = NBTHelper.getString(nbt, NBT_ICONS_NORTH);
-        south = NBTHelper.getString(nbt, NBT_ICONS_SOUTH);
-        west = NBTHelper.getString(nbt, NBT_ICONS_WEST);
-        east = NBTHelper.getString(nbt, NBT_ICONS_EAST);
+        down = NBTHelper.getString(nbt, Archive.NBT_ICONS_DOWN);
+        up = NBTHelper.getString(nbt, Archive.NBT_ICONS_UP);
+        north = NBTHelper.getString(nbt, Archive.NBT_ICONS_NORTH);
+        south = NBTHelper.getString(nbt, Archive.NBT_ICONS_SOUTH);
+        west = NBTHelper.getString(nbt, Archive.NBT_ICONS_WEST);
+        east = NBTHelper.getString(nbt, Archive.NBT_ICONS_EAST);
     }
 
     public void writeToNBT(final NBTTagCompound nbt)
     {
         NBTTagCompound origin = new NBTTagCompound();
         // Adding Block stuff
-        origin.setInteger(NBT_BLOCK_ID, getID());
-        origin.setByte(NBT_BLOCK_META, getMeta());
-        origin.setTag(NBT_BLOCK_DATA, getData());
+        origin.setInteger(Archive.NBT_BLOCK_ID, getID());
+        origin.setByte(Archive.NBT_BLOCK_META, getMeta());
+        origin.setTag(Archive.NBT_BLOCK_DATA, getData());
         // Done adding that. Adding Tick stuff
         NBTTagCompound tick = new NBTTagCompound();
-        tick.setBoolean(NBT_TICK_HAS, tick());
-        tick.setString(NBT_TICK_NAME, tickTile);
+        tick.setBoolean(Archive.NBT_TICK_HAS, tick());
+        tick.setString(Archive.NBT_TICK_NAME, tickTile);
         if (tick())
         {
             getTick().writeToNBT(tick);
         }
-        origin.setCompoundTag(NBT_TICK, tick);
+        origin.setCompoundTag(Archive.NBT_TICK, tick);
         // Done adding that. Add Icons to nbt
         NBTTagCompound icons = new NBTTagCompound();
-        icons.setTag(NBT_ICONS_DOWN, new NBTTagString(down));
-        icons.setTag(NBT_ICONS_UP, new NBTTagString(up));
-        icons.setTag(NBT_ICONS_NORTH, new NBTTagString(north));
-        icons.setTag(NBT_ICONS_SOUTH, new NBTTagString(south));
-        icons.setTag(NBT_ICONS_WEST, new NBTTagString(west));
-        icons.setTag(NBT_ICONS_EAST, new NBTTagString(east));
-        origin.setCompoundTag(NBT_ICONS, icons);
+        icons.setTag(Archive.NBT_ICONS_DOWN, new NBTTagString(down));
+        icons.setTag(Archive.NBT_ICONS_UP, new NBTTagString(up));
+        icons.setTag(Archive.NBT_ICONS_NORTH, new NBTTagString(north));
+        icons.setTag(Archive.NBT_ICONS_SOUTH, new NBTTagString(south));
+        icons.setTag(Archive.NBT_ICONS_WEST, new NBTTagString(west));
+        icons.setTag(Archive.NBT_ICONS_EAST, new NBTTagString(east));
+        origin.setCompoundTag(Archive.NBT_ICONS, icons);
         // Done adding them
-        nbt.setCompoundTag(NBT_ORIGEN, origin);
+        nbt.setCompoundTag(Archive.NBT_ORIGEN, origin);
     }
 
     public void readFromNBT(final NBTTagCompound nbt)
     {
         // Getting Origin
-        NBTTagCompound origin = NBTHelper.getTag(nbt, NBT_ORIGEN);
+        NBTTagCompound origin = NBTHelper.getTag(nbt, Archive.NBT_ORIGEN);
         // Getting Block stuff
-        setBlockID(NBTHelper.getInteger(origin, NBT_BLOCK_ID));
-        setBlockMeta(NBTHelper.getByte(origin, NBT_BLOCK_META));
-        setData(NBTHelper.getTag(origin, NBT_BLOCK_DATA));
+        setBlockID(NBTHelper.getInteger(origin, Archive.NBT_BLOCK_ID));
+        setBlockMeta(NBTHelper.getByte(origin, Archive.NBT_BLOCK_META));
+        setData(NBTHelper.getTag(origin, Archive.NBT_BLOCK_DATA));
         // Getting Tick Stuff
-        NBTTagCompound tick = NBTHelper.getTag(origin, NBT_TICK);
-        setTick(NBTHelper.getString(tick, NBT_TICK_NAME));
+        NBTTagCompound tick = NBTHelper.getTag(origin, Archive.NBT_TICK);
+        setTick(NBTHelper.getString(tick, Archive.NBT_TICK_NAME));
         if (tick())
         {
             getTick().readFromNBT(tick);
         }
         // Getting icons
-        setIcons(NBTHelper.getTag(origin, NBT_ICONS));
+        setIcons(NBTHelper.getTag(origin, Archive.NBT_ICONS));
     }
 
     /*
