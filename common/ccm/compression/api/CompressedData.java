@@ -18,6 +18,11 @@ import ccm.nucleum.omnium.utils.helper.NBTHelper;
 public final class CompressedData
 {
     /*
+     * IMC Requests
+     */
+    public static final String IMC_LIST_BLACK = "blacklist";
+    // public static final String IMC_LIST_WHITE = "whitelist"; NOT DONE YET
+    /*
      * NBT NAMES
      */
     public static final String NBT_PATH = "classpath";

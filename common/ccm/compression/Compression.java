@@ -26,7 +26,7 @@ import ccm.compression.block.CompressedType;
 import ccm.compression.block.ModBlocks;
 import ccm.compression.proxy.CommonProxy;
 import ccm.compression.utils.handler.CompresstionConfig;
-import ccm.compression.utils.helper.IMCHandler;
+import ccm.compression.utils.handler.IMCHandler;
 import ccm.nucleum.omnium.CCMMod;
 
 @Mod(modid = MOD_ID, useMetadata = true, dependencies = "required-after:nucleum_omnium")
