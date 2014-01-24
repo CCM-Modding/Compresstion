@@ -52,7 +52,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
             sb.append(" ");
             if (data.getBlock() == null)
             {
-                sb.append(StatCollector.translateToLocalFormatted("compressed.name", "ERROR"));
+                sb.append(StatCollector.translateToLocalFormatted("compressed.title", "ERROR"));
             } else
             {
                 List<ItemStack> list = new ArrayList<ItemStack>();
@@ -70,7 +70,7 @@ public class CompressedItemBlock extends ItemBlockWithMetadata
                 {
                     stack = new ItemStack(data.getBlock());
                 }
-                sb.append(StatCollector.translateToLocalFormatted("compressed.name", stack.getDisplayName()));
+                sb.append(StatCollector.translateToLocalFormatted("compressed.title", stack.getDisplayName()));
             }
             return sb.toString();
         }
