@@ -30,7 +30,7 @@ public class CompressedTile extends BaseTE
     public void validate()
     {
         super.validate();
-        if (data().tick())
+        if (data().hasTick())
         {
             data().getTick().validate();
         }
@@ -40,7 +40,7 @@ public class CompressedTile extends BaseTE
     public void invalidate()
     {
         super.invalidate();
-        if (data().tick())
+        if (data().hasTick())
         {
             data().getTick().invalidate();
         }
@@ -49,14 +49,14 @@ public class CompressedTile extends BaseTE
     @Override
     public boolean canUpdate()
     {
-        return data().tick();
+        return data().hasTick() ? data().getTick().shouldTick() : false;
     }
 
     @Override
     public void updateEntity()
     {
         super.updateEntity();
-        if (data().tick())
+        if (data().hasTick())
         {
             data().getTick().tick();
         } else

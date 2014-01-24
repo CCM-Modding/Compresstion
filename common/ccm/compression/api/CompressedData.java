@@ -17,14 +17,17 @@ import ccm.nucleum.omnium.utils.helper.NBTHelper;
  */
 public final class CompressedData
 {
-    /* NBT NAMES */
+    /*
+     * NBT NAMES
+     */
+    public static final String NBT_PATH = "classpath";
     public static final String NBT_ORIGEN = "original";
     public static final String NBT_BLOCK_ID = "id";
     public static final String NBT_BLOCK_META = "meta";
     public static final String NBT_BLOCK_DATA = "data";
     public static final String NBT_TICK = "tick";
-    public static final String NBT_TICK_NAME = "name";
-    public static final String NBT_TICK_HAS = "has";
+    public static final String NBT_SPECIAL = "special";
+    public static final String NBT_RENDER = "render";
     /*
      * Block data
      */
@@ -97,9 +100,9 @@ public final class CompressedData
     private transient ITileTick tick = null;
 
     /**
-     * @return True if the Tile is allowed to tick
+     * @return true if the tile is has a {@link ITileTick}
      */
-    public boolean tick()
+    public boolean hasTick()
     {
         return hasTick;
     }
@@ -137,9 +140,9 @@ public final class CompressedData
     {
         if (tick == null)
         {
-            if (!tick())
+            if (!hasTick())
             {
-                Compression.instance.logger().bug("GET TICK HAS BEEN CALLED ON A COMPRESSED TILE THAT DOESN'T TICK");
+                Compression.instance.logger().bug("getTick HAS BEEN CALLED ON A COMPRESSED TILE THAT DOESN'T TICK");
             } else
             {
                 // Create the temporal variables for internal usage
@@ -168,6 +171,168 @@ public final class CompressedData
     }
 
     /*
+     * ISpecialCompressed
+     */
+    /** Weather it has an {@link ISpecialCompressed} */
+    private boolean isSpecial = false;
+    /** The path to it's {@link ISpecialCompressed} */
+    private String special;
+    /** A temporally stored version so that it dosen't have to be created every time */
+    private transient ISpecialCompressed iSpecial = null;
+
+    /**
+     * @return true if the tile is has a {@link ISpecialCompressed}
+     */
+    public boolean isSpecial()
+    {
+        return isSpecial;
+    }
+
+    /**
+     * @param special
+     *            The Canonical Name of a class that implements {@link ISpecialCompressed}
+     */
+    public void setSpecial(final String special)
+    {
+        if ((special != null) && !special.equalsIgnoreCase(""))
+        {
+            isSpecial = true;
+            this.special = special;
+        }
+    }
+
+    /**
+     * @param special
+     *            An instance of {@link ISpecialCompressed}. It <b>MUST</b> be able to be reconstructed
+     */
+    public void setSpecial(final ISpecialCompressed special)
+    {
+        if (special != null)
+        {
+            iSpecial = special;
+            setSpecial(special.getClass().getCanonicalName());
+        }
+    }
+
+    /**
+     * @return An instance of {@link ISpecialCompressed} or null if the tile doesn't have one
+     */
+    public ISpecialCompressed getSpecial()
+    {
+        if (iSpecial == null)
+        {
+            if (!isSpecial())
+            {
+                Compression.instance.logger().bug("getSpecial HAS BEEN CALLED ON A COMPRESSED TILE THAT ISN'T SPECIAL");
+            } else
+            {
+                // Create the temporal variables for internal usage
+                Class<? extends ISpecialCompressed> tmpHandler = null;
+                try
+                {// Try to find the ITileTick Class
+                    tmpHandler = (Class<? extends ISpecialCompressed>) Class.forName(special, false, Loader.instance().getModClassLoader());
+                } catch (ClassNotFoundException e)
+                {
+                    Compression.instance.logger().printCatch(e, "A compressed Tile has failed to find it's ISpecialCompressed @ %s", special);
+                    return null;
+                }
+                try
+                {// Try to crate a new instance of said Class
+                    iSpecial = tmpHandler.newInstance();
+                } catch (Exception e)
+                {
+                    Compression.instance.logger().printCatch(e,
+                                                             "A compressed Tile has failed to create an instance of it's ISpecialCompressed @ %s",
+                                                             special);
+                    return null;
+                }
+            }
+        }// Done
+        return iSpecial;
+    }
+
+    /*
+     * ISpecialRenderer
+     */
+    /** Weather it has an {@link ITileTick} */
+    private boolean hasRender = false;
+    /** The path to it's {@link ITileTick} */
+    private String renderTile;
+    /** A temporally stored version so that it dosen't have to be created every time */
+    private transient ISpecialRenderer render = null;
+
+    /**
+     * @return true if the tile is has an {@link ISpecialRenderer}
+     */
+    public boolean hasRender()
+    {
+        return hasRender;
+    }
+
+    /**
+     * @param renderTile
+     *            The Canonical Name of a class that implements {@link ISpecialRenderer}
+     */
+    public void setRender(final String renderTile)
+    {
+        if ((renderTile != null) && !renderTile.equalsIgnoreCase(""))
+        {
+            hasRender = true;
+            this.renderTile = renderTile;
+        }
+    }
+
+    /**
+     * @param render
+     *            An instance of {@link ISpecialRenderer}. It <b>MUST</b> be able to be reconstructed
+     */
+    public void setRender(final ISpecialRenderer render)
+    {
+        if (render != null)
+        {
+            this.render = render;
+            setRender(render.getClass().getCanonicalName());
+        }
+    }
+
+    /**
+     * @return An instance of {@link ISpecialRenderer} or null if the tile doesn't have one
+     */
+    public ISpecialRenderer getRender()
+    {
+        if (render == null)
+        {
+            if (!hasRender())
+            {
+                Compression.instance.logger().bug("getRender HAS BEEN CALLED ON A COMPRESSED TILE THAT DOESN'T HAVE A SPECIAL RENDER");
+            } else
+            {
+                // Create the temporal variables for internal usage
+                Class<? extends ISpecialRenderer> tmpHandler = null;
+                try
+                {// Try to find the ITileTick Class
+                    tmpHandler = (Class<? extends ISpecialRenderer>) Class.forName(renderTile, false, Loader.instance().getModClassLoader());
+                } catch (ClassNotFoundException e)
+                {
+                    Compression.instance.logger().printCatch(e, "A compressed Tile has failed to find it's ISpecialRenderer @ %s", renderTile);
+                    return null;
+                }
+                try
+                {// Try to crate a new instance of said Class
+                    render = tmpHandler.newInstance();
+                } catch (Exception e)
+                {
+                    Compression.instance.logger().printCatch(e,
+                                                             "A compressed Tile has failed to create an ISpecialRenderer of it's ITileTick @ %s",
+                                                             renderTile);
+                    return null;
+                }
+            }
+        }// Done
+        return render;
+    }
+
+    /*
      * NBT STUFF
      */
     public void writeToNBT(final NBTTagCompound nbt)
@@ -182,14 +347,27 @@ public final class CompressedData
         }
         // Done adding that. Adding Tick stuff
         NBTTagCompound tick = new NBTTagCompound();
-        tick.setBoolean(NBT_TICK_HAS, tick());
-        if (tick())
+        if (hasTick())
         {
-            tick.setString(NBT_TICK_NAME, tickTile);
+            tick.setString(NBT_PATH, tickTile);
             getTick().writeToNBT(tick);
         }
         origin.setCompoundTag(NBT_TICK, tick);
-        // Done adding them
+        // Done adding that. Adding Special stuff
+        NBTTagCompound special = new NBTTagCompound();
+        if (hasTick())
+        {
+            special.setString(NBT_PATH, this.special);
+        }
+        origin.setCompoundTag(NBT_SPECIAL, special);
+        // Done adding that. Adding Render stuff
+        NBTTagCompound render = new NBTTagCompound();
+        if (hasRender())
+        {
+            render.setString(NBT_PATH, renderTile);
+        }
+        origin.setCompoundTag(NBT_RENDER, render);
+        // Done adding everything, now storing it
         nbt.setCompoundTag(NBT_ORIGEN, origin);
     }
 
@@ -203,11 +381,17 @@ public final class CompressedData
         setData(NBTHelper.getTag(origin, NBT_BLOCK_DATA));
         // Getting Tick Stuff
         NBTTagCompound tick = NBTHelper.getTag(origin, NBT_TICK);
-        setTick(NBTHelper.getString(tick, NBT_TICK_NAME));
-        if (tick())
+        setTick(NBTHelper.getString(tick, NBT_PATH));
+        if (hasTick())
         {
             getTick().readFromNBT(tick);
         }
+        // Getting Special Stuff
+        NBTTagCompound special = NBTHelper.getTag(origin, NBT_SPECIAL);
+        setSpecial(NBTHelper.getString(special, NBT_PATH));
+        // Getting Render Stuff
+        NBTTagCompound render = NBTHelper.getTag(origin, NBT_RENDER);
+        setRender(NBTHelper.getString(render, NBT_PATH));
     }
 
     /*
@@ -255,6 +439,9 @@ public final class CompressedData
         tmp.writeToItemStack(item);
     }
 
+    /*
+     * Object Stuff
+     */
     private transient final TileEntity parent;
 
     public CompressedData()
@@ -265,6 +452,10 @@ public final class CompressedData
         data = null;
         hasTick = false;
         tickTile = null;
+        isSpecial = false;
+        special = null;
+        hasRender = false;
+        renderTile = null;
     }
 
     public CompressedData(TileEntity tile)
@@ -275,6 +466,10 @@ public final class CompressedData
         data = null;
         hasTick = false;
         tickTile = null;
+        isSpecial = false;
+        special = null;
+        hasRender = false;
+        renderTile = null;
     }
 
     /**
@@ -283,87 +478,5 @@ public final class CompressedData
     public TileEntity getParent()
     {
         return parent;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = (prime * result) + ((data == null) ? 0 : data.hashCode());
-        result = (prime * result) + (hasTick ? 1231 : 1237);
-        result = (prime * result) + id;
-        result = (prime * result) + meta;
-        result = (prime * result) + ((tickTile == null) ? 0 : tickTile.hashCode());
-        return result;
-    }
-
-    @Override
-    public String toString()
-    {
-        StringBuilder builder = new StringBuilder();
-        builder.append("CompressedData [id=");
-        builder.append(id);
-        builder.append(", meta=");
-        builder.append(meta);
-        builder.append(", data=");
-        builder.append(data);
-        builder.append(", hasTick=");
-        builder.append(hasTick);
-        builder.append(", tickTile=");
-        builder.append(tickTile);
-        builder.append("]");
-        return builder.toString();
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (!(obj instanceof CompressedData))
-        {
-            return false;
-        }
-        CompressedData other = (CompressedData) obj;
-        if (data == null)
-        {
-            if (other.data != null)
-            {
-                return false;
-            }
-        } else if (!data.equals(other.data))
-        {
-            return false;
-        }
-        if (hasTick != other.hasTick)
-        {
-            return false;
-        }
-        if (id != other.id)
-        {
-            return false;
-        }
-        if (meta != other.meta)
-        {
-            return false;
-        }
-        if (tickTile == null)
-        {
-            if (other.tickTile != null)
-            {
-                return false;
-            }
-        } else if (!tickTile.equals(other.tickTile))
-        {
-            return false;
-        }
-        return true;
     }
 }

@@ -1,7 +1,10 @@
 package ccm.compression.api;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -16,58 +19,58 @@ import ccm.nucleum.omnium.utils.helper.NBTHelper;
  */
 public final class CompressionPerms
 {
-    private static final List<ItemStack> whiteList = new ArrayList<ItemStack>();
+    private static final Map<ItemStack, ItemStack> whiteList = new HashMap<ItemStack, ItemStack>();
     private static final List<ItemStack> blackList = new ArrayList<ItemStack>();
 
-    public static void addWhiteList(ItemStack s)
+    public static void addWhiteList(ItemStack key, ItemStack value)
     {
-        if (s != null)
+        if (key != null)
         {
-            whiteList.add(s);
+            whiteList.put(key, value);
         }
     }
 
-    public static ItemStack getWhiteListData(ItemStack s)
+    public static ItemStack getWhiteListData(ItemStack key)
     {
-        return s != null ? whiteList.get(whiteList.indexOf(s)) : null;
+        return whiteList.get(key);
     }
 
-    public static boolean whiteListed(ItemStack s)
+    public static boolean whiteListed(ItemStack key)
     {
-        return isListed(s, whiteList);
+        return isListed(key, whiteList.keySet());
     }
 
-    public static void addBlackList(ItemStack s)
+    public static void addBlackList(ItemStack item)
     {
-        if (s != null)
+        if (item != null)
         {
-            blackList.add(s);
+            blackList.add(item);
         }
     }
 
-    public static boolean blackListed(ItemStack s)
+    public static boolean blackListed(ItemStack item)
     {
-        return isListed(s, blackList);
+        return isListed(item, blackList);
     }
 
-    private static boolean isListed(ItemStack s, List<ItemStack> list)
+    private static boolean isListed(ItemStack item, Collection<ItemStack> collection)
     {
-        if (s != null)
+        if (item != null)
         {
-            for (ItemStack tmp : list)
+            for (ItemStack tmp : collection)
             {
                 if (tmp != null)
                 {
-                    if (tmp.itemID == s.itemID)
+                    if (tmp.itemID == item.itemID)
                     {
-                        if ((tmp.getItemDamage() == s.getItemDamage()) || (tmp.getItemDamage() == OreDictionary.WILDCARD_VALUE))
+                        if ((tmp.getItemDamage() == item.getItemDamage()) || (tmp.getItemDamage() == OreDictionary.WILDCARD_VALUE))
                         {
-                            if ((tmp.getTagCompound() == null) && (s.getTagCompound() == null))
+                            if ((tmp.getTagCompound() == null) && (item.getTagCompound() == null))
                             {
                                 return true;
-                            } else if ((tmp.getTagCompound() != null) && (s.getTagCompound() != null))
+                            } else if ((tmp.getTagCompound() != null) && (item.getTagCompound() != null))
                             {
-                                if (NBTHelper.getBoolean(tmp, "wildcard") || tmp.getTagCompound().equals(s.getTagCompound()))
+                                if (NBTHelper.getBoolean(tmp, "wildcard") || tmp.getTagCompound().equals(item.getTagCompound()))
                                 {
                                     return true;
                                 }

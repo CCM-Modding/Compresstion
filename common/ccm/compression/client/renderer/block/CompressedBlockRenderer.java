@@ -31,7 +31,9 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
         return true;
     }
 
+    // Had to do that cause the else clause IS important
     @Override
+    @SuppressWarnings("all")
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
     {
         if (!renderer.hasOverrideBlockTexture())
@@ -44,13 +46,19 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
                     CompressedTile tile = (CompressedTile) temp;
                     if (tile.data().getBlock() != null)
                     {
-                        renderer.setRenderBoundsFromBlock(block);
-                        renderer.renderStandardBlock(block, x, y, z);
-                        renderer.setOverrideBlockTexture(CompressedType.getOverlay(tile.getBlockMetadata()));
-                        renderer.setRenderBoundsFromBlock(block);
-                        renderer.renderStandardBlock(block, x, y, z);
-                        renderer.clearOverrideBlockTexture();
-                        return true;
+                        if (!tile.data().hasRender())
+                        {
+                            renderer.setRenderBoundsFromBlock(block);
+                            renderer.renderStandardBlock(block, x, y, z);
+                            renderer.setOverrideBlockTexture(CompressedType.getOverlay(tile.getBlockMetadata()));
+                            renderer.setRenderBoundsFromBlock(block);
+                            renderer.renderStandardBlock(block, x, y, z);
+                            renderer.clearOverrideBlockTexture();
+                            return true;
+                        } else
+                        {
+                            return tile.data().getRender().renderBlock(world, x, y, z, block, renderer);
+                        }
                     }
                 }
             }

@@ -13,6 +13,8 @@ import net.minecraft.tileentity.TileEntity;
  */
 public interface ITileTick
 {
+    public boolean shouldTick();
+
     /**
      * runs when updateEntity is called on the owner tile
      */

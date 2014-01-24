@@ -142,7 +142,7 @@ public interface ISpecialCompressed
 
     public boolean canPlaceBlockAt(World world, int x, int y, int z);
 
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int par5, ItemStack par6ItemStack);
+    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int par5, ItemStack item);
 
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int par5);
 

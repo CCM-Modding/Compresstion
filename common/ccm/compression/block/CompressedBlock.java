@@ -52,6 +52,18 @@ public class CompressedBlock extends BlockContainer
         return TileHandler.getTileInstance(Archive.COMPRESSED);
     }
 
+    @Override
+    public int getRenderType()
+    {
+        return CompressedBlockRenderer.id;
+    }
+
+    @Override
+    public Icon getIcon(int side, int meta)
+    {
+        return Block.slowSand.getBlockTextureFromSide(side);
+    }
+
     private static CompressedTile getTile(final IBlockAccess world, final int x, final int y, final int z)
     {
         TileEntity tmp = world.getBlockTileEntity(x, y, z);
@@ -65,12 +77,22 @@ public class CompressedBlock extends BlockContainer
         return null;
     }
 
-    private static Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
+    private static CompressedData getData(final IBlockAccess world, final int x, final int y, final int z)
     {
         CompressedTile tmp = getTile(world, x, y, z);
         if (tmp != null)
         {
-            Block block = tmp.data().getBlock();
+            return tmp.data();
+        }
+        return null;
+    }
+
+    private static Block getBlock(final IBlockAccess world, final int x, final int y, final int z)
+    {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null)
+        {
+            Block block = tmp.getBlock();
             if (block != null)
             {
                 return block;
@@ -83,10 +105,10 @@ public class CompressedBlock extends BlockContainer
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
     {
         ItemStack stack = new ItemStack(world.getBlockId(x, y, z), 1, world.getBlockMetadata(x, y, z));
-        CompressedTile tile = getTile(world, x, y, z);
-        if (tile != null)
+        CompressedData data = getData(world, x, y, z);
+        if (data != null)
         {
-            tile.data().writeToItemStack(stack);
+            data.writeToItemStack(stack);
         }
         return stack;
     }
@@ -115,10 +137,10 @@ public class CompressedBlock extends BlockContainer
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack item)
     {
         super.onBlockPlacedBy(world, x, y, z, entity, item);
-        CompressedTile tile = getTile(world, x, y, z);
-        if (tile != null)
+        CompressedData data = getData(world, x, y, z);
+        if (data != null)
         {
-            tile.data().readFromNBT(item.getTagCompound());
+            data.readFromNBT(item.getTagCompound());
         }
     }
 
@@ -126,8 +148,8 @@ public class CompressedBlock extends BlockContainer
     public ArrayList<ItemStack> getBlockDropped(final World world, final int x, final int y, final int z, final int metadata, final int fortune)
     {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        CompressedTile tile = getTile(world, x, y, z);
-        if (tile != null)
+        CompressedData data = getData(world, x, y, z);
+        if (data != null)
         {
             int count = quantityDropped(metadata, fortune, world.rand);
             for (int i = 0; i < count; i++)
@@ -136,7 +158,7 @@ public class CompressedBlock extends BlockContainer
                 if (id > 0)
                 {
                     ItemStack stack = new ItemStack(id, 1, metadata);
-                    tile.data().writeToItemStack(stack);
+                    data.writeToItemStack(stack);
                     ret.add(stack);
                 }
             }
@@ -147,6 +169,11 @@ public class CompressedBlock extends BlockContainer
     @Override
     public Icon getBlockTexture(final IBlockAccess world, final int x, final int y, final int z, final int side)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getBlockTexture(world, x, y, z, side);
+        }
         return getBlock(world, x, y, z).getIcon(side, ((CompressedTile) world.getBlockTileEntity(x, y, z)).data().getMeta());
     }
 
@@ -156,6 +183,12 @@ public class CompressedBlock extends BlockContainer
     @Override
     public void onBlockClicked(final World world, final int x, final int y, final int z, final EntityPlayer player)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            tmp.getSpecial().onBlockClicked(world, x, y, z, player);
+            return;
+        }
         getBlock(world, x, y, z).onBlockClicked(world, x, y, z, player);
     }
 
@@ -166,6 +199,12 @@ public class CompressedBlock extends BlockContainer
      */
     public void randomDisplayTick(final World world, final int x, final int y, final int z, final Random rand)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            tmp.getSpecial().randomDisplayTick(world, x, y, z, rand);
+            return;
+        }
         getBlock(world, x, y, z).randomDisplayTick(world, x, y, z, rand);
     }
 
@@ -176,6 +215,11 @@ public class CompressedBlock extends BlockContainer
      */
     public int getMixedBrightnessForBlock(final IBlockAccess world, final int x, final int y, final int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getMixedBrightnessForBlock(world, x, y, z);
+        }
         return getBlock(world, x, y, z).getMixedBrightnessForBlock(world, x, y, z);
     }
 
@@ -186,6 +230,11 @@ public class CompressedBlock extends BlockContainer
      */
     public float getBlockBrightness(final IBlockAccess world, final int x, final int y, final int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getBlockBrightness(world, x, y, z);
+        }
         return getBlock(world, x, y, z).getBlockBrightness(world, x, y, z);
     }
 
@@ -195,6 +244,12 @@ public class CompressedBlock extends BlockContainer
     @Override
     public void velocityToAddToEntity(final World world, final int x, final int y, final int z, final Entity entity, final Vec3 par6Vec3)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            tmp.getSpecial().velocityToAddToEntity(world, x, y, z, entity, par6Vec3);
+            return;
+        }
         getBlock(world, x, y, z).velocityToAddToEntity(world, x, y, z, entity, par6Vec3);
     }
 
@@ -205,6 +260,11 @@ public class CompressedBlock extends BlockContainer
      */
     public AxisAlignedBB getSelectedBoundingBoxFromPool(final World world, final int x, final int y, final int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getSelectedBoundingBoxFromPool(world, x, y, z);
+        }
         return getBlock(world, x, y, z).getSelectedBoundingBoxFromPool(world, x, y, z);
     }
 
@@ -216,6 +276,12 @@ public class CompressedBlock extends BlockContainer
     @Override
     public void breakBlock(final World world, final int x, final int y, final int z, final int par5, final int par6)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            tmp.getSpecial().breakBlock(world, x, y, z, par5, par6);
+            return;
+        }
         getBlock(world, x, y, z).breakBlock(world, x, y, z, par5, par6);
     }
 
@@ -225,6 +291,12 @@ public class CompressedBlock extends BlockContainer
     @Override
     public void onEntityWalking(final World world, final int x, final int y, final int z, final Entity entity)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            tmp.getSpecial().onEntityWalking(world, x, y, z, entity);
+            return;
+        }
         getBlock(world, x, y, z).onEntityWalking(world, x, y, z, entity);
     }
 
@@ -234,6 +306,12 @@ public class CompressedBlock extends BlockContainer
     @Override
     public void updateTick(final World world, final int x, final int y, final int z, final Random rand)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            tmp.getSpecial().updateTick(world, x, y, z, rand);
+            return;
+        }
         getBlock(world, x, y, z).updateTick(world, x, y, z, rand);
     }
 
@@ -251,6 +329,11 @@ public class CompressedBlock extends BlockContainer
                                     final float par8,
                                     final float par9)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+        }
         return getBlock(world, x, y, z).onBlockActivated(world, x, y, z, player, 0, 0.0F, 0.0F, 0.0F);
     }
 
@@ -260,6 +343,12 @@ public class CompressedBlock extends BlockContainer
     @Override
     public void onBlockDestroyedByExplosion(final World world, final int x, final int y, final int z, final Explosion explosion)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            tmp.getSpecial().onBlockDestroyedByExplosion(world, x, y, z, explosion);
+            return;
+        }
         getBlock(world, x, y, z).onBlockDestroyedByExplosion(world, x, y, z, explosion);
     }
 
@@ -273,6 +362,11 @@ public class CompressedBlock extends BlockContainer
                                         final double explosionY,
                                         final double explosionZ)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
+        }
         int metadata = world.getBlockMetadata(x, y, z);
         return ((getBlock(world, x, y, z).getExplosionResistance(entity)) * ((int) Math.pow(2, 1 + metadata)));
     }
@@ -280,6 +374,11 @@ public class CompressedBlock extends BlockContainer
     @Override
     public float getBlockHardness(final World world, final int x, final int y, final int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getBlockHardness(world, x, y, z);
+        }
         int metadata = world.getBlockMetadata(x, y, z);
         return ((getBlock(world, x, y, z).getBlockHardness(world, x, y, z)) * ((int) Math.pow(2, 1 + metadata)));
     }
@@ -287,217 +386,377 @@ public class CompressedBlock extends BlockContainer
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int oldmeta)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            tmp.getSpecial().onNeighborBlockChange(world, x, y, z, oldmeta);
+            return;
+        }
         getBlock(world, x, y, z).onNeighborBlockChange(world, x, y, z, oldmeta);
     }
 
     @Override
     public void onNeighborTileChange(World world, int x, int y, int z, int tileX, int tileY, int tileZ)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            tmp.getSpecial().onNeighborTileChange(world, x, y, z, tileX, tileY, tileZ);
+            return;
+        }
         getBlock(world, x, y, z).onNeighborTileChange(world, x, y, z, tileX, tileY, tileZ);
     }
 
     @Override
     public boolean canBeReplacedByLeaves(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canBeReplacedByLeaves(world, x, y, z);
+        }
         return getBlock(world, x, y, z).canBeReplacedByLeaves(world, x, y, z);
     }
 
     @Override
     public boolean canBlockStay(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canBlockStay(world, x, y, z);
+        }
         return getBlock(world, x, y, z).canBlockStay(world, x, y, z);
     }
 
     @Override
     public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canConnectRedstone(world, x, y, z, side);
+        }
         return getBlock(world, x, y, z).canConnectRedstone(world, x, y, z, side);
     }
 
     @Override
     public boolean canEntityDestroy(World world, int x, int y, int z, Entity entity)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canEntityDestroy(world, x, y, z, entity);
+        }
         return getBlock(world, x, y, z).canEntityDestroy(world, x, y, z, entity);
     }
 
     @Override
     public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canSilkHarvest(world, player, x, y, z, metadata);
+        }
         return getBlock(world, x, y, z).canSilkHarvest(world, player, x, y, z, metadata);
     }
 
     @Override
     public boolean canSustainLeaves(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canSustainLeaves(world, x, y, z);
+        }
         return getBlock(world, x, y, z).canSustainLeaves(world, x, y, z);
     }
 
     @Override
     public float getAmbientOcclusionLightValue(IBlockAccess world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getAmbientOcclusionLightValue(world, x, y, z);
+        }
         return getBlock(world, x, y, z).getAmbientOcclusionLightValue(world, x, y, z);
     }
 
     @Override
     public boolean getBlocksMovement(IBlockAccess world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getBlocksMovement(world, x, y, z);
+        }
         return getBlock(world, x, y, z).getBlocksMovement(world, x, y, z);
     }
 
     @Override
     public int getComparatorInputOverride(World world, int x, int y, int z, int par5)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getComparatorInputOverride(world, x, y, z, par5);
+        }
         return getBlock(world, x, y, z).getComparatorInputOverride(world, x, y, z, par5);
     }
 
     @Override
     public int getFireSpreadSpeed(World world, int x, int y, int z, int metadata, ForgeDirection face)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getFireSpreadSpeed(world, x, y, z, metadata, face);
+        }
         return (getBlock(world, x, y, z).getFireSpreadSpeed(world, x, y, z, metadata, face)) / 9;
     }
 
     @Override
     public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getFlammability(world, x, y, z, metadata, face);
+        }
         return (getBlock(world, x, y, z).getFlammability(world, x, y, z, metadata, face)) * 9;
     }
 
     @Override
     public int getLightOpacity(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getLightOpacity(world, x, y, z);
+        }
         return getBlock(world, x, y, z).getLightOpacity(world, x, y, z);
     }
 
     @Override
     public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canCreatureSpawn(type, world, x, y, z);
+        }
         return getBlock(world, x, y, z).canCreatureSpawn(type, world, x, y, z);
     }
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canPlaceBlockAt(world, x, y, z);
+        }
         return getBlock(world, x, y, z).canPlaceBlockAt(world, x, y, z);
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int par5, ItemStack par6ItemStack)
+    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int par5, ItemStack item)
     {
-        return getBlock(world, x, y, z).canPlaceBlockOnSide(world, x, y, z, par5, par6ItemStack);
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canPlaceBlockOnSide(world, x, y, z, par5, item);
+        }
+        return getBlock(world, x, y, z).canPlaceBlockOnSide(world, x, y, z, par5, item);
     }
 
     @Override
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int par5)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canPlaceBlockOnSide(world, x, y, z, par5);
+        }
         return getBlock(world, x, y, z).canPlaceBlockOnSide(world, x, y, z, par5);
     }
 
     @Override
     public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().canPlaceTorchOnTop(world, x, y, z);
+        }
         return getBlock(world, x, y, z).canPlaceTorchOnTop(world, x, y, z);
     }
 
     @Override
     public float getEnchantPowerBonus(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getEnchantPowerBonus(world, x, y, z);
+        }
         return (getBlock(world, x, y, z).getEnchantPowerBonus(world, x, y, z)) * 9;
     }
 
     @Override
     public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getPlayerRelativeBlockHardness(player, world, x, y, z);
+        }
         return getBlock(world, x, y, z).getPlayerRelativeBlockHardness(player, world, x, y, z);
     }
 
     @Override
     public ForgeDirection[] getValidRotations(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().getValidRotations(world, x, y, z);
+        }
         return getBlock(world, x, y, z).getValidRotations(world, x, y, z);
     }
 
     @Override
     public boolean isBeaconBase(World world, int x, int y, int z, int beaconX, int beaconY, int beaconZ)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().isBeaconBase(world, x, y, z, beaconX, beaconY, beaconZ);
+        }
         return getBlock(world, x, y, z).isBeaconBase(world, x, y, z, beaconX, beaconY, beaconZ);
     }
 
     @Override
     public boolean isBlockBurning(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().isBlockBurning(world, x, y, z);
+        }
         return getBlock(world, x, y, z).isBlockBurning(world, x, y, z);
     }
 
     @Override
     public boolean isBlockFoliage(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().isBlockFoliage(world, x, y, z);
+        }
         return getBlock(world, x, y, z).isBlockFoliage(world, x, y, z);
     }
 
     @Override
     public boolean isFertile(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().isFertile(world, x, y, z);
+        }
         return getBlock(world, x, y, z).isFertile(world, x, y, z);
     }
 
     @Override
     public boolean isFireSource(World world, int x, int y, int z, int metadata, ForgeDirection side)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().isFireSource(world, x, y, z, metadata, side);
+        }
         return getBlock(world, x, y, z).isFireSource(world, x, y, z, metadata, side);
     }
 
     @Override
     public boolean isFlammable(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().isFlammable(world, x, y, z, metadata, face);
+        }
         return getBlock(world, x, y, z).isFlammable(world, x, y, z, metadata, face);
     }
 
     @Override
     public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int par5)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().isProvidingStrongPower(world, x, y, z, par5);
+        }
         return getBlock(world, x, y, z).isProvidingStrongPower(world, x, y, z, par5);
     }
 
     @Override
     public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int par5)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().isProvidingWeakPower(world, x, y, z, par5);
+        }
         return getBlock(world, x, y, z).isProvidingWeakPower(world, x, y, z, par5);
     }
 
     @Override
     public boolean isWood(World world, int x, int y, int z)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().isWood(world, x, y, z);
+        }
         return getBlock(world, x, y, z).isWood(world, x, y, z);
     }
 
     @Override
     public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
     {
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().shouldCheckWeakPower(world, x, y, z, side);
+        }
         return getBlock(world, x, y, z).shouldCheckWeakPower(world, x, y, z, side);
-    }
-
-    @Override
-    public int getRenderType()
-    {
-        return CompressedBlockRenderer.id;
-    }
-
-    @Override
-    public Icon getIcon(int side, int meta)
-    {
-        return Block.slowSand.getBlockTextureFromSide(side);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public boolean addBlockDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer)
     { // TODO REPLACE
+        CompressedData tmp = getData(world, x, y, z);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().addBlockDestroyEffects(world, x, y, z, meta, effectRenderer);
+        }
         return getBlock(world, x, y, z).addBlockDestroyEffects(world, x, y, z, meta, effectRenderer);
     }
 
     @Override
     public boolean addBlockHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer)
     { // TODO REDO
+        CompressedData tmp = getData(world, target.blockX, target.blockY, target.blockZ);
+        if (tmp != null && tmp.isSpecial())
+        {
+            return tmp.getSpecial().addBlockHitEffects(world, target, effectRenderer);
+        }
         return getBlock(world, target.blockX, target.blockY, target.blockZ).addBlockHitEffects(world, target, effectRenderer);
     }
 }
