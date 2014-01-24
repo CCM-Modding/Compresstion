@@ -8,7 +8,13 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import ccm.nucleum.omnium.utils.helper.NBTHelper;
 
-public final class CompressedPermissions
+/**
+ * CompressionPerms
+ * <p>
+ * 
+ * @author Captain_Shadows
+ */
+public final class CompressionPerms
 {
     private static final List<ItemStack> whiteList = new ArrayList<ItemStack>();
     private static final List<ItemStack> blackList = new ArrayList<ItemStack>();

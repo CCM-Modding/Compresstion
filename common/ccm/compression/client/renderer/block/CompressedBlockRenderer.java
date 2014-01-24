@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -45,10 +44,9 @@ public class CompressedBlockRenderer implements ISimpleBlockRenderingHandler
                     CompressedTile tile = (CompressedTile) temp;
                     if (tile.data().getBlock() != null)
                     {
-                        Icon overlay = CompressedType.getOverlay(tile.getBlockMetadata());
                         renderer.setRenderBoundsFromBlock(block);
                         renderer.renderStandardBlock(block, x, y, z);
-                        renderer.setOverrideBlockTexture(overlay);
+                        renderer.setOverrideBlockTexture(CompressedType.getOverlay(tile.getBlockMetadata()));
                         renderer.setRenderBoundsFromBlock(block);
                         renderer.renderStandardBlock(block, x, y, z);
                         renderer.clearOverrideBlockTexture();

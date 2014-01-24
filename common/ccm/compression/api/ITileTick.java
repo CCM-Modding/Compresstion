@@ -14,19 +14,14 @@ import net.minecraft.tileentity.TileEntity;
 public interface ITileTick
 {
     /**
-     * @param The
-     *            owner {@link TileEntity}. THIS MIGHT BE NULL
-     */
-    public void setOwner(TileEntity tile);
-
-    /**
      * runs when updateEntity is called on the owner tile
      */
     public void tick();
 
-    public void writeToNBT(final NBTTagCompound nbt);
-
-    public void readFromNBT(final NBTTagCompound nbt);
+    /**
+     * runs when validate is called on the owner tile
+     */
+    public void validate();
 
     /**
      * runs when invalidate is called on the owner tile
@@ -34,7 +29,20 @@ public interface ITileTick
     public void invalidate();
 
     /**
-     * runs when validate is called on the owner tile
+     * @param owner
+     *            The owner {@link TileEntity}. THIS MIGHT BE NULL
      */
-    public void validate();
+    public void setOwner(final TileEntity tile);
+
+    /**
+     * @param nbt
+     *            Write all of YOUR data to this
+     */
+    public void writeToNBT(final NBTTagCompound nbt);
+
+    /**
+     * @param nbt
+     *            Read all of YOUR data from this. Only Your data will appear here seriously don't try to get TE data from it.
+     */
+    public void readFromNBT(final NBTTagCompound nbt);
 }
