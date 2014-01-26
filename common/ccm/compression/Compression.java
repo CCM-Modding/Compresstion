@@ -56,13 +56,14 @@ public class Compression extends CCMMod
         {
             GameRegistry.addRecipe(type.getRecipe());
         }
-        // THIS IS WHAT HAPPENS WHEN I MAKE THE RECIPE!!
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.compressor),
-                                                   "xax",
-                                                   "i i",
+                                                   "xx",
+                                                   "iai",
                                                    "xxx",
                                                    'a',
                                                    Block.anvil,
+                                                   'p',
+                                                   Block.pistonStickyBase,
                                                    'i',
                                                    Item.ingotIron,
                                                    'x',
